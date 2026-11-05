@@ -7,15 +7,17 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.3-beta` |
+| Plugin version | `2026.3-2.0.0-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
 | Java toolchain for the mod | 8 |
 | License | CC BY-NC 4.0 (see `LICENSE`) |
 
-This is the first development batch. It delivers the generator foundation and the
-creative tab, item and recipe mod elements. The complete support overview is in
+This is the second development batch. It delivers the generator foundation, the
+creative tab, item and recipe mod elements, basic cube blocks with block items
+and drops, and a tag editor backed by the Forge 1.12.2 Ore Dictionary. The
+complete support overview is in
 [docs/SUPPORT-MATRIX.md](docs/SUPPORT-MATRIX.md); known limitations and the
 migration rationale are in [MIGRATION-REPORT.md](MIGRATION-REPORT.md).
 
@@ -38,6 +40,39 @@ synchronization action. RetroFuturaGradle keeps the 1.12.2 build semantics
 No MCreator "Java home override" to a JDK 8 is required anymore. Leave the
 Gradle JVM at MCreator's bundled JDK (Java 25) or any JDK supported by
 Gradle 9.8.
+
+## Block support
+
+The second batch supports the default basic cube block:
+
+- single texture, cube model, block state JSON and block item model;
+- hardness, resistance, step sound, creative tabs, stack size and rarity;
+- automatic block item registration (optional per block) with multi-tab support;
+- self drop or custom drop with amount and XP range.
+
+Block bases such as stairs, slabs, fences, doors, plants, fluids and transparent
+or multipart blocks are not available yet. The block base selector and the
+corresponding advanced fields are hidden in this batch.
+
+## Tags and the Ore Dictionary
+
+Forge 1.12.2 has no tag registry. The generator keeps MCreator's tag editor
+workflow, but generates Ore Dictionary registrations instead of functional tag
+files:
+
+- `ITEMS` and `BLOCKS` tags are registered through
+  `net.minecraftforge.oredict.OreDictionary.registerOre` in the generated
+  `<Mod>OreDictionary` class.
+- Common tag paths are translated to conventional Ore Dictionary names, for
+  example `forge:ores/copper` -> `oreCopper`,
+  `forge:storage_blocks/copper` -> `blockCopper`,
+  `forge:ingots/copper` -> `ingotCopper`, `forge:planks` -> `plankWood`.
+  Other paths fall back to `<namespace>_<path>` with non-alphanumeric characters
+  replaced by underscores.
+- Tag JSON files are still written for MCreator compatibility but are inert in
+  1.12.2; they are placed under the unused `data/` folder.
+- Other tag types (entities, biomes, structures, functions, enchantments, ...)
+  have no 1.12.2 equivalent and are not registered.
 
 ## Recipe support
 
@@ -161,13 +196,13 @@ plugin-branch-2026.3/
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
    `VALIDATION PASSED`.
 3. Headless MCreator renderer: the plugin is discovered and accepted by
-   MCreator 2026.3.44621, a workspace is created, and the base, tab, item and
-   recipe templates render without errors.
+   MCreator 2026.3.44621, a workspace is created, and the base, tab, item,
+   recipe, block and Ore Dictionary templates render without errors.
 4. Generated sources are compiled with RetroFuturaGradle 2.0.6 / Gradle 9.8.0 /
    Java 8 toolchain: `BUILD SUCCESSFUL`, producing `build/libs/modid-1.0.jar`.
-   The previous ForgeGradle 2.3 / Gradle 4.10.3 chain reproduced the
-   `Unsupported class file major version 69` synchronization failure and has
-   been replaced.
+   The test workspace contains a two-tab item, a basic cube block with block
+   item and custom drops, crafting/smelting/brewing recipes, and `ITEMS`/`BLOCKS`
+   tags mapped to Ore Dictionary entries.
 
 In-game verification is intentionally left to the user, as required by the
 delivery specification.

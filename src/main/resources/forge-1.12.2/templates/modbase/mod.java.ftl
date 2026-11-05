@@ -32,7 +32,10 @@ public class ${JavaModName} {
 		<#if (types.tabs![])?has_content>
 		${package}.init.${JavaModName}Tabs.load();
 		</#if>
-		<#if (types.items![])?has_content>
+		<#if (types.blocks![])?has_content>
+		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Blocks.class);
+		</#if>
+		<#if (types.items![])?has_content || (types.blocks![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Items.class);
 		</#if>
 
@@ -40,6 +43,9 @@ public class ${JavaModName} {
 	}
 
 	@Mod.EventHandler public void init(FMLInitializationEvent event) {
+		<#if w.getWorkspace().getTagElements()?size != 0>
+		${package}.init.${JavaModName}OreDictionary.init();
+		</#if>
 		<#if (types.recipes![])?has_content>
 		${package}.init.${JavaModName}Recipes.init();
 		</#if>

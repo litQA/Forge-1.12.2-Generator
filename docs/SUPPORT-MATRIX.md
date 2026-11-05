@@ -21,7 +21,7 @@ feature list. This matrix records how the generator handles each feature group.
 | Creative tab | Direct | Name, icon, search bar. `hideTitle` has no 1.12.2 API and is excluded. |
 | Item | Degraded | Supported: normal/tool model, texture, name, rarity, creative tabs, stack size, durability, enchantability, use duration, use animation, destroy speed, destroy any block, melee damage, attack speed, recipe remainder, container item behaviour, food, creative tabs. Unavailable: procedures/triggers, inventories, GUI binding, ranged behaviour, JSON/OBJ/Java models, glow conditions, music disc, banner patterns, attribute modifier entries, repair items, fire immunity, piglin currency. Multiple creative tabs are supported through a `getSubItems` override; the first selected tab remains the item default tab. |
 | Recipe | Direct | Crafting (shaped/shapeless) as 1.12.2 JSON; furnace smelting and brewing registered through generated Java code (`GameRegistry.addSmelting`, `BrewingRecipeRegistry`). Blasting, Smoking, Campfire cooking, Stone cutting and Smithing do not exist in Forge 1.12.2 and fail generation explicitly. |
-| Block | Unavailable | Planned for batch 2, including block states, multipart states, redstone conduction, custom light, block bases and loot tables. |
+| Block | Degraded | Batch 2 supports the default basic cube block: single texture, cube model/block state, hardness/resistance/step sound, creative tabs, optional block item with multi-tab support, self/custom drops and XP. Block bases, custom/multipart states, transparency, per-face textures, inventories, energy, fluids, worldgen, redstone behavior, tool tiers and loot-table drops are unavailable. |
 | Plant | Unavailable | Planned for batch 3. |
 | Fluid | Unavailable | Planned for batch 3. |
 | Dimension | Unavailable | Planned for batch 4, including portal, void world gen and sky parameters. |
@@ -48,7 +48,7 @@ feature list. This matrix records how the generator handles each feature group.
 | Command / Function | Unavailable | Planned for batch 8. |
 | Game rule | Unavailable | Planned for batch 8. |
 | Painting / Banner pattern / Armor trim | Unavailable | Painting can be implemented in batch 8; banner patterns as recipes/materials; armor trims do not exist in 1.12.2 (Unavailable permanently). |
-| Music disc / Fuel / Tag (2021.1 legacy elements) | Unavailable | Music disc and fuel were merged into the item model in later MCreator versions and are not present as separate 2026.3 definitions. Tag elements are represented by 1.12.2 ore dictionary entries in the item/recipe batches. |
+| Music disc / Fuel / Tag (2021.1 legacy elements) | Unavailable | Music disc and fuel were merged into the item model in later MCreator versions and are not present as separate 2026.3 definitions. Tag elements are represented by 1.12.2 Ore Dictionary entries since batch 2. |
 
 ## Cross-cutting features
 
@@ -59,13 +59,14 @@ feature list. This matrix records how the generator handles each feature group.
 | YAML merge semantics | Direct | The generator is self-contained; plugin weight guarantees precedence if another plugin ships the same `forge-1.12.2` resources. |
 | Generator fragments | Unavailable | The loader supports fragments, but the 1.12.2 build has no mixin/accesstransformer pipeline. No fragments are declared so no invalid mixin code can be generated. |
 | Empty `types` lists | Direct | All templates read `types.*` and guard with `?has_content`. |
-| Field inclusions / exclusions | Direct | Item and recipe definitions expose only supported fields. |
+| Field inclusions / exclusions | Direct | Item, recipe and block definitions use field exclusions so unsupported fields are hidden without hiding grouped editor controls. |
 | MCP name mappings | Degraded | Full 1.12.2 lists are shipped for the implemented elements; unimplemented elements have no runtime mapping consumers yet. Unavailable modern values fall back to documented vanilla approximations. |
-| Resource generation (models, language, block states, loot tables, tags) | Degraded | Item models and language keys are generated; block states, loot tables and 1.12.2 ore dictionary tags are planned with their element batches. |
+| Resource generation (models, language, block states, loot tables, tags) | Degraded | Item models, block models/block states, block item models and language keys are generated. Loot tables are replaced by `getDrops` in batch 2; tag JSON is inert because the Ore Dictionary is the backend. |
+| Tags / Ore Dictionary | Degraded | MCreator's tag editor is preserved. `ITEMS` and `BLOCKS` tags are registered through `OreDictionary.registerOre` with conventional names for common `forge:` paths; nested tags and non-item/block tag types are ignored. |
 | Gradle build chain | Direct | Plugin: Gradle 9.8.0 + Java 25. Generated mod: RetroFuturaGradle 2.0.6 + Gradle 9.8.0 + Java 8 toolchain, Forge `14.23.5.2847`. Gradle 9.8 is required because MCreator 2026.3 sends a Java 25 synchronization action (class file major version 69) that legacy Gradle cannot parse or load. |
 | Forge `14.23.5.2864` | Unavailable | RetroFuturaGradle 2.0.6 targets `1.12.2-14.23.5.2847` for 1.12.2. 2864 is planned with a later RFG upgrade. |
 | Workspace-local caches | Direct for wrapper builds | `gradlew` sets `GRADLE_USER_HOME=<project>/caches/gradle`; wrapper distributions point to local files. MCreator's own Tooling API build cannot be redirected from generator resources (platform limitation). |
-| Server-side build safety | Direct | No client-only classes are referenced from common code paths in the batch-1 templates except `@SideOnly(Side.CLIENT)` model registration, which is standard 1.12.2 practice. |
+| Server-side build safety | Direct | No client-only classes are referenced from common code paths except `@SideOnly(Side.CLIENT)` model registration, which is standard 1.12.2 practice. |
 | Generator validator | Direct | YAML, mappings, FreeMarker syntax, includes and template references are validated by `gradlew validateGenerator`. |
 | MCP tool compatibility | Direct | All definitions use standard 2026.3 YAML formats and do not add generator-specific keys that would fail standard YAML parsing. The generator does not implement an MCP server. |
 | Generation diagnostics | Degraded | MCreator reports the mod element name and template path on failure; unsupported features raise explicit `<#stop>` messages. Missing name mappings fall back to documented values instead of raising, so no mapping error can be produced for the implemented elements. |
@@ -105,8 +106,8 @@ is marked Unavailable until its owning mod element is implemented.
 | Batch | Scope |
 | --- | --- |
 | 1 (this batch) | Foundation, creative tab, item, crafting/smelting/brewing recipes, mappings, build chain, validator, documentation |
-| 2 | Blocks, block states/multipart states, block items, loot tables, ore dictionary tags |
-| 3 | Tools, armor, item extensions, attributes, enchantments, potion items/effects |
+| 2 (this batch) | Basic cube blocks, block items, custom drops/XP, Ore Dictionary bridge for the tag editor |
+| 3 | Block bases (stairs/slabs/fences/doors), block states/multipart states, transparent blocks, loot tables; tools, armor, item extensions, attributes, enchantments, potion items/effects |
 | 4 | Plants, fluids, biomes, dimensions, portals, worldgen features |
 | 5 | Living entities, special entities, projectiles, AI tasks, synced data |
 | 6 | GUIs, overlays, key binds, particles, rendered entities |

@@ -1,0 +1,37 @@
+<#-- @formatter:off -->
+/*
+ *    MCreator note: This file is regenerated on each build.
+ */
+package ${package}.init;
+
+import java.util.ArrayList;
+import java.util.List;
+import net.minecraft.block.Block;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+public class ${JavaModName}Blocks {
+
+	private static final List<Block> REGISTRY = new ArrayList<>();
+
+	<#list types.blocks as block>
+	<#if block.getModElement().getTypeString() == "block">
+	public static final Block ${block.getModElement().getRegistryNameUpper()} = register("${block.getModElement().getRegistryName()}", new ${package}.block.${block.getModElement().getName()}Block());
+	</#if>
+	</#list>
+
+	// Start of user code block custom blocks
+	// End of user code block custom blocks
+
+	private static Block register(String name, Block block) {
+		block.setRegistryName(${package}.${JavaModName}.MODID, name);
+		REGISTRY.add(block);
+		return block;
+	}
+
+	@SubscribeEvent public static void registerBlocks(RegistryEvent.Register<Block> event) {
+		event.getRegistry().registerAll(REGISTRY.toArray(new Block[0]));
+	}
+
+}
+<#-- @formatter:on -->

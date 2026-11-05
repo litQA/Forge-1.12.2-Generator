@@ -42,7 +42,15 @@
     <#if mcItemIsCustom(mappedItem)>
         <#assign element = mcItemModElement(mappedItem)>
         <#if element??>
-            <#return "new ItemStack(" + JavaModName + "Items." + element.getRegistryNameUpper() + ", " + amount + ")">
+            <#if element.getTypeString() == "block">
+                <#if element.getGeneratableElement().hasBlockItem>
+            <#return "new ItemStack(" + package + ".init." + JavaModName + "Items." + element.getRegistryNameUpper() + "_ITEM, " + amount + ")">
+                <#else>
+            <#return "new ItemStack(net.minecraft.item.Item.getItemFromBlock(" + package + ".init." + JavaModName + "Blocks." + element.getRegistryNameUpper() + "), " + amount + ")">
+                </#if>
+            <#else>
+            <#return "new ItemStack(" + package + ".init." + JavaModName + "Items." + element.getRegistryNameUpper() + ", " + amount + ")">
+            </#if>
         <#else>
             <#return "ItemStack.EMPTY">
         </#if>

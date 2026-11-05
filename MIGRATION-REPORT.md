@@ -58,7 +58,7 @@ Forge 1.12.2.
 | Field availability is configured per generator (`field_inclusions` / `field_exclusions`). | The item and recipe definitions use `field_exclusions`. Exclusions are safer than inclusions here: inclusion cleanup hides every GUI component it cannot resolve, and grouped recipe controls are not plain GUI fields. Unsupported fields are hidden explicitly, and unsupported recipe types still stop generation. |
 | Gradle task names and export path are configured in `generator.yaml`. | `runClient`, `runServer` and `build/libs/modid-1.0.jar` are used. The workspace wrapper pins Gradle 9.8.0 and RetroFuturaGradle handles the 1.12.2 build. |
 
-## Mod element support (batch 1)
+## Mod element support
 
 ### Creative tab
 
@@ -117,6 +117,56 @@ Explicitly unavailable (generation stops with a message naming the recipe
 type): Blasting, Smoking, Campfire cooking, Stone cutting and Smithing. These
 recipe types do not exist in Forge 1.12.2.
 
+### Block (batch 2)
+
+Direct implementation for the default basic cube block:
+
+- single texture with `block/cube_all` model, block state JSON and block item
+  model;
+- hardness, resistance, 1.12.2 `SoundType`, creative tabs, stack size and
+  rarity;
+- optional `ItemBlock` registration with the same multi-tab `getSubItems`
+  approach used by items;
+- self drop by default, or a custom drop item with amount and XP range through
+  `getDrops`/`getExpDrop` overrides.
+
+Block bases (stairs, slabs, fences, walls, doors, trapdoors, buttons, pressure
+plates, plants, signs, flower pots), custom block states, multipart models,
+transparency, per-face textures, tile entities/inventories, energy, fluids,
+world generation, redstone behavior, tool tiers, loot-table based drops,
+vibration and all block procedures/triggers are not implemented in this batch.
+The block base and the corresponding advanced fields are hidden in the editor.
+
+### Tags and Ore Dictionary (batch 2)
+
+Forge 1.12.2 has no tag registry, so MCreator's tag editor is kept as the user
+interface while the generator emits Ore Dictionary registrations:
+
+- `ITEMS` and `BLOCKS` tags are registered in the generated
+  `<Mod>OreDictionary` class through
+  `net.minecraftforge.oredict.OreDictionary.registerOre`.
+- Managed entries referencing custom items/blocks resolve to the generated
+  registry classes; registry-name entries (`minecraft:stone`) are resolved at
+  runtime with null checks; external entries are resolved after stripping the
+  `EXTERNAL:` prefix.
+- Common tag paths are translated to conventional Ore Dictionary names:
+  `forge:ores/<material>` -> `ore<Material>`,
+  `forge:storage_blocks/<material>` -> `block<Material>`,
+  `forge:ingots/<material>` -> `ingot<Material>`,
+  `forge:nuggets/<material>` -> `nugget<Material>`,
+  `forge:dusts/<material>` -> `dust<Material>`,
+  `forge:gems/<material>` -> `gem<Material>`,
+  `forge:planks` -> `plankWood`, `forge:logs` -> `logWood`.
+  Other paths fall back to `<namespace>_<path>` in lower case with separators
+  replaced by underscores.
+- Nested tag entries (`#tag`/`TAG:`) are not expanded because Ore Dictionary
+  has no nested tag concept.
+- Other tag types (entities, biomes, structures, functions, enchantments,
+  damage types, game events, etc.) have no 1.12.2 equivalent and are ignored by
+  the Ore Dictionary generator.
+- The declared `tags` specification keeps MCreator's tag workflow active and
+  writes inert JSON files under the unused `data/` folder.
+
 ### Other mod elements
 
 All other 2026.3 mod elements (blocks, plants, fluids, dimensions, biomes,
@@ -165,9 +215,10 @@ them as unavailable.
 
 ## Known Limitations
 
-1. **Batch scope.** Only creative tab, item and recipe definitions exist in this
-   batch. The generator is marked `status: dev`; it does not claim full coverage
-   of the 2026.3 feature surface yet.
+1. **Batch scope.** Creative tab, item, recipe and basic cube block definitions
+   exist in this batch, together with the Ore Dictionary bridge for tags. The
+   generator is marked `status: dev`; it does not claim full coverage of the
+   2026.3 feature surface yet.
 2. **Item feature coverage.** Procedures, GUI inventories, ranged behaviour,
    custom models and the other item features listed above are unavailable and
    the corresponding editor fields are hidden.
@@ -183,7 +234,13 @@ them as unavailable.
    stops generation with an explicit error instead of emitting broken code.
 6. **Procedures and triggers.** No procedure blocks, global triggers or element
    triggers are implemented, so no procedure code can be generated yet.
-7. **Toolchain provisioning.** A Java 8 toolchain is required for compilation and
+7. **Block coverage.** Only the default basic cube block is implemented. Block
+   bases, states, multipart models, transparency, inventories, world generation
+   and tool tiers are hidden and belong to a later batch.
+8. **Tag coverage.** Only `ITEMS` and `BLOCKS` tags are mapped to the Ore
+   Dictionary. Nested tag references are ignored, and non-item/block tag types
+   have no 1.12.2 equivalent.
+9. **Toolchain provisioning.** A Java 8 toolchain is required for compilation and
    runtime. It is auto-detected when installed, otherwise downloaded through the
    Foojay resolver. Machines without network access must install a JDK 8 and let
    Gradle detect it (or set `org.gradle.java.installations.paths`).
@@ -206,13 +263,14 @@ them as unavailable.
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (28 YAML documents, 19 templates, 17 template references) |
+| Static validator | `VALIDATION PASSED` (29 YAML documents, 27 templates, 24 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |
 | RetroFuturaGradle 2.0.6 / Gradle 9.8.0 / Java 8 toolchain | `BUILD SUCCESSFUL`; `build/libs/modid-1.0.jar` (reobfuscated) and `modid-1.0-dev.jar` produced. Only deprecation notes for `setUnlocalizedName` (expected on 1.12.2). |
 | Multi-tab item (`CUSTOM:ModTab` + `FOOD`) | `BUILD SUCCESSFUL`; generated item contains the `getSubItems` override and both tab entries. In-game membership is part of the user's real-device test. |
 | Crafting + smelting + brewing recipe workspace | `BUILD SUCCESSFUL`; the generated `<Mod>Recipes` class registers a furnace recipe through `GameRegistry.addSmelting` and a brewing recipe through `BrewingRecipeRegistry`, with a potion-type aware `IBrewingRecipe` implementation. |
+| Basic cube block + block item + Ore Dictionary tags | `BUILD SUCCESSFUL`; the generated `<Mod>Blocks`/`<Mod>Items` classes register a block and its item, and `<Mod>OreDictionary` registers `oreTest`/`ingotTest` entries from `BLOCKS`/`ITEMS` tags. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 
 The generated-mod build used the exact workspace base, templates and generated

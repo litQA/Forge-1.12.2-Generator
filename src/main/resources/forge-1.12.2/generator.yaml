@@ -83,15 +83,28 @@ base_templates:
     condition: "${types.tabs?has_content}"
   - template: elementinits/items.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameItems.java"
-    condition: "${types.items?has_content}"
+    condition: "${types.items?has_content || types.blocks?has_content}"
+  - template: elementinits/blocks.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBlocks.java"
+    condition: "${types.blocks?has_content}"
   - template: elementinits/recipes.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameRecipes.java"
     condition: "${types.recipes?has_content}"
+  - template: elementinits/oredictionary.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameOreDictionary.java"
+    condition: "${w.getWorkspace().getTagElements()?keys?size != 0}"
 
 language_file:
   format: keyvalue
   root_folder: "@MODASSETSROOT/lang/"
   langfile_name: "@langname.lang"
+
+# Forge 1.12.2 has no tag registry. The tag editor remains available in the
+# workspace; this inert file keeps MCreator's tag workflow compatible, while
+# elementinits/oredictionary.java.ftl registers the actual Ore Dictionary entries.
+tags:
+  template: tags.json.ftl
+  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
 
 resources_setup_tasks:
   - task: copy_file

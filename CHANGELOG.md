@@ -25,6 +25,16 @@
   registered through `GameRegistry.addSmelting`, and brewing recipes generated
   as per-element `IBrewingRecipe` implementations with potion-type aware
   inputs and outputs.
+- Block mod element for the default basic cube: single texture, cube model,
+  block state, block item model, hardness, resistance, step sound, creative
+  tabs, stack size, rarity, self/custom drops and XP range.
+- Block item generation with optional auto-generated `ItemBlock`, multi-tab
+  creative tab membership and automatic model registration.
+- Ore Dictionary bridge for MCreator tags: `ITEMS` and `BLOCKS` tags generate
+  `OreDictionary.registerOre` entries, with conventional names for common
+  `forge:` tag paths and a fallback for custom tags.
+- Inert tag JSON output keeps MCreator's tag editor workflow available while
+  the actual 1.12.2 registration uses the Ore Dictionary.
 - Complete 1.12.2 MCP name mappings for the implemented elements, including a
   two-column blocks/items mapping used by both Java code and JSON generation.
 - Static generator validator that parses all YAML documents, parses all
@@ -96,10 +106,17 @@ Fixed 5 bug(s).
 See `MIGRATION-REPORT.md` for the complete list. The most important current
 limitations are:
 
-- Only the creative tab, item and recipe mod elements are implemented.
+- Only the creative tab, item, recipe and basic cube block mod elements are
+  implemented.
 - Item procedure triggers, inventories, GUI binding, ranged behavior, music
   discs, banner patterns, attribute modifiers, custom JSON/OBJ/Java models and
   the other post-1.12.2 item features are not available yet.
+- Block bases (stairs, slabs, fences, doors, plants, fluids), block states,
+  multipart models, transparency, inventories, world generation and tool tiers
+  are not available yet.
+- Tags are limited to `ITEMS` and `BLOCKS` and are stored in the Forge 1.12.2
+  Ore Dictionary; nested tag entries and non-item/block tag types have no
+  1.12.2 equivalent.
 - Forge 1.12.2 still has one default creative tab per item; the first selected
   tab is used as the default, while additional tabs are populated through an
   item `getSubItems` override.

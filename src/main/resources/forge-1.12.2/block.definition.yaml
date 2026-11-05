@@ -1,0 +1,53 @@
+templates:
+  - template: block/block.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlock.java"
+  - template: json/block_states.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/block.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block_item.json.ftl
+    writer: json
+    condition: hasBlockItem
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+
+base_types:
+  - block
+
+localizationkeys:
+  - key: tile.@modid.@registryname.name
+    mapto: name
+
+# Batch 2 supports the default basic cube block. Block bases, custom states,
+# multipart models, animations, inventories, energy, fluids, world generation,
+# procedures, vibration, redstone and per-face textures are not implemented.
+# Exclusions are used instead of inclusions to keep grouped editor controls.
+field_exclusions: [textureTop, textureLeft, textureFront, textureRight, textureBack,
+                   renderType, customModelName, rotationMode, enablePitch, emissiveRendering,
+                   displayFluidOverlay, multipartModel, states, animations, itemTexture,
+                   particleTexture, blockBase, blockSetType, pottedPlant, leavesParticleType,
+                   leavesParticleChance, signEntityTexture, signGUITexture, tintType, isItemTinted,
+                   hasTransparency, connectedSides, transparencyType, disableOffset, boundingBoxes,
+                   customProperties, specialInformation, hasGravity, isWaterloggable, immuneToFire,
+                   destroyTool, useLootTableForDrops, requiresCorrectTool, enchantPowerBonus,
+                   plantsGrowOn, canRedstoneConnect, hasCustomOpacity, lightOpacity, tickRate,
+                   tickRandomly, isReplaceable, canProvidePower, forceRedstoneConductor,
+                   emittedRedstonePower, colorOnMap, noteBlockInstrument, creativePickItem, offsetType,
+                   aiPathNodeType, beaconColorModifier, strippingResult, ignitedByLava, flammability,
+                   fireSpreadSpeed, isLadder, slipperiness, speedFactor, jumpFactor, reactionToPushing,
+                   isNotColidable, isCustomSoundType, breakSound, fallSound, hitSound, placeSound,
+                   stepSound, luminance, unbreakable, vanillaToolTier, additionalHarvestCondition,
+                   placingCondition, isBonemealable, isBonemealTargetCondition, bonemealSuccessCondition,
+                   onBonemealSuccess, sensitiveToVibration, vibrationalEvents, vibrationSensitivityRadius,
+                   canReceiveVibrationCondition, onReceivedVibration, hasInventory, guiBoundTo,
+                   openGUIOnRightClick, inventorySize, inventoryStackSize, inventoryDropWhenDestroyed,
+                   inventoryComparatorPower, inventoryOutSlotIDs, inventoryInSlotIDs,
+                   inventoryAutomationTakeCondition, inventoryAutomationPlaceCondition,
+                   hasEnergyStorage, energyInitial, energyCapacity, energyMaxReceive, energyMaxExtract,
+                   isFluidTank, fluidCapacity, fluidRestrictions, onRightClicked, onBlockAdded,
+                   onNeighbourBlockChanges, onTickUpdate, onRandomUpdateEvent, onDestroyedByPlayer,
+                   onDestroyedByExplosion, onStartToDestroy, onEntityCollides, onEntityWalksOn,
+                   onBlockPlayedBy, onRedstoneOn, onRedstoneOff, onHitByProjectile, onEntityFallsOn,
+                   generateFeature, restrictionBiomes, blocksToReplace, generationShape,
+                   frequencyPerChunks, frequencyOnChunk, minGenerateHeight, maxGenerateHeight]
