@@ -127,16 +127,6 @@ public class ${name}Block extends BlockBush {
 		return <@procedureOBJToConditionCode data.placingCondition/>;
 	}
 
-	<#if data.plantType == "growapable">
-	@Override public boolean canBlockStay(World world, BlockPos pos) {
-		double x = pos.getX(), y = pos.getY(), z = pos.getZ();
-		IBlockState blockstate = world.getBlockState(pos);
-		Entity entity = null;
-		EnumFacing direction = null;
-		ItemStack itemstack = ItemStack.EMPTY;
-		return <@procedureOBJToConditionCode data.placingCondition/>;
-	}
-	<#else>
 	@Override public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
 		double x = pos.getX(), y = pos.getY(), z = pos.getZ();
 		IBlockState blockstate = state;
@@ -145,7 +135,6 @@ public class ${name}Block extends BlockBush {
 		ItemStack itemstack = ItemStack.EMPTY;
 		return <@procedureOBJToConditionCode data.placingCondition/>;
 	}
-	</#if>
 	</#if>
 
 	<#if data.isBonemealable>

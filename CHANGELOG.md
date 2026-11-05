@@ -1,5 +1,18 @@
 # Changelog
 
+# 3.1.3-beta
+
+## Fixes
+
+- Growable plants use normal plant placement instead of the water-only
+  `BlockReed` placement rules.
+- Double-plant blockstates now include all six vanilla double-plant variants
+  and valid separators.
+- Fluid bucket models fall back to the vanilla bucket texture when no custom
+  bucket texture is supplied.
+- Fluid blockstate mapping points at the generated fluid model.
+
+
 # 3.1.2-beta
 
 ## Fixes
