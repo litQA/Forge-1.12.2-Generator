@@ -205,6 +205,14 @@ public class ${name}Block extends Block {
 	@Override protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this<#list customBool as property>, ${property.property().getName()?replace("CUSTOM:", "")?upper_case}</#list><#list customInt as property>, ${property.property().getName()?replace("CUSTOM:", "")?upper_case}</#list><#list customEnum as property>, ${property.property().getName()?replace("CUSTOM:", "")?upper_case}</#list>);
 	}
+
+	@Override public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState();
+	}
+
+	@Override public int getMetaFromState(IBlockState state) {
+		return 0;
+	}
 	</#if>
 </#if>
 
