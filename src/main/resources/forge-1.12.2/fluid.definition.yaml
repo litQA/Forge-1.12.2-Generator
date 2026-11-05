@@ -11,6 +11,9 @@ templates:
   - template: json/fluid_model.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/fluid_states.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
   - template: json/bucket_model.json.ftl
     writer: json
     condition: generateBucket

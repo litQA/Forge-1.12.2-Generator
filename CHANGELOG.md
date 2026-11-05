@@ -1,5 +1,16 @@
 # Changelog
 
+# 3.1.8-beta
+
+## Fixes
+
+- Generate `blockstates/<fluid>.json` with Forge fluid variants for every
+  fluid level; this satisfies the blockstate load that occurs before model
+  rendering.
+- Removed the custom fluid state mapper that caused the loader to look for a
+  missing `test_fluid` blockstate.
+
+
 # 3.1.7-beta
 
 ## New Content
