@@ -98,7 +98,7 @@
 
 ## Fixes
 
-Fixed 16 bug(s).
+Fixed 17 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -137,6 +137,8 @@ Fixed 16 bug(s).
 - State models were generated from combinations that carry no textures; models
   now use `getDefinedStates()` and blockstate variants resolve their model by
   property name/value, so partial integer state sets and a default value work.
+- Enum property setters used `java.util.Optional`; 1.12.2 `PropertyEnum.parseValue`
+  returns Guava `com.google.common.base.Optional`.
 - Integer block properties were missing from generated block classes, so the
   integer property procedure always read `-1`.
 
