@@ -98,7 +98,7 @@
 
 ## Fixes
 
-Fixed 11 bug(s).
+Fixed 12 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -127,6 +127,9 @@ Fixed 11 bug(s).
 - The block property setter template emitted a BlockState value expression as a
   statement and did not understand `blockstate_from_deps` inputs, producing
   broken ternary/parenthesis code.
+- Blockstate property templates called `getProperty(String)` on `IBlockState`;
+  in 1.12.2 the lookup must go through `IBlockState.getBlock().getBlockState()`
+  (the block state container).
 
 ## Known Limitations
 
