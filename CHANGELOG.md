@@ -98,7 +98,7 @@
 
 ## Fixes
 
-Fixed 22 bug(s).
+Fixed 24 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -156,6 +156,11 @@ Fixed 22 bug(s).
 - Added optional TileEntity generation and registration for blocks with
   inventory opt-in.
 - Added independent block item textures and fixed/procedure item tooltips.
+- Fixed the block item tooltip template crashing when the special-information
+  procedure object exposed a null name; this aborted block, item and tile entity
+  generation.
+- Fixed boolean-returning procedures using a null default value in generated
+  guard returns.
 - Integer block properties were missing from generated block classes, so the
   integer property procedure always read `-1`.
 

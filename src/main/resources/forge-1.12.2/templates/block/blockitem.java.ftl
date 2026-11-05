@@ -48,15 +48,17 @@ public class ${name}ItemBlock extends ItemBlock {
 	}
 
 	<#if data.specialInformation?? && data.specialInformation?is_hash>
+	<#assign infoName = (data.specialInformation.getName())!"null">
+	<#assign infoLines = (data.specialInformation.getFixedValue())![] >
 	@SideOnly(Side.CLIENT)
 	@Override public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
 		super.addInformation(stack, world, tooltip, flag);
-		<#if data.specialInformation.getFixedValue()?has_content>
-		<#list data.specialInformation.getFixedValue() as line>
+		<#if infoLines?has_content>
+		<#list infoLines as line>
 		tooltip.add("${JavaConventions.escapeStringForJava(line)}");
 		</#list>
 		</#if>
-		<#if data.specialInformation.getName() != "null">
+		<#if infoName != "null">
 		if (Minecraft.getMinecraft().player != null) {
 			Entity entity = Minecraft.getMinecraft().player;
 			ItemStack itemstack = stack;
@@ -65,7 +67,7 @@ public class ${name}ItemBlock extends ItemBlock {
 			double z = entity.posZ;
 			IBlockState blockstate = null;
 			EnumFacing direction = null;
-			String hover = <@procedureToRetvalCode name=data.specialInformation.getName() dependencies=data.specialInformation.getDependencies(generator.getWorkspace())/>;
+			String hover = <@procedureToRetvalCode name=infoName dependencies=data.specialInformation.getDependencies(generator.getWorkspace())/>;
 			if (hover != null) {
 				for (String line : hover.split("\n")) {
 					tooltip.add(line);

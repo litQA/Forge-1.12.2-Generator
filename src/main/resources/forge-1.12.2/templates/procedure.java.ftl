@@ -19,13 +19,13 @@ public class ${name}Procedure {
 	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> executeProcedure(Map<String, Object> dependencies) {
 		if (dependencies == null) {
 			System.err.println("Procedure ${name} called without dependencies");
-			return<#if return_type??> ${return_type.getDefaultValue(generator.getWorkspace())}</#if>;
+			return<#if return_type??><#if return_type.getJavaType(generator.getWorkspace()) == "boolean"> false<#else> ${return_type.getDefaultValue(generator.getWorkspace())}</#if></#if>;
 		}
 
 		<#list dependencies as dependency>
 		if (dependencies.get("${dependency.getName()}") == null) {
 			System.err.println("Failed to load dependency ${dependency.getName()} for procedure ${name}");
-			return<#if return_type??> ${return_type.getDefaultValue(generator.getWorkspace())}</#if>;
+			return<#if return_type??><#if return_type.getJavaType(generator.getWorkspace()) == "boolean"> false<#else> ${return_type.getDefaultValue(generator.getWorkspace())}</#if></#if>;
 		}
 		</#list>
 
