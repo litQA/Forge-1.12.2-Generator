@@ -3,6 +3,7 @@ package ${package}.init;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.common.MinecraftForge;
 
 public class ${JavaModName}Enchantments {
 
@@ -14,6 +15,7 @@ public class ${JavaModName}Enchantments {
 	public static void init() {
 		<#list (types.enchantments![]) as enchantment>
 		ForgeRegistries.ENCHANTMENTS.register(${enchantment.getModElement().getRegistryNameUpper()});
+		MinecraftForge.EVENT_BUS.register(${package}.enchantment.${enchantment.getModElement().getName()}Enchantment.class);
 		</#list>
 	}
 

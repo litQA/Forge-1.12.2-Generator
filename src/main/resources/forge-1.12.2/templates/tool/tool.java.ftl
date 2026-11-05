@@ -57,7 +57,7 @@ public class ${name}Item extends Item {
 
 	<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "Sword">
 	private static final Item.ToolMaterial MATERIAL = EnumHelper.addToolMaterial("${registryname?upper_case}", ${harvestLevel},
-			${data.usageCount}, ${data.efficiency?c}f, ${data.damageVsEntity - 4}d, ${data.enchantability});
+			${data.usageCount}, ${data.efficiency?c}f, ${(data.damageVsEntity - 4)?c}f, ${data.enchantability});
 	</#if>
 
 	public ${name}Item() {
@@ -155,7 +155,7 @@ public class ${name}Item extends Item {
 		com.google.common.collect.Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(slot);
 		if (slot == EntityEquipmentSlot.MAINHAND) {
 			<#list data.attributeModifiers as modifier>
-			multimap.put(${modifier.attribute}, new AttributeModifier("${registryname}_${modifier?index}", ${modifier.amount?c}d,
+			multimap.put(${modifier.attribute}.getName(), new AttributeModifier("${registryname}_${modifier?index}", ${modifier.amount?c}d,
 					<#if modifier.operation == "ADD_PERCENTAGE" || modifier.operation == "MULTIPLY_TOTAL">2<#elseif modifier.operation == "MULTIPLY_BASE">1<#else>0</#if>));
 			</#list>
 		}

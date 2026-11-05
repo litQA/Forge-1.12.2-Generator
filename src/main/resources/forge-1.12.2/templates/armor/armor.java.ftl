@@ -38,7 +38,7 @@ public class ${name}Item {
 			(SoundEvent) SoundEvent.REGISTRY.getObject(new ResourceLocation("${data.equipSound}")),
 			<#else>null</#if> ${data.toughness?c}f);
 
-	<#macro armorPiece className enable slot textureName info tick index>
+	<#macro armorPiece className enable slot textureName="" info="" tick="" index=0>
 	<#if enable>
 	public static class ${className} extends ItemArmor {
 		public ${className}() {
@@ -72,7 +72,7 @@ public class ${name}Item {
 			if (equipmentSlot == EntityEquipmentSlot.${slot}) {
 				<#list data.attributeModifiers as modifier>
 				<#if !modifier.armorPieces?has_content || modifier.armorPieces[index]>
-				multimap.put(${modifier.attribute}, new AttributeModifier("${registryname}_${index}_${modifier?index}", ${modifier.amount?c}d,
+				multimap.put(${modifier.attribute}.getName(), new AttributeModifier("${registryname}_${index}_${modifier?index}", ${modifier.amount?c}d,
 						<#if modifier.operation == "ADD_PERCENTAGE" || modifier.operation == "MULTIPLY_TOTAL">2<#elseif modifier.operation == "MULTIPLY_BASE">1<#else>0</#if>));
 				</#if>
 				</#list>

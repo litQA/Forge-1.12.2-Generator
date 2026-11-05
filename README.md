@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-3.2.0-beta` |
+| Plugin version | `2026.3-3.2.1-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -110,6 +110,11 @@ Fluids support still/flowing textures, `Fluid` registration,
 mapping. Fog, overlays, custom flow conditions and fluid block procedures are
 not implemented yet.
 
+## Tool limitations
+
+Fishing rods are intentionally not adapted for the current 1.12.2 tool
+implementation. Shields are scheduled for the next batch; the current Shield
+tool mode falls back to a basic item.\n
 ## Tags and the Ore Dictionary
 
 Forge 1.12.2 has no tag registry. The generator keeps MCreator's tag editor

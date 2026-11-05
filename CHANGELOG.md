@@ -1,5 +1,29 @@
 # Changelog
 
+# 3.2.1-beta
+
+## New Content
+
+- Enchantment effect blocks are partially adapted to 1.12.2: damage/armor
+  effectiveness, knockback, mob/block experience and prevent-equipment-drop
+  components generate event handlers. Conditional requirements and value
+  expressions are currently level-scaled fallbacks rather than a full
+  Blockly-value interpreter.
+
+## Fixes
+
+- Armor template macro parameters accept null tick/tooltip inputs.
+- Tool and armor attribute modifiers use `IAttribute.getName()`.
+- Tool material damage is emitted as a float.
+- Attribute initialization is registered once manually instead of relying on
+  automatic event-bus discovery.
+
+## Known Limitations
+
+- Shields are planned for the next batch; fishing rods are intentionally not
+  adapted for the current 1.12.2 tool implementation.
+
+
 # 3.2.0-beta
 
 ## New Content

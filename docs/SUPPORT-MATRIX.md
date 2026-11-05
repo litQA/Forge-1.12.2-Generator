@@ -30,7 +30,7 @@ feature list. This matrix records how the generator handles each feature group.
 | Special entity | Unavailable | Planned for batch 5 (boat, raft, chest raft). |
 | Projectile | Unavailable | Planned for batch 5. |
 | Armor | Degraded | Armor/tool batch supports four armor pieces and custom materials; custom armor models/layer textures must be supplied by the project. | Planned for batch 3. |
-| Tool | Degraded | Armor/tool batch supports the main 1.12.2 tool classes; fishing rod and shield modes remain unavailable. | Planned for batch 3. |
+| Tool | Degraded | Armor/tool batch supports the main 1.12.2 tool classes. Fishing rods are intentionally unsupported; shields are scheduled for the next batch. | Planned for batch 3. |
 | Item extension | Unavailable | Planned for batch 3. |
 | GUI / Overlay | Unavailable | Planned for batch 6. |
 | Key binding | Unavailable | Planned for batch 6. |
