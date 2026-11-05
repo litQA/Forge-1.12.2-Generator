@@ -1,0 +1,102 @@
+name: Forge for @minecraft (@buildfileversion)
+status: dev
+buildfileversion: 14.23.5.2864
+subversion: 1.0
+
+# Java model key used by the legacy 1.12.2 renderer (ModelRenderer based models).
+java_models:
+  key: legacy
+  requested_key_words: [ModelRenderer, ~ModelPart, ~texHeight, ~(ResourceLocation.]
+
+start_id_map:
+  dimension: 2
+
+# Gradle task definitions
+gradle:
+  run_client: runClient
+  run_server: runServer
+  export_file: "build/libs/modid-1.0.jar"
+
+import_formatter:
+  duplicates_whitelist:
+    - java.util
+    - net.minecraft
+  priority_imports:
+    Material: net.minecraft.block.material
+    Nullable: javax.annotation
+    SoundEvent: net.minecraft.util
+    Blocks: net.minecraft.block
+    Items: net.minecraft.item
+    Multimap: com.google.common.collect
+    ImmutableSet: com.google.common.collect
+    Iterables: com.google.common.collect
+    Attributes: net.minecraft.entity.ai.attributes
+    EnumRarity: net.minecraft.item
+    EnumActionResult: net.minecraft.util
+
+# Base generator roots
+source_root: "@WORKSPACEROOT/src/main/java"
+res_root: "@WORKSPACEROOT/src/main/resources"
+mod_assets_root: "@RESROOT/assets/@modid"
+
+# Specific resource folders
+sounds_dir: "@MODASSETSROOT/sounds"
+structures_dir: "@MODASSETSROOT/structures"
+block_textures_dir: "@MODASSETSROOT/textures/blocks"
+item_textures_dir: "@MODASSETSROOT/textures/items"
+entity_textures_dir: "@MODASSETSROOT/textures/entities"
+effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
+particle_textures_dir: "@MODASSETSROOT/textures/particle"
+screen_textures_dir: "@MODASSETSROOT/textures/screens"
+armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+other_textures_dir: "@MODASSETSROOT/textures"
+
+# Vanilla resources
+vanilla_resources_jar: "client-extra-.*.jar"
+vanilla_block_textures_dir: "assets/minecraft/textures/blocks"
+vanilla_item_textures_dir: "assets/minecraft/textures/items"
+
+base_templates:
+  - template: modbase/mod.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModName.java"
+  - template: modbase/iproxy.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/IProxy@JavaModName.java"
+  - template: modbase/serverproxy.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/ServerProxy@JavaModName.java"
+  - template: modbase/clientproxy.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/ClientProxy@JavaModName.java"
+  - template: modbase/pack.mcmeta.ftl
+    writer: json
+    name: "@RESROOT/pack.mcmeta"
+  - template: modbase/mcmod.info.ftl
+    writer: json
+    name: "@RESROOT/mcmod.info"
+  - template: modbase/sounds.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/sounds.json"
+    condition: hasSounds()
+  - template: modbase/variableslist.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModNameVariables.java"
+    condition: hasVariables()
+  - template: elementinits/tabs.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
+    condition: "${types.tabs?has_content}"
+  - template: elementinits/items.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameItems.java"
+    condition: "${types.items?has_content}"
+
+language_file:
+  format: keyvalue
+  root_folder: "@MODASSETSROOT/lang/"
+  langfile_name: "@langname.lang"
+
+resources_setup_tasks:
+  - task: copy_file
+    from: "@MODASSETSROOT/textures/@modpicture.png"
+    to: "@RESROOT/logo.png"
+  - task: copy_models
+    type: OBJ
+    to: "@MODASSETSROOT/models/item"
+  - task: copy_models
+    type: JSON_noinlinetextures
+    to: "@MODASSETSROOT/models/custom"

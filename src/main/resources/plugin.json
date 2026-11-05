@@ -1,0 +1,13 @@
+{
+  "id": "generator-forge-1.12.2",
+  "weight": 100,
+  "supportedversions": [${supportedVersion}],
+  "info": {
+    "name": "Forge ${mcVersion} Generator",
+    "version": "${pluginVersion}",
+    "description": "Minecraft Forge ${mcVersion} generator for MCreator ${mcreatorVersion}.",
+    "author": "LitQA",
+    "credits": "Built on the Apache-2.0 licensed MCreator Generator-Forge-1.12.2 reference project and aligned with the generator-26.3.x architecture.",
+    "dependencies": []
+  }
+}

@@ -1,0 +1,70 @@
+plugins {
+    id 'java'
+}
+
+group = 'net.litqa.mcreator.generator'
+version = pluginVersion
+
+// MCreator version numbers use the <major><minor padded to three digits> form,
+// for example 2026.3 -> 2026003.
+def supportedVersion = {
+    def parts = mcreatorVersion.split('\\.')
+    return (parts[0] + parts[1].padLeft(3, '0')).toLong()
+}()
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+sourceSets {
+    validator {
+        java {
+            srcDir 'src/validator/java'
+        }
+    }
+}
+
+dependencies {
+    // Bundled validation libraries keep the project buildable without network access.
+    validatorImplementation files(
+            'tools/lib/freemarker-2.3.35.jar',
+            'tools/lib/snakeyaml-engine-3.2.jar'
+    )
+}
+
+// Expands the ${...} placeholders in plugin.json at build time.
+tasks.named('processResources') {
+    filesMatching('plugin.json') {
+        expand(
+                mcVersion: mcVersion,
+                mcreatorVersion: mcreatorVersion,
+                pluginVersion: pluginVersion,
+                supportedVersion: supportedVersion
+        )
+    }
+}
+
+// The plugin archive is a zip that holds plugin.json and the generator folders.
+tasks.named('jar', Jar) {
+    archiveFileName = "generator-forge-${mcVersion}-${pluginVersion}.zip"
+    destinationDirectory = layout.buildDirectory.dir('dist')
+    includeEmptyDirs = false
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+tasks.register('validateGenerator', JavaExec) {
+    group = 'verification'
+    description = 'Validates generator YAML, mappings and FreeMarker templates without launching MCreator.'
+    dependsOn tasks.named('validatorClasses')
+    classpath = sourceSets.validator.runtimeClasspath
+    mainClass = 'net.litqa.generator.forge1122.validator.GeneratorValidator'
+    args layout.projectDirectory.dir('src/main/resources').asFile.absolutePath
+    jvmArgs '-Dfile.encoding=UTF-8'
+}
+
+tasks.named('check') {
+    dependsOn 'validateGenerator'
+}
