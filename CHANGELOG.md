@@ -93,10 +93,12 @@
   exist in Forge 1.12.2.
 - `potions.yaml` now maps potion types to the 1.12.2 `PotionTypes` constants used
   by brewing recipes.
+- The blocks/items mapping declares the `CUSTOM:` mapping prefix, so procedure
+  block inputs keep their workspace element identity.
 
 ## Fixes
 
-Fixed 7 bug(s).
+Fixed 8 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -115,6 +117,8 @@ Fixed 7 bug(s).
 - The `block_add` procedure block crashed when the block input exposed only its
   mapped value; MCItem mapping now falls back between unmapped and mapped
   values.
+- Generated procedure classes did not import `net.minecraft.world.World` (and
+  other dependency types), so every generated procedure failed to compile.
 
 ## Known Limitations
 
