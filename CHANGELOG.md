@@ -1,5 +1,21 @@
 # Changelog
 
+# 3.1.5-beta
+
+## New Content
+
+- Growable plants can stack on themselves and grow upward up to
+  `growapableMaxHeight` while force ticking.
+
+## Fixes
+
+- Growable plants genuinely use `BlockBush` placement rules.
+- Fluid state mapping points at the generated `test:<fluid>` model and its
+  `<fluid>` variant, avoiding the `blocks/<texture>#fluid` lookup.
+- Bucket models use the vanilla bucket texture when no custom bucket texture is
+  configured.
+
+
 # 3.1.4-beta
 
 ## Fixes

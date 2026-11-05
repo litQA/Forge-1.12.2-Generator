@@ -59,6 +59,19 @@ public class ${name}Block extends BlockBush {
 	</#if>
 	</#if>
 
+	<#if data.plantType == "growapable">
+	@Override protected boolean canSustainBush(IBlockState state) {
+		return state.getBlock() == this || super.canSustainBush(state);
+	}
+
+	@Override public boolean canPlaceBlockAt(World world, BlockPos pos) {
+		if (world.getBlockState(pos.down()).getBlock() == this) {
+			return true;
+		}
+		return super.canPlaceBlockAt(world, pos);
+	}
+	</#if>
+
 	<#if data.hasTileEntity>
 	@Override public boolean hasTileEntity(IBlockState state) {
 		return true;
@@ -77,6 +90,15 @@ public class ${name}Block extends BlockBush {
 
 	@Override public void updateTick(World world, BlockPos pos, IBlockState state, java.util.Random random) {
 		super.updateTick(world, pos, state, random);
+		<#if data.plantType == "growapable">
+		int height = 1;
+		while (world.getBlockState(pos.down(height)).getBlock() == this) {
+			height++;
+		}
+		if (height < ${data.growapableMaxHeight} && world.isAirBlock(pos.up())) {
+			world.setBlockState(pos.up(), getDefaultState(), 3);
+		}
+		</#if>
 		world.scheduleUpdate(pos, this, 1);
 	}
 	</#if>
