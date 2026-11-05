@@ -6,6 +6,7 @@ package ${package}.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -14,8 +15,19 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 public class ${name}Item extends <#if data.isFood>ItemFood<#else>Item</#if> {
+
+	<#if (data.creativeTabs?size > 1)>
+	// Forge 1.12.2 only stores one default tab, but getSubItems is called by
+	// every tab, so overriding it exposes the item in all selected tabs.
+	private static final CreativeTabs[] CREATIVE_TABS = new CreativeTabs[] {
+<#list data.creativeTabs as creativeTab>
+		${creativeTabValue([creativeTab])}<#if creativeTab?has_next>,</#if>
+</#list>
+	};
+	</#if>
 
 	public ${name}Item() {
 		<#if data.isFood>
@@ -42,6 +54,17 @@ public class ${name}Item extends <#if data.isFood>ItemFood<#else>Item</#if> {
 		setMaxStackSize(1);
 		</#if>
 	}
+
+	<#if (data.creativeTabs?size > 1)>
+	@Override public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		for (CreativeTabs supportedTab : CREATIVE_TABS) {
+			if (supportedTab == tab) {
+				items.add(new ItemStack(this));
+				return;
+			}
+		}
+	}
+	</#if>
 
 	<#if data.rarity != "COMMON">
 	@Override public EnumRarity getRarity(ItemStack stack) {

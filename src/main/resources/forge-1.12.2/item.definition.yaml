@@ -24,12 +24,20 @@ templates:
     variables: "feature=item render type 'custom Java model'"
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItemJavaModelUnsupported.java"
 
-# Only the fields implemented by this batch are shown in the element editor.
-# Every other MCreator 2026.3 item field is unavailable for Forge 1.12.2 at this time.
-field_inclusions: [name, texture, renderType, customModelName, rarity, creativeTabs, stackSize,
-                   enchantability, useDuration, toolType, damageCount, recipeRemainder, destroyAnyBlock,
-                   stayInGridWhenCrafting, damageOnCrafting, enableMeleeDamage, damageVsEntity, attackSpeed,
-                   isFood, nutritionalValue, saturation, isMeat, isAlwaysEdible, animation]
+# Fields that have no implementation in this batch. Exclusions are used instead
+# of inclusions because inclusion cleanup hides every component it could not map
+# by reflection, which makes element editors unusable for grouped controls.
+field_exclusions: [guiTexture, customProperties, states, animations, immuneToFire,
+                   isPiglinCurrency, repairItems, specialInformation, glowCondition,
+                   guiBoundTo, openGUIOnRightClick, inventorySize, inventoryStackSize,
+                   onRightClickedInAir, onRightClickedOnBlock, onCrafted, onEntityHitWith,
+                   onItemInInventoryTick, onItemInUseTick, onStoppedUsing, onEntitySwing,
+                   onDroppedByPlayer, onFinishUsingItem, everyTickWhileUsing,
+                   onItemEntityDestroyed, enableRanged, shootConstantly, rangedItemChargesPower,
+                   projectile, projectileDisableAmmoCheck, onRangedItemUsed, rangedUseCondition,
+                   eatResultItem, isMusicDisc, musicDiscMusic, musicDiscDescription,
+                   musicDiscLengthInTicks, musicDiscAnalogOutput, providedBannerPatterns,
+                   attributeModifiers]
 
 localizationkeys:
   - key: item.@modid.@registryname.name

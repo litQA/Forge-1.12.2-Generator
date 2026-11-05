@@ -50,8 +50,10 @@ tasks.named('processResources') {
 }
 
 // The plugin archive is a zip that holds plugin.json and the generator folders.
+// The export name is intentionally fixed so that released builds always replace
+// the same file in the MCreator plugins folder.
 tasks.named('jar', Jar) {
-    archiveFileName = "generator-forge-${mcVersion}-${pluginVersion}.zip"
+    archiveFileName = "generator-forge-${mcVersion}.zip"
     destinationDirectory = layout.buildDirectory.dir('dist')
     includeEmptyDirs = false
     preserveFileTimestamps = false

@@ -20,7 +20,11 @@ templates:
     variables: "feature=recipe type 'Brewing'"
     name: "@SRCROOT/@BASEPACKAGEPATH/recipe/@NAMERecipeBrewingUnsupported.java"
 
-field_inclusions: [recipeType, recipeRetstackSize, group, recipeShapeless, recipeSlots, recipeReturnStack,
-                   smeltingInputStack, smeltingReturnStack, blastingInputStack, blastingReturnStack,
-                   smokingInputStack, smokingReturnStack, campfireCookingInputStack, campfireCookingReturnStack,
-                   xpReward, cookingTime]
+# Fields that have no implementation in this batch. Exclusions are used instead
+# of inclusions because inclusion cleanup hides every component it could not map
+# by reflection, which includes the recipe slot grid and result/input selectors.
+field_exclusions: [unlockingItems, cookingBookCategory, craftingBookCategory,
+                   stoneCuttingInputStack, stoneCuttingReturnStack,
+                   smithingInputStack, smithingInputAdditionStack, smithingInputTemplateStack,
+                   smithingReturnStack, brewingInputStack, brewingIngredientStack,
+                   brewingReturnStack]

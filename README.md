@@ -7,7 +7,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.1-beta` |
+| Plugin version | `2026.3-1.0.2-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -66,7 +66,7 @@ The build runs the generator validator before `assemble`. The plugin archive is
 written to:
 
 ```text
-build/dist/generator-forge-1.12.2-2026.3-1.0.1-beta.zip
+build/dist/generator-forge-1.12.2.zip
 ```
 
 Run only the static generator validation with:

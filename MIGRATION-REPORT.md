@@ -55,7 +55,7 @@ Forge 1.12.2.
 | `types` is provided as an empty list when no element of a type exists. | All templates iterate `types.<plural>` and guard with `?has_content`; base templates use `condition: "${types.tabs?has_content}"` style conditions. |
 | Mod element base types are declared by YAML (`base_types`). | Not required for the batch-1 element set (creative tab, item, recipe). The item registry is generated from `types.items` in `elementinits/items.java.ftl`. |
 | Generator fragments (`*.fragment.yaml`). | The loader supports fragments, but the 1.12.2 build has no mixin/accesstransformer pipeline. This generator declares no fragments and therefore cannot accidentally emit 1.13+ mixin artefacts. The design allows adding fragments in later batches when a 1.12.2 use case exists. |
-| Field availability is configured per generator (`field_inclusions` / `field_exclusions`). | The item and recipe definitions use `field_inclusions` to expose only the fields implemented by this batch. Unsupported fields are absent from the editor instead of silently generating incomplete code. |
+| Field availability is configured per generator (`field_inclusions` / `field_exclusions`). | The item and recipe definitions use `field_exclusions`. Exclusions are safer than inclusions here: inclusion cleanup hides every GUI component it cannot resolve, and grouped recipe controls are not plain GUI fields. Unsupported fields are hidden explicitly, and unsupported recipe types still stop generation. |
 | Gradle task names and export path are configured in `generator.yaml`. | `runClient`, `runServer` and `build/libs/modid-1.0.jar` are used. The workspace wrapper pins Gradle 9.8.0 and RetroFuturaGradle handles the 1.12.2 build. |
 
 ## Mod element support (batch 1)
@@ -78,13 +78,14 @@ Direct implementation for:
 - melee attack damage and attack speed attribute modifiers;
 - container item and recipe remainder;
 - food value, saturation, meat flag, always-edible flag;
-- creative tab selection.
+- creative tab selection, including membership in multiple tabs.
 
 Degraded behaviour:
 
-- MCreator 2026.3 supports multiple creative tabs per item. Forge 1.12.2
-  `Item` has a single `setCreativeTab` call, so only the first selected tab is
-  used.
+- Forge 1.12.2's `Item` API has a single `setCreativeTab` call. The generator
+  sets the first selected tab as the item default and overrides `getSubItems`
+  to expose the item in every selected tab, so both custom and vanilla tab
+  selections are honoured.
 - The `OP_BLOCKS` tab does not exist in 1.12.2 and falls back to
   `CreativeTabs.MISC`.
 
@@ -166,8 +167,10 @@ them as unavailable.
 2. **Item feature coverage.** Procedures, GUI inventories, ranged behaviour,
    custom models and the other item features listed above are unavailable and
    the corresponding editor fields are hidden.
-3. **Single creative tab per item.** Forge 1.12.2's item API supports only one
-   creative tab; additional selections are ignored.
+3. **Creative tabs.** Multiple tab membership is implemented through an item
+   `getSubItems` override. Forge 1.12.2 still has a single default tab
+   (`setCreativeTab`), so tab sorting and the "search" tab use the first
+   selected tab.
 4. **Recipe degradation.** Blasting, Smoking and Campfire cooking become
    furnace smelting recipes. Stone cutting, Smithing and Brewing fail code
    generation explicitly.
@@ -204,6 +207,7 @@ them as unavailable.
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |
 | RetroFuturaGradle 2.0.6 / Gradle 9.8.0 / Java 8 toolchain | `BUILD SUCCESSFUL`; `build/libs/modid-1.0.jar` (reobfuscated) and `modid-1.0-dev.jar` produced. Only deprecation notes for `setUnlocalizedName` (expected on 1.12.2). |
+| Multi-tab item (`CUSTOM:ModTab` + `FOOD`) | `BUILD SUCCESSFUL`; generated item contains the `getSubItems` override and both tab entries. In-game membership is part of the user's real-device test. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 
 The generated-mod build used the exact workspace base, templates and generated

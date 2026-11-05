@@ -57,6 +57,25 @@
 - Generated mod folders use the 2026.3 default `src/main/java` and
   `src/main/resources` layout and the 1.12.2 asset paths
   (`textures/items`, `textures/blocks`, `recipes`).
+- Item creative tab membership is implemented through a generated
+  `getSubItems(CreativeTabs, NonNullList<ItemStack>)` override, so an item can
+  appear in all selected vanilla and custom tabs on Forge 1.12.2.
+- Item and recipe definitions now use `field_exclusions` instead of
+  `field_inclusions`. Inclusion cleanup hides every GUI component it cannot
+  resolve by reflection, which broke grouped controls such as the recipe slot
+  grid.
+- The exported plugin archive is always named `generator-forge-1.12.2.zip`
+  instead of embedding the plugin version in the file name.
+
+## Fixes
+
+Fixed 3 bug(s).
+
+- Creative tab selections after the first entry were ignored for items.
+- Recipe elements could not be created because the recipe slot grid, result and
+  input selectors were hidden by the previous field inclusion configuration.
+- The plugin export file name changed with every version instead of staying
+  `generator-forge-1.12.2.zip`.
 
 ## Known Limitations
 
@@ -67,8 +86,9 @@ limitations are:
 - Item procedure triggers, inventories, GUI binding, ranged behavior, music
   discs, banner patterns, attribute modifiers, custom JSON/OBJ/Java models and
   the other post-1.12.2 item features are not available yet.
-- Forge 1.12.2 supports one creative tab per item; multi-tab item selections
-  degrade to the first tab.
+- Forge 1.12.2 still has one default creative tab per item; the first selected
+  tab is used as the default, while additional tabs are populated through an
+  item `getSubItems` override.
 - Workspace variables are not supported yet and stop code generation with an
   explicit error message.
 - Blasting, Smoking and Campfire cooking recipes degrade to regular furnace

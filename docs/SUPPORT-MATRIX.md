@@ -19,7 +19,7 @@ feature list. This matrix records how the generator handles each feature group.
 | Mod element | Status | Notes |
 | --- | --- | --- |
 | Creative tab | Direct | Name, icon, search bar. `hideTitle` has no 1.12.2 API and is excluded. |
-| Item | Degraded | Supported: normal/tool model, texture, name, rarity, creative tabs, stack size, durability, enchantability, use duration, use animation, destroy speed, destroy any block, melee damage, attack speed, recipe remainder, container item behaviour, food, creative tabs. Unavailable: procedures/triggers, inventories, GUI binding, ranged behaviour, JSON/OBJ/Java models, glow conditions, music disc, banner patterns, attribute modifier entries, repair items, fire immunity, piglin currency. Multiple tabs degrade to the first tab. |
+| Item | Degraded | Supported: normal/tool model, texture, name, rarity, creative tabs, stack size, durability, enchantability, use duration, use animation, destroy speed, destroy any block, melee damage, attack speed, recipe remainder, container item behaviour, food, creative tabs. Unavailable: procedures/triggers, inventories, GUI binding, ranged behaviour, JSON/OBJ/Java models, glow conditions, music disc, banner patterns, attribute modifier entries, repair items, fire immunity, piglin currency. Multiple creative tabs are supported through a `getSubItems` override; the first selected tab remains the item default tab. |
 | Recipe | Degraded | Crafting (shaped/shapeless) and furnace smelting are direct. Blasting, Smoking and Campfire cooking degrade to furnace smelting. Stone cutting, Smithing and Brewing fail generation explicitly. |
 | Block | Unavailable | Planned for batch 2, including block states, multipart states, redstone conduction, custom light, block bases and loot tables. |
 | Plant | Unavailable | Planned for batch 3. |
@@ -89,7 +89,7 @@ is marked Unavailable until its owning mod element is implemented.
 | 2023.3 | Shield events, damage source dependencies, item property overrides | Unavailable |
 | 2023.4 | Damage type element, synced entity data, team procedures, shields, tags in selectors | Unavailable |
 | 2024.1 | Jigsaw structures, tree features, tag management, debugging tools | Unavailable |
-| 2024.2 | Multiple creative tabs, vanilla textures, spring feature, team blocks | Degraded (items use the first tab only) |
+| 2024.2 | Multiple creative tabs, vanilla textures, spring feature, team blocks | Multiple creative tabs: Direct. Other features: Unavailable. |
 | 2024.3 | Attribute element, custom block state properties, projectile hitbox, more worldgen features | Unavailable |
 | 2024.4 | Resource pack workspace, sapling, waterlogging, dimension parameters, GUI sprite component | Unavailable |
 | 2025.1 | Attribute sentiment, structure/game event tags, potion triggers, emissive particles | Unavailable |
