@@ -1,11 +1,20 @@
 <#-- @formatter:off -->
 <#include "/mcitems.ftl">
 <#include "/creativeTabs.ftl">
+<#include "/procedures.ftl">
 package ${package}.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import java.util.List;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -130,6 +139,37 @@ public class ${name}Item extends <#if data.isFood>ItemFood<#else>Item</#if> {
 			return ItemStack.EMPTY;
 		}
 		return retval;
+	}
+	</#if>
+
+	<#if data.specialInformation?? && data.specialInformation?is_hash>
+	<#assign infoName = (data.specialInformation.getName())!"null">
+	<#assign infoLines = (data.specialInformation.getFixedValue())![] >
+	@SideOnly(Side.CLIENT)
+	@Override public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+		super.addInformation(stack, world, tooltip, flag);
+		<#if infoLines?has_content>
+		<#list infoLines as line>
+		tooltip.add("${JavaConventions.escapeStringForJava(line)}");
+		</#list>
+		</#if>
+		<#if infoName != "null">
+		if (Minecraft.getMinecraft().player != null) {
+			Entity entity = Minecraft.getMinecraft().player;
+			ItemStack itemstack = stack;
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
+			IBlockState blockstate = null;
+			EnumFacing direction = null;
+			String hover = <@procedureToRetvalCode name=infoName dependencies=data.specialInformation.getDependencies(generator.getWorkspace())/>;
+			if (hover != null) {
+				for (String line : hover.split("\n")) {
+					tooltip.add(line);
+				}
+			}
+		}
+		</#if>
 	}
 	</#if>
 

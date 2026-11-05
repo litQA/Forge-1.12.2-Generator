@@ -28,7 +28,7 @@ templates:
 # of inclusions because inclusion cleanup hides every component it could not map
 # by reflection, which makes element editors unusable for grouped controls.
 field_exclusions: [guiTexture, customProperties, states, animations, immuneToFire,
-                   isPiglinCurrency, repairItems, specialInformation, glowCondition,
+                   isPiglinCurrency, repairItems, glowCondition,
                    guiBoundTo, openGUIOnRightClick, inventorySize, inventoryStackSize,
                    onRightClickedInAir, onRightClickedOnBlock, onCrafted, onEntityHitWith,
                    onItemInInventoryTick, onItemInUseTick, onStoppedUsing, onEntitySwing,

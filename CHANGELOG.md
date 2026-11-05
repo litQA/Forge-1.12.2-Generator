@@ -17,7 +17,7 @@
   Java 8 toolchain is provisioned automatically when no local JDK 8 is present.
 - Creative tab mod element: name, icon and search bar rendering through the
   generated `<Mod>Tabs` class.
-- Item mod element: normal and tool models, rarity, creative tabs, stack size,
+- Item mod element: fixed/procedure tooltips, normal and tool models, rarity, creative tabs, stack size,
   durability, enchantability, use duration, use animation, destroy speed,
   melee damage and attack speed, container item / recipe remainder, food
   properties, block harvesting and localized name.
