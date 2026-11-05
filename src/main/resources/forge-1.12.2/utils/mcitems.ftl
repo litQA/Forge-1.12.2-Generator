@@ -119,3 +119,14 @@
     </#if>
 </#function>
 
+<#function mappedBlockToBlockStateCode mappedItem>
+    <#if mcItemIsCustom(mappedItem)>
+        <#assign element = mcItemModElement(mappedItem)>
+        <#if element?? && element.getTypeString() == "block">
+            <#return package + ".init." + JavaModName + "Blocks." + element.getRegistryNameUpper() + ".getDefaultState()">
+        </#if>
+        <#return "net.minecraft.init.Blocks.STONE.getDefaultState()">
+    <#else>
+        <#return mcItemMapped(mappedItem, 0)?split("#")[0] + ".getDefaultState()">
+    </#if>
+</#function>

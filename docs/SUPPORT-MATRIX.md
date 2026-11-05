@@ -21,7 +21,7 @@ feature list. This matrix records how the generator handles each feature group.
 | Creative tab | Direct | Name, icon, search bar. `hideTitle` has no 1.12.2 API and is excluded. |
 | Item | Degraded | Supported: normal/tool model, texture, name, rarity, creative tabs, stack size, durability, enchantability, use duration, use animation, destroy speed, destroy any block, melee damage, attack speed, recipe remainder, container item behaviour, food, creative tabs. Unavailable: procedures/triggers, inventories, GUI binding, ranged behaviour, JSON/OBJ/Java models, glow conditions, music disc, banner patterns, attribute modifier entries, repair items, fire immunity, piglin currency. Multiple creative tabs are supported through a `getSubItems` override; the first selected tab remains the item default tab. |
 | Recipe | Direct | Crafting (shaped/shapeless) as 1.12.2 JSON; furnace smelting and brewing registered through generated Java code (`GameRegistry.addSmelting`, `BrewingRecipeRegistry`). Blasting, Smoking, Campfire cooking, Stone cutting and Smithing do not exist in Forge 1.12.2 and fail generation explicitly. |
-| Block | Degraded | Batch 2 supports the default basic cube block: single texture, cube model/block state, hardness/resistance/step sound, creative tabs, optional block item with multi-tab support, self/custom drops and XP. Block bases, custom/multipart states, transparency, per-face textures, inventories, energy, fluids, worldgen, redstone behavior, tool tiers and loot-table drops are unavailable. |
+| Block | Degraded | Batch 3 supports basic cubes with per-face textures and cutout/translucent layers, stairs, slabs (bottom/top/double), fences and walls. All support block items with multi-tab support, self/custom drops and XP. Remaining bases, custom/multipart state editing, inventories, energy, fluids, worldgen, redstone behavior, tool tiers and loot-table drops are unavailable. |
 | Plant | Unavailable | Planned for batch 3. |
 | Fluid | Unavailable | Planned for batch 3. |
 | Dimension | Unavailable | Planned for batch 4, including portal, void world gen and sky parameters. |
@@ -35,7 +35,7 @@ feature list. This matrix records how the generator handles each feature group.
 | GUI / Overlay | Unavailable | Planned for batch 6. |
 | Key binding | Unavailable | Planned for batch 6. |
 | Particle | Unavailable | Planned for batch 6. |
-| Procedure | Unavailable | Planned for batch 7, including every procedure block and trigger. |
+| Procedure | Degraded | Preview in batch 3: chat, set/remove block, play sound, give item, call procedure and return values. Block triggers: right click, added, destroyed by player, entity walk, scheduled/random tick and neighbour change. Global triggers and the remaining procedure block catalog are unavailable. |
 | Advancement / achievement | Unavailable | Planned for batch 8. |
 | Loot table | Unavailable | Planned for batch 2/8. |
 | Enchantment | Unavailable | Planned for batch 3. |
@@ -107,10 +107,10 @@ is marked Unavailable until its owning mod element is implemented.
 | --- | --- |
 | 1 (this batch) | Foundation, creative tab, item, crafting/smelting/brewing recipes, mappings, build chain, validator, documentation |
 | 2 (this batch) | Basic cube blocks, block items, custom drops/XP, Ore Dictionary bridge for the tag editor |
-| 3 | Block bases (stairs/slabs/fences/doors), block states/multipart states, transparent blocks, loot tables; tools, armor, item extensions, attributes, enchantments, potion items/effects |
+| 3 (this batch) | Stairs/slabs/fences/walls, per-face textures, transparent cubes, minimal procedures and block interaction triggers |
 | 4 | Plants, fluids, biomes, dimensions, portals, worldgen features |
 | 5 | Living entities, special entities, projectiles, AI tasks, synced data |
 | 6 | GUIs, overlays, key binds, particles, rendered entities |
-| 7 | Procedures, procedure blocks, global and element triggers, variables (WorldSavedData) |
+| 7 | Remaining procedure blocks, global triggers, workspace variables (WorldSavedData) |
 | 8 | Advancements, structures, worldgen, commands, functions, game rules, villager trades and professions, paintings |
 | 9 | Forge 2864 / RetroFuturaGradle upgrade, full coverage audit and stable-status promotion |

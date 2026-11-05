@@ -117,25 +117,52 @@ Explicitly unavailable (generation stops with a message naming the recipe
 type): Blasting, Smoking, Campfire cooking, Stone cutting and Smithing. These
 recipe types do not exist in Forge 1.12.2.
 
-### Block (batch 2)
+### Block (batch 3)
 
-Direct implementation for the default basic cube block:
+Direct implementation for these bases:
 
-- single texture with `block/cube_all` model, block state JSON and block item
-  model;
-- hardness, resistance, 1.12.2 `SoundType`, creative tabs, stack size and
-  rarity;
-- optional `ItemBlock` registration with the same multi-tab `getSubItems`
-  approach used by items;
-- self drop by default, or a custom drop item with amount and XP range through
-  `getDrops`/`getExpDrop` overrides.
+- basic cube: `block/cube` model generated from the six per-face texture fields
+  (`texture`, `textureTop`, `textureFront`, `textureBack`, `textureLeft`,
+  `textureRight`), block state and block item model;
+- stairs: `BlockStairs` with the complete facing/half/shape block state set and
+  inner/outer models;
+- slab: a dedicated bottom/top/double slab block with block state variants, top
+  placement, double-slab merging on right click and two-item drops for the
+  double state;
+- fence: `BlockFence` with multipart post/side models and an inventory model;
+- wall: `BlockWall` with multipart post/side models and an inventory model.
 
-Block bases (stairs, slabs, fences, walls, doors, trapdoors, buttons, pressure
-plates, plants, signs, flower pots), custom block states, multipart models,
-transparency, per-face textures, tile entities/inventories, energy, fluids,
-world generation, redstone behavior, tool tiers, loot-table based drops,
-vibration and all block procedures/triggers are not implemented in this batch.
-The block base and the corresponding advanced fields are hidden in the editor.
+All bases support hardness, resistance, 1.12.2 `SoundType`, creative tabs, stack
+size, rarity, optional `ItemBlock` registration with multi-tab support, self or
+custom drops and XP ranges. Transparent blocks can set a cutout or translucent
+`BlockRenderLayer` and disable full-cube rendering.
+
+Leaves, trapdoors, panes, doors, fence gates, end rods, pressure plates,
+buttons, flower pots and signs stop generation with an explicit message.
+Custom block states, multipart state editing, tile entities/inventories, energy,
+fluids, world generation, redstone behavior, tool tiers, loot-table drops and
+vibration remain unavailable.
+
+### Procedures (batch 3 preview)
+
+A minimal procedure element is implemented with a dependency-map entry point:
+
+`public static void executeProcedure(Map<String, Object> dependencies)`.
+
+Supported procedure block templates: world/entity chat, set block, remove block,
+play sound, give item, call procedure, return value and print. Standard Blockly
+flow/math/logic/text/variable blocks come from MCreator itself. Procedures with a
+return value use the generated return type.
+
+Block triggers that call procedures: right click, block added, destroyed by a
+player, entity walk, scheduled tick, random tick and neighbour change. Values are
+passed in the dependency map (`world`, `x`, `y`, `z`, `entity`, `blockstate`,
+`direction`, `itemstack`). Global triggers are not implemented. A right-click
+procedure on a slab is not generated because the slab uses its own activation
+handler for double-slab merging. Other procedure blocks found in MCreator's
+toolbox do not have 1.12.2 templates yet and fail generation explicitly.
+
+### Tags and Ore Dictionary (batch 2)
 
 ### Tags and Ore Dictionary (batch 2)
 
@@ -215,10 +242,10 @@ them as unavailable.
 
 ## Known Limitations
 
-1. **Batch scope.** Creative tab, item, recipe and basic cube block definitions
-   exist in this batch, together with the Ore Dictionary bridge for tags. The
-   generator is marked `status: dev`; it does not claim full coverage of the
-   2026.3 feature surface yet.
+1. **Batch scope.** Creative tab, item, recipe, block and preview procedure
+   definitions exist in this batch, together with the Ore Dictionary bridge for
+   tags. The generator is marked `status: dev`; it does not claim full coverage
+   of the 2026.3 feature surface yet.
 2. **Item feature coverage.** Procedures, GUI inventories, ranged behaviour,
    custom models and the other item features listed above are unavailable and
    the corresponding editor fields are hidden.
@@ -232,11 +259,12 @@ them as unavailable.
 5. **Workspace variables.** Global workspace variables have no WorldSavedData
    implementation in this batch. If variables exist, `variableslist.java.ftl`
    stops generation with an explicit error instead of emitting broken code.
-6. **Procedures and triggers.** No procedure blocks, global triggers or element
-   triggers are implemented, so no procedure code can be generated yet.
-7. **Block coverage.** Only the default basic cube block is implemented. Block
-   bases, states, multipart models, transparency, inventories, world generation
-   and tool tiers are hidden and belong to a later batch.
+6. **Procedure coverage.** Only the preview blocks listed above have 1.12.2
+   templates. Global triggers are not implemented, and other procedure blocks
+   fail generation explicitly. Right-click procedures on slabs are skipped.
+7. **Block coverage.** Basic cubes, stairs, slabs, fences and walls are
+   implemented. Other bases, custom/multipart states, inventories, world
+   generation and tool tiers are hidden and belong to a later batch.
 8. **Tag coverage.** Only `ITEMS` and `BLOCKS` tags are mapped to the Ore
    Dictionary. Nested tag references are ignored, and non-item/block tag types
    have no 1.12.2 equivalent.
@@ -263,7 +291,7 @@ them as unavailable.
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (29 YAML documents, 27 templates, 24 template references) |
+| Static validator | `VALIDATION PASSED` (30 YAML documents, 51 templates, 37 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |
@@ -271,6 +299,8 @@ them as unavailable.
 | Multi-tab item (`CUSTOM:ModTab` + `FOOD`) | `BUILD SUCCESSFUL`; generated item contains the `getSubItems` override and both tab entries. In-game membership is part of the user's real-device test. |
 | Crafting + smelting + brewing recipe workspace | `BUILD SUCCESSFUL`; the generated `<Mod>Recipes` class registers a furnace recipe through `GameRegistry.addSmelting` and a brewing recipe through `BrewingRecipeRegistry`, with a potion-type aware `IBrewingRecipe` implementation. |
 | Basic cube block + block item + Ore Dictionary tags | `BUILD SUCCESSFUL`; the generated `<Mod>Blocks`/`<Mod>Items` classes register a block and its item, and `<Mod>OreDictionary` registers `oreTest`/`ingotTest` entries from `BLOCKS`/`ITEMS` tags. |
+| Stairs/slab/fence/wall bases and per-face textures | All block state/model JSON parses, and the generated block classes compile with RFG (`BUILD SUCCESSFUL`). |
+| Block procedure triggers | Generated right-click/added/tick calls were compiled against a stub procedure class (`BUILD SUCCESSFUL`). The procedure block templates and MCreator-side procedure editor need the user test. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 
 The generated-mod build used the exact workspace base, templates and generated

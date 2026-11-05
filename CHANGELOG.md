@@ -25,9 +25,17 @@
   registered through `GameRegistry.addSmelting`, and brewing recipes generated
   as per-element `IBrewingRecipe` implementations with potion-type aware
   inputs and outputs.
-- Block mod element for the default basic cube: single texture, cube model,
+- Block mod element for the default basic cube: per-face textures, cube model,
   block state, block item model, hardness, resistance, step sound, creative
   tabs, stack size, rarity, self/custom drops and XP range.
+- Stairs, slab, fence and wall block bases, including full block state/model
+  sets, slab double placement/drops and multipart fence/wall models.
+- Cutout and translucent render layer support for transparent cubes.
+- Minimal procedure element with world/entity chat, set/remove block, play
+  sound, give item, call-procedure and return-value blocks.
+- Block interaction triggers that call procedures: right click, block added,
+  destroyed by player, entity walk, scheduled tick, random tick and neighbour
+  change. No global triggers are provided.
 - Block item generation with optional auto-generated `ItemBlock`, multi-tab
   creative tab membership and automatic model registration.
 - Ore Dictionary bridge for MCreator tags: `ITEMS` and `BLOCKS` tags generate
@@ -88,7 +96,7 @@
 
 ## Fixes
 
-Fixed 5 bug(s).
+Fixed 6 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -100,20 +108,25 @@ Fixed 5 bug(s).
   from the mod init event.
 - Generated recipe and brewing classes did not import `net.minecraft.init.Blocks`,
   so recipes using vanilla blocks failed to compile.
+- Basic blocks ignored the per-face texture fields and always rendered the
+  `texture` field as a single `cube_all` texture.
 
 ## Known Limitations
 
 See `MIGRATION-REPORT.md` for the complete list. The most important current
 limitations are:
 
-- Only the creative tab, item, recipe and basic cube block mod elements are
+- Only the creative tab, item, recipe, block and procedure mod elements are
   implemented.
 - Item procedure triggers, inventories, GUI binding, ranged behavior, music
   discs, banner patterns, attribute modifiers, custom JSON/OBJ/Java models and
   the other post-1.12.2 item features are not available yet.
-- Block bases (stairs, slabs, fences, doors, plants, fluids), block states,
-  multipart models, transparency, inventories, world generation and tool tiers
+- Block bases not listed above (leaves, trapdoors, panes, doors, fence gates,
+  end rods, pressure plates, buttons, flower pots and signs), custom block
+  states, multipart state editing, inventories, world generation and tool tiers
   are not available yet.
+- Procedure coverage is a preview: only the blocks listed in the README have
+  code templates, and global triggers are not implemented.
 - Tags are limited to `ITEMS` and `BLOCKS` and are stored in the Forge 1.12.2
   Ore Dictionary; nested tag entries and non-item/block tag types have no
   1.12.2 equivalent.

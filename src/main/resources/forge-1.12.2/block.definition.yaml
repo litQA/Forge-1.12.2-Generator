@@ -6,11 +6,120 @@ templates:
     name: "@MODASSETSROOT/blockstates/@registryname.json"
   - template: json/block.json.ftl
     writer: json
+    condition:
+      - "!blockBase %= Stairs"
+      - "!blockBase %= Slab"
+      - "!blockBase %= Fence"
+      - "!blockBase %= Wall"
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block_item.json.ftl
     writer: json
     condition: hasBlockItem
     name: "@MODASSETSROOT/models/item/@registryname.json"
+
+  # Stairs
+  - template: json/stairs.json.ftl
+    writer: json
+    condition: "blockBase %= Stairs"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/stairs_inner.json.ftl
+    writer: json
+    condition: "blockBase %= Stairs"
+    name: "@MODASSETSROOT/models/block/@registryname_inner.json"
+  - template: json/stairs_outer.json.ftl
+    writer: json
+    condition: "blockBase %= Stairs"
+    name: "@MODASSETSROOT/models/block/@registryname_outer.json"
+
+  # Slab
+  - template: json/slab.json.ftl
+    writer: json
+    condition: "blockBase %= Slab"
+    name: "@MODASSETSROOT/models/block/@registryname_slab.json"
+  - template: json/slab_top.json.ftl
+    writer: json
+    condition: "blockBase %= Slab"
+    name: "@MODASSETSROOT/models/block/@registryname_slab_top.json"
+  - template: json/slab_double.json.ftl
+    writer: json
+    condition: "blockBase %= Slab"
+    name: "@MODASSETSROOT/models/block/@registryname_double.json"
+
+  # Fence
+  - template: json/fence_post.json.ftl
+    writer: json
+    condition: "blockBase %= Fence"
+    name: "@MODASSETSROOT/models/block/@registryname_post.json"
+  - template: json/fence_side.json.ftl
+    writer: json
+    condition: "blockBase %= Fence"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/fence_inventory.json.ftl
+    writer: json
+    condition: "blockBase %= Fence"
+    name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
+
+  # Wall
+  - template: json/wall_post.json.ftl
+    writer: json
+    condition: "blockBase %= Wall"
+    name: "@MODASSETSROOT/models/block/@registryname_post.json"
+  - template: json/wall_side.json.ftl
+    writer: json
+    condition: "blockBase %= Wall"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/wall_inventory.json.ftl
+    writer: json
+    condition: "blockBase %= Wall"
+    name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
+
+  # Block bases that are not implemented in this batch stop generation instead
+  # of emitting a basic cube with the wrong model or collision shape.
+  - template: modbase/unsupported.ftl
+    condition: "blockBase %= Leaves"
+    variables: "feature=block base 'Leaves'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "blockBase %= TrapDoor"
+    variables: "feature=block base 'TrapDoor'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "blockBase %= Pane"
+    variables: "feature=block base 'Pane'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "blockBase %= Door"
+    variables: "feature=block base 'Door'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "blockBase %= FenceGate"
+    variables: "feature=block base 'FenceGate'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "blockBase %= EndRod"
+    variables: "feature=block base 'EndRod'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "blockBase %= PressurePlate"
+    variables: "feature=block base 'PressurePlate'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "blockBase %= Button"
+    variables: "feature=block base 'Button'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "blockBase %= FlowerPot"
+    variables: "feature=block base 'FlowerPot'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "blockBase %= Sign"
+    variables: "feature=block base 'Sign'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "blockBase %= HangingSign"
+    variables: "feature=block base 'HangingSign'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
+
 
 base_types:
   - block
@@ -19,20 +128,19 @@ localizationkeys:
   - key: tile.@modid.@registryname.name
     mapto: name
 
-# Batch 2 supports the default basic cube block. Block bases, custom states,
-# multipart models, animations, inventories, energy, fluids, world generation,
-# procedures, vibration, redstone and per-face textures are not implemented.
-# Exclusions are used instead of inclusions to keep grouped editor controls.
-field_exclusions: [textureTop, textureLeft, textureFront, textureRight, textureBack,
-                   renderType, customModelName, rotationMode, enablePitch, emissiveRendering,
+# Batch 3 supports basic cubes, stairs, slabs, fences and walls, including
+# per-face textures and transparent render layers. Custom states, multipart
+# models, animations, inventories, energy, fluids, world generation, tools and
+# the remaining block bases are not implemented. Exclusions are used instead of
+# inclusions to keep grouped editor controls visible.
+field_exclusions: [renderType, customModelName, rotationMode, enablePitch, emissiveRendering,
                    displayFluidOverlay, multipartModel, states, animations, itemTexture,
-                   particleTexture, blockBase, blockSetType, pottedPlant, leavesParticleType,
+                   particleTexture, blockSetType, pottedPlant, leavesParticleType,
                    leavesParticleChance, signEntityTexture, signGUITexture, tintType, isItemTinted,
-                   hasTransparency, connectedSides, transparencyType, disableOffset, boundingBoxes,
+                   connectedSides, disableOffset, boundingBoxes,
                    customProperties, specialInformation, hasGravity, isWaterloggable, immuneToFire,
                    destroyTool, useLootTableForDrops, requiresCorrectTool, enchantPowerBonus,
-                   plantsGrowOn, canRedstoneConnect, hasCustomOpacity, lightOpacity, tickRate,
-                   tickRandomly, isReplaceable, canProvidePower, forceRedstoneConductor,
+                   plantsGrowOn, canRedstoneConnect, hasCustomOpacity, lightOpacity, isReplaceable, canProvidePower, forceRedstoneConductor,
                    emittedRedstonePower, colorOnMap, noteBlockInstrument, creativePickItem, offsetType,
                    aiPathNodeType, beaconColorModifier, strippingResult, ignitedByLava, flammability,
                    fireSpreadSpeed, isLadder, slipperiness, speedFactor, jumpFactor, reactionToPushing,
@@ -45,9 +153,7 @@ field_exclusions: [textureTop, textureLeft, textureFront, textureRight, textureB
                    inventoryComparatorPower, inventoryOutSlotIDs, inventoryInSlotIDs,
                    inventoryAutomationTakeCondition, inventoryAutomationPlaceCondition,
                    hasEnergyStorage, energyInitial, energyCapacity, energyMaxReceive, energyMaxExtract,
-                   isFluidTank, fluidCapacity, fluidRestrictions, onRightClicked, onBlockAdded,
-                   onNeighbourBlockChanges, onTickUpdate, onRandomUpdateEvent, onDestroyedByPlayer,
-                   onDestroyedByExplosion, onStartToDestroy, onEntityCollides, onEntityWalksOn,
+                   isFluidTank, fluidCapacity, fluidRestrictions, onDestroyedByExplosion, onStartToDestroy, onEntityCollides,
                    onBlockPlayedBy, onRedstoneOn, onRedstoneOff, onHitByProjectile, onEntityFallsOn,
                    generateFeature, restrictionBiomes, blocksToReplace, generationShape,
                    frequencyPerChunks, frequencyOnChunk, minGenerateHeight, maxGenerateHeight]

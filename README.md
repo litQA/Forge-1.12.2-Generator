@@ -7,17 +7,18 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-2.0.0-beta` |
+| Plugin version | `2026.3-3.0.0-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
 | Java toolchain for the mod | 8 |
 | License | CC BY-NC 4.0 (see `LICENSE`) |
 
-This is the second development batch. It delivers the generator foundation, the
-creative tab, item and recipe mod elements, basic cube blocks with block items
-and drops, and a tag editor backed by the Forge 1.12.2 Ore Dictionary. The
-complete support overview is in
+This is the third development batch. It delivers the generator foundation, the
+creative tab, item and recipe mod elements, blocks (basic cubes, stairs, slabs,
+fences and walls, with per-face textures and transparent render layers), the
+Ore Dictionary-backed tag editor, and a minimal procedure system with block
+interaction triggers. The complete support overview is in
 [docs/SUPPORT-MATRIX.md](docs/SUPPORT-MATRIX.md); known limitations and the
 migration rationale are in [MIGRATION-REPORT.md](MIGRATION-REPORT.md).
 
@@ -43,16 +44,47 @@ Gradle 9.8.
 
 ## Block support
 
-The second batch supports the default basic cube block:
+The third batch supports these block bases:
 
-- single texture, cube model, block state JSON and block item model;
-- hardness, resistance, step sound, creative tabs, stack size and rarity;
-- automatic block item registration (optional per block) with multi-tab support;
-- self drop or custom drop with amount and XP range.
+- **Basic cube**: per-face textures (top/bottom/front/back/left/right), cube
+  model, block state JSON and block item model;
+- **Stairs**: `BlockStairs` with the full facing/half/shape block state set;
+- **Slab**: bottom/top/double slab block with full block state variants, top
+  placement, double-slab merging and correct double drops;
+- **Fence**: `BlockFence` with multipart post/side models and an inventory model;
+- **Wall**: `BlockWall` with multipart post/side models and an inventory model.
 
-Block bases such as stairs, slabs, fences, doors, plants, fluids and transparent
-or multipart blocks are not available yet. The block base selector and the
-corresponding advanced fields are hidden in this batch.
+All bases support hardness, resistance, step sound, creative tabs, stack size,
+rarity, optional block items with multi-tab support, self/custom drops and XP
+ranges. Transparent cubes can select Cutout or Translucent render layers.
+
+Block bases that are not implemented yet (leaves, trapdoors, panes, doors,
+fence gates, end rods, pressure plates, buttons, flower pots and signs) stop
+generation with an explicit message instead of generating a wrong model.
+Custom block states, multipart state editing, tile entities, inventories,
+energy, fluids, world generation and tool tiers remain unavailable.
+
+## Procedures (preview)
+
+A minimal procedure element is available. Supported procedure blocks are:
+
+- world/entity chat messages;
+- set block and remove block;
+- play sound;
+- give an item to a player;
+- call another procedure and return values.
+
+Standard Blockly flow, math, logic, text and local-variable blocks are provided
+by MCreator itself. Procedures with return values use
+`executeProcedure(Map<String, Object>)`.
+
+The following block interaction triggers can call a procedure: right click,
+block added, block destroyed by a player, entity walks on the block, scheduled
+tick, random tick and neighbour block change. Trigger context values are passed
+through a dependency map (`world`, `x`, `y`, `z`, `entity`, `blockstate`,
+`direction`, `itemstack`). Global triggers are intentionally not implemented.
+Right-click procedures on slabs are not generated in this batch because the slab
+uses its own activation handler for double-slab merging.
 
 ## Tags and the Ore Dictionary
 
@@ -197,12 +229,15 @@ plugin-branch-2026.3/
    `VALIDATION PASSED`.
 3. Headless MCreator renderer: the plugin is discovered and accepted by
    MCreator 2026.3.44621, a workspace is created, and the base, tab, item,
-   recipe, block and Ore Dictionary templates render without errors.
+   recipe, basic/stairs/slab/fence/wall block and Ore Dictionary templates
+   render without errors.
 4. Generated sources are compiled with RetroFuturaGradle 2.0.6 / Gradle 9.8.0 /
    Java 8 toolchain: `BUILD SUCCESSFUL`, producing `build/libs/modid-1.0.jar`.
-   The test workspace contains a two-tab item, a basic cube block with block
-   item and custom drops, crafting/smelting/brewing recipes, and `ITEMS`/`BLOCKS`
-   tags mapped to Ore Dictionary entries.
+   The test workspace contains a two-tab item, five block bases with block
+   items and custom drops, crafting/smelting/brewing recipes, `ITEMS`/`BLOCKS`
+   tags mapped to Ore Dictionary entries, and block procedure triggers compiled
+   against a stub procedure. The procedure editor and generated procedure code
+   need the user real-device test.
 
 In-game verification is intentionally left to the user, as required by the
 delivery specification.
