@@ -98,7 +98,7 @@
 
 ## Fixes
 
-Fixed 8 bug(s).
+Fixed 10 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -119,6 +119,11 @@ Fixed 8 bug(s).
   values.
 - Generated procedure classes did not import `net.minecraft.world.World` (and
   other dependency types), so every generated procedure failed to compile.
+- Blockstate JSON referenced block models as `<modid>:block/<name>`, which
+  resolves to `models/block/block/<name>` in 1.12.2 and produced missing models.
+- Blockstate property procedure templates required a block input; when MCreator
+  supplied no block input they failed generation instead of using the current
+  trigger blockstate.
 
 ## Known Limitations
 

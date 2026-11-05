@@ -1,3 +1,10 @@
 <#include "/mcitems.ftl">
-/*@logic*/(${mappedBlockToBlock(input$block)}.getBlockState().getProperty(${input$property}) instanceof net.minecraft.block.properties.PropertyBool
-    && ${mappedBlockToBlockStateCode(input$block)}.getValue((net.minecraft.block.properties.PropertyBool) ${mappedBlockToBlock(input$block)}.getBlockState().getProperty(${input$property})))
+<#if input$block??>
+<#assign blockCode = mappedBlockToBlock(input$block)>
+<#assign stateCode = mappedBlockToBlockStateCode(input$block)>
+<#else>
+<#assign blockCode = "blockstate.getBlock()">
+<#assign stateCode = "blockstate">
+</#if>
+/*@logic*/(${blockCode}.getBlockState().getProperty(${input$property}) instanceof net.minecraft.block.properties.PropertyBool
+    && ${stateCode}.getValue((net.minecraft.block.properties.PropertyBool) ${blockCode}.getBlockState().getProperty(${input$property})))
