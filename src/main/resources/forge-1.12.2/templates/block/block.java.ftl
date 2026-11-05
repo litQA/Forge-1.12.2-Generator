@@ -216,6 +216,32 @@ public class ${name}Block extends Block {
 	</#if>
 </#if>
 
+	<#if blockBase != "Slab" && data.isNotColidable>
+	@Override public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return NULL_AABB;
+	}
+
+	@Override public boolean isPassable(IBlockAccess world, BlockPos pos) {
+		return true;
+	}
+	</#if>
+
+	<#if (data.hasTransparency || data.transparencyType != "SOLID") && data.transparencyType?has_content>
+	@SideOnly(Side.CLIENT)
+	@Override public net.minecraft.util.BlockRenderLayer getBlockLayer() {
+		return net.minecraft.util.BlockRenderLayer.${data.transparencyType?upper_case};
+	}
+	<#if blockBase != "Slab">
+	@Override public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+	</#if>
+	</#if>
+
 	<#if blockBase != "Slab" && data.customDrop?? && !data.customDrop.isEmpty()>
 	@Override public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		drops.add(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});

@@ -98,7 +98,7 @@
 
 ## Fixes
 
-Fixed 20 bug(s).
+Fixed 21 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -146,6 +146,10 @@ Fixed 20 bug(s).
   now generated and resolved against defined state models.
 - The multi-property blockstate variant list omitted commas between outer
   property groups, producing invalid JSON and missing models for every variant.
+- Custom-property blocks lost their transparency render layer/culling overrides;
+  crop/cross models were rendered with opaque cube lighting.
+- Added the pass-through (`isNotColidable`) option with null collision and
+  `isPassable` support.
 - Integer block properties were missing from generated block classes, so the
   integer property procedure always read `-1`.
 
