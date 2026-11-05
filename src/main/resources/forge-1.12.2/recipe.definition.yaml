@@ -1,0 +1,26 @@
+templates:
+  - template: json/crafting.json.ftl
+    writer: json
+    condition: "recipeType %= Crafting"
+    name: "@MODASSETSROOT/recipes/@registryname.json"
+
+  # Unsupported 1.16+ recipe types fail generation explicitly. Blasting, Smoking
+  # and Campfire cooking are handled by elementinits/recipes.java.ftl as regular
+  # furnace smelting recipes (documented degradation).
+  - template: modbase/unsupported.ftl
+    condition: "recipeType %= Stone cutting"
+    variables: "feature=recipe type 'Stone cutting'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/recipe/@NAMERecipeStonecuttingUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "recipeType %= Smithing"
+    variables: "feature=recipe type 'Smithing'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/recipe/@NAMERecipeSmithingUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "recipeType %= Brewing"
+    variables: "feature=recipe type 'Brewing'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/recipe/@NAMERecipeBrewingUnsupported.java"
+
+field_inclusions: [recipeType, recipeRetstackSize, group, recipeShapeless, recipeSlots, recipeReturnStack,
+                   smeltingInputStack, smeltingReturnStack, blastingInputStack, blastingReturnStack,
+                   smokingInputStack, smokingReturnStack, campfireCookingInputStack, campfireCookingReturnStack,
+                   xpReward, cookingTime]

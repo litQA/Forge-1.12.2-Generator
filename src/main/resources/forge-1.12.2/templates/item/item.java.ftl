@@ -1,6 +1,6 @@
 <#-- @formatter:off -->
-<#include "../utils/mcitems.ftl">
-<#include "../utils/creativeTabs.ftl">
+<#include "/mcitems.ftl">
+<#include "/creativeTabs.ftl">
 package ${package}.item;
 
 public class ${name}Item extends <#if data.isFood>ItemFood<#else>Item</#if> {

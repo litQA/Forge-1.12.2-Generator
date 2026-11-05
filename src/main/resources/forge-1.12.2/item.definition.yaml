@@ -1,0 +1,36 @@
+templates:
+  - template: item/item.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: json/item.json.ftl
+    writer: json
+    condition: hasNormalModel()
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/tool.json.ftl
+    writer: json
+    condition: hasToolModel()
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  # JSON, OBJ and Java models are planned for a later batch. Stop generation
+  # instead of emitting an item without a model.
+  - template: modbase/unsupported.ftl
+    condition: "renderType #= 1"
+    variables: "feature=item render type 'custom JSON model'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItemJsonModelUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "renderType #= 2"
+    variables: "feature=item render type 'custom OBJ model'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItemObjModelUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "renderType #= 3"
+    variables: "feature=item render type 'custom Java model'"
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItemJavaModelUnsupported.java"
+
+# Only the fields implemented by this batch are shown in the element editor.
+# Every other MCreator 2026.3 item field is unavailable for Forge 1.12.2 at this time.
+field_inclusions: [name, texture, renderType, customModelName, rarity, creativeTabs, stackSize,
+                   enchantability, useDuration, toolType, damageCount, recipeRemainder, destroyAnyBlock,
+                   stayInGridWhenCrafting, damageOnCrafting, enableMeleeDamage, damageVsEntity, attackSpeed,
+                   isFood, nutritionalValue, saturation, isMeat, isAlwaysEdible, animation]
+
+localizationkeys:
+  - key: item.@modid.@registryname.name
+    mapto: name

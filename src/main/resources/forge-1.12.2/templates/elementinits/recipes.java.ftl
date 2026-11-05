@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-<#include "../utils/mcitems.ftl">
+<#include "/mcitems.ftl">
 /*
  *    MCreator note: This file is regenerated on each build.
  *
@@ -11,7 +11,7 @@ package ${package}.init;
 public class ${JavaModName}Recipes {
 
 	public static void init() {
-		<#list recipes as recipe>
+		<#list types.recipes as recipe>
 		<#if recipe.recipeType == "Smelting" || recipe.recipeType == "Blasting" || recipe.recipeType == "Smoking" || recipe.recipeType == "Campfire cooking">
 		GameRegistry.addSmelting(${mappedMCItemToItemStackCode(recipeInput(recipe), 1)},
 				${mappedMCItemToItemStackCode(recipeOutput(recipe), recipe.recipeRetstackSize)}, ${recipe.xpReward?c}f);
