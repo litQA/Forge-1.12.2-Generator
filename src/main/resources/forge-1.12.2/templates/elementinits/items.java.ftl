@@ -50,6 +50,25 @@ public class ${JavaModName}Items {
 	</#if>
 	</#list>
 
+	<#list (types.tools![]) as tool>
+	public static final Item ${tool.getModElement().getRegistryNameUpper()} = register("${tool.getModElement().getRegistryName()}", new ${package}.item.${tool.getModElement().getName()}Item());
+	</#list>
+
+	<#list (types.armors![]) as armor>
+	<#if armor.enableHelmet>
+	public static final Item ${armor.getModElement().getRegistryNameUpper()}_HELMET = register("${armor.getModElement().getRegistryName()}_helmet", new ${package}.item.${armor.getModElement().getName()}Item.Helmet());
+	</#if>
+	<#if armor.enableBody>
+	public static final Item ${armor.getModElement().getRegistryNameUpper()}_CHESTPLATE = register("${armor.getModElement().getRegistryName()}_chestplate", new ${package}.item.${armor.getModElement().getName()}Item.Chestplate());
+	</#if>
+	<#if armor.enableLeggings>
+	public static final Item ${armor.getModElement().getRegistryNameUpper()}_LEGGINGS = register("${armor.getModElement().getRegistryName()}_leggings", new ${package}.item.${armor.getModElement().getName()}Item.Leggings());
+	</#if>
+	<#if armor.enableBoots>
+	public static final Item ${armor.getModElement().getRegistryNameUpper()}_BOOTS = register("${armor.getModElement().getRegistryName()}_boots", new ${package}.item.${armor.getModElement().getName()}Item.Boots());
+	</#if>
+	</#list>
+
 	// Start of user code block custom items
 	// End of user code block custom items
 

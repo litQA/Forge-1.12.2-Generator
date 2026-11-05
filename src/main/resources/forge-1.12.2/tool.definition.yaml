@@ -1,0 +1,18 @@
+templates:
+  - template: tool/tool.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: json/tool.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+
+base_types:
+  - item
+
+localizationkeys:
+  - key: item.@modid.@registryname
+    mapto: name
+
+field_exclusions: [blockingRenderType, blockingModelName, guiTexture,
+                   glowCondition, additionalDropCondition, onCrafted,
+                   onDroppedByPlayer, onItemEntityDestroyed, onItemInInventoryTick,
+                   onItemInUseTick, onEntitySwing]

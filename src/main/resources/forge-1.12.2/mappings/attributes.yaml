@@ -1,0 +1,30 @@
+MAX_HEALTH:
+  - SharedMonsterAttributes.MAX_HEALTH
+  - "generic.maxHealth"
+FOLLOW_RANGE:
+  - SharedMonsterAttributes.FOLLOW_RANGE
+  - "generic.followRange"
+KNOCKBACK_RESISTANCE:
+  - SharedMonsterAttributes.KNOCKBACK_RESISTANCE
+  - "generic.knockbackResistance"
+MOVEMENT_SPEED:
+  - SharedMonsterAttributes.MOVEMENT_SPEED
+  - "generic.movementSpeed"
+FLYING_SPEED:
+  - SharedMonsterAttributes.FLYING_SPEED
+  - "generic.flyingSpeed"
+ATTACK_DAMAGE:
+  - SharedMonsterAttributes.ATTACK_DAMAGE
+  - "generic.attackDamage"
+ATTACK_SPEED:
+  - SharedMonsterAttributes.ATTACK_SPEED
+  - "generic.attackSpeed"
+ARMOR:
+  - SharedMonsterAttributes.ARMOR
+  - "generic.armor"
+ARMOR_TOUGHNESS:
+  - SharedMonsterAttributes.ARMOR_TOUGHNESS
+  - "generic.armorToughness"
+LUCK:
+  - SharedMonsterAttributes.LUCK
+  - "generic.luck"

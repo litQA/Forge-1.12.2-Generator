@@ -1,5 +1,31 @@
 # Changelog
 
+# 3.2.0-beta
+
+## New Content
+
+- Armor support for helmet, chestplate, leggings and boots: custom armor
+  material, textures/item models, durability, protection, enchantability,
+  toughness, knockback resistance, repair items, armor ticks, tooltips and
+  attribute modifiers.
+- Tool support for pickaxe, axe, spade, hoe, sword, shears, special and
+  multi-tool modes: tool material, durability, efficiency, damage, attack speed,
+  enchantability, repair items, right-click/hit/block-destroy triggers,
+  tooltips and attribute modifiers.
+- Custom enchantment elements with max level, weight, incompatibility,
+  supported items and registry integration.
+- Custom attribute elements with min/max/default values and registration on
+  players, selected entities or all living entities.
+
+## Known Limitations
+
+- Armor layer textures and custom armor model parts still need to be supplied
+  by the project.
+- Fishing rod and shield tool modes are not generated in this batch.
+- Enchantment effects XML, treasure/curse flags and 1.12.2 enchantment
+  categories are not mapped because they are data-driven in newer versions.
+
+
 # 3.1.8-beta
 
 ## Fixes

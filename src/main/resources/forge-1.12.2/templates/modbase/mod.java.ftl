@@ -35,10 +35,16 @@ public class ${JavaModName} {
 		<#if (types.fluids![])?has_content>
 		${package}.init.${JavaModName}Fluids.init();
 		</#if>
+		<#if (types.enchantments![])?has_content>
+		${package}.init.${JavaModName}Enchantments.init();
+		</#if>
+		<#if (types.attributes![])?has_content>
+		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Attributes.class);
+		</#if>
 		<#if (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Blocks.class);
 		</#if>
-		<#if (types.items![])?has_content || (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content>
+		<#if (types.items![])?has_content || (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.tools![])?has_content || (types.armors![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Items.class);
 		</#if>
 

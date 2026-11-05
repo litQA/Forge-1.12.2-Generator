@@ -1,0 +1,53 @@
+templates:
+  - template: armor/armor.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: json/item.json.ftl
+    writer: json
+    condition: enableHelmet
+    variables: "item=helmet"
+    name: "@MODASSETSROOT/models/item/@registryname_helmet.json"
+  - template: json/item.json.ftl
+    writer: json
+    condition: enableBody
+    variables: "item=body"
+    name: "@MODASSETSROOT/models/item/@registryname_chestplate.json"
+  - template: json/item.json.ftl
+    writer: json
+    condition: enableLeggings
+    variables: "item=leggings"
+    name: "@MODASSETSROOT/models/item/@registryname_leggings.json"
+  - template: json/item.json.ftl
+    writer: json
+    condition: enableBoots
+    variables: "item=boots"
+    name: "@MODASSETSROOT/models/item/@registryname_boots.json"
+
+base_types:
+  - item
+
+localizationkeys:
+  - key: item.@modid.@registryname_helmet
+    mapto: helmetName
+    condition: enableHelmet
+  - key: item.@modid.@registryname_chestplate
+    mapto: bodyName
+    condition: enableBody
+  - key: item.@modid.@registryname_leggings
+    mapto: leggingsName
+    condition: enableLeggings
+  - key: item.@modid.@registryname_boots
+    mapto: bootsName
+    condition: enableBoots
+
+field_exclusions: [helmetModelName, helmetModelPart, helmetModelTexture,
+                   bodyModelName, bodyModelPart, armsModelPartL, armsModelPartR, bodyModelTexture,
+                   leggingsModelName, leggingsModelPartL, leggingsModelPartR, leggingsModelTexture,
+                   bootsModelName, bootsModelPartL, bootsModelPartR, bootsModelTexture,
+                   helmetItemRenderType, helmetItemCustomModelName,
+                   bodyItemRenderType, bodyItemCustomModelName,
+                   leggingsItemRenderType, leggingsItemCustomModelName,
+                   bootsItemRenderType, bootsItemCustomModelName,
+                   helmetTranslucency, bodyTranslucency, leggingsTranslucency, bootsTranslucency,
+                   helmetImmuneToFire, bodyImmuneToFire, leggingsImmuneToFire, bootsImmuneToFire,
+                   helmetGlowCondition, bodyGlowCondition, leggingsGlowCondition, bootsGlowCondition,
+                   helmetPiglinNeutral, bodyPiglinNeutral, leggingsPiglinNeutral, bootsPiglinNeutral]
