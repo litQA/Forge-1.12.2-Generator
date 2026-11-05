@@ -121,9 +121,10 @@ recipe types do not exist in Forge 1.12.2.
 
 Direct implementation for these bases:
 
-- basic cube: `block/cube` model generated from the six per-face texture fields
-  (`texture`, `textureTop`, `textureFront`, `textureBack`, `textureLeft`,
-  `textureRight`), block state and block item model;
+- basic cube: `block/cube`, `block/cross`, `block/crop` or a custom JSON model,
+  generated from the six per-face texture fields (`texture`, `textureTop`,
+  `textureFront`, `textureBack`, `textureLeft`, `textureRight`), with block state
+  and block item model;
 - stairs: `BlockStairs` with the complete facing/half/shape block state set and
   inner/outer models;
 - slab: a dedicated bottom/top/double slab block with block state variants, top
@@ -138,6 +139,8 @@ custom drops and XP ranges. Transparent blocks can set a cutout or translucent
 `BlockRenderLayer` and disable full-cube rendering. Basic cubes support custom
 boolean, integer and enum properties; state entries with their own texture set
 generate per-state models, so property changes can also change the appearance.
+Cross/crop models, custom JSON models and their inventory models are generated;
+custom JSON models are copied to `models/custom`.
 
 Leaves, trapdoors, panes, doors, fence gates, end rods, pressure plates,
 buttons, flower pots and signs stop generation with an explicit message.

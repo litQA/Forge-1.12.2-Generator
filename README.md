@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-3.0.7-beta` |
+| Plugin version | `2026.3-3.0.8-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -48,8 +48,9 @@ Gradle 9.8.
 
 The third batch supports these block bases:
 
-- **Basic cube**: per-face textures (top/bottom/front/back/left/right), cube
-  model, block state JSON and block item model;
+- **Basic cube**: per-face textures (top/bottom/front/back/left/right), cube,
+  cross, crop and custom JSON models, custom boolean/integer/enum properties,
+  state-specific models and block state JSON;
 - **Stairs**: `BlockStairs` with the full facing/half/shape block state set;
 - **Slab**: bottom/top/double slab block with full block state variants, top
   placement, double-slab merging and correct double drops;

@@ -107,12 +107,12 @@ tags:
   name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
 
 resources_setup_tasks:
+  - task: copy_models
+    type: JSON_noinlinetextures
+    to: "@MODASSETSROOT/models/custom"
   - task: copy_file
     from: "@MODASSETSROOT/textures/@modpicture.png"
     to: "@RESROOT/logo.png"
   - task: copy_models
     type: OBJ
     to: "@MODASSETSROOT/models/item"
-  - task: copy_models
-    type: JSON_noinlinetextures
-    to: "@MODASSETSROOT/models/custom"

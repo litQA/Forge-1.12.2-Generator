@@ -11,6 +11,19 @@ templates:
       - "!blockBase %= Slab"
       - "!blockBase %= Fence"
       - "!blockBase %= Wall"
+      - "renderType() #?= 0,4,10,11"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block_cross.json.ftl
+    writer: json
+    condition: "renderType() #= 12"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block_crop.json.ftl
+    writer: json
+    condition: "renderType() #= 13"
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/block_cmodel.json.ftl
+    writer: json
+    condition: "renderType() #= 2"
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block_item.json.ftl
     writer: json
@@ -141,7 +154,7 @@ localizationkeys:
 # models, animations, inventories, energy, fluids, world generation, tools and
 # the remaining block bases are not implemented. Exclusions are used instead of
 # inclusions to keep grouped editor controls visible.
-field_exclusions: [renderType, customModelName, rotationMode, enablePitch, emissiveRendering,
+field_exclusions: [rotationMode, enablePitch, emissiveRendering,
                    displayFluidOverlay, multipartModel, animations, itemTexture,
                    particleTexture, blockSetType, pottedPlant, leavesParticleType,
                    leavesParticleChance, signEntityTexture, signGUITexture, tintType, isItemTinted,

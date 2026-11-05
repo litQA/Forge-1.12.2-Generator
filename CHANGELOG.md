@@ -98,7 +98,7 @@
 
 ## Fixes
 
-Fixed 14 bug(s).
+Fixed 15 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -132,6 +132,8 @@ Fixed 14 bug(s).
   (the block state container).
 - Custom boolean block properties from the block editor were not generated in
   the block class or blockstate, so procedures toggling them had no effect.
+- State model generation crashed when a state had no particle texture; the
+  model template now falls back to the state face texture.
 - Integer block properties were missing from generated block classes, so the
   integer property procedure always read `-1`.
 
