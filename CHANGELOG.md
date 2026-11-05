@@ -98,7 +98,7 @@
 
 ## Fixes
 
-Fixed 19 bug(s).
+Fixed 20 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -144,6 +144,8 @@ Fixed 19 bug(s).
 - Blockstates for multiple custom properties only covered the first state map
   key, leaving bool/enum variants without models; all property combinations are
   now generated and resolved against defined state models.
+- The multi-property blockstate variant list omitted commas between outer
+  property groups, producing invalid JSON and missing models for every variant.
 - Integer block properties were missing from generated block classes, so the
   integer property procedure always read `-1`.
 

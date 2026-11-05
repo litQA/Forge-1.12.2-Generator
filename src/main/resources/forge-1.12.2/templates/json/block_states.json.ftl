@@ -95,7 +95,9 @@
         </#list>
         "${bp.property().getName()?replace("CUSTOM:", "")}=${b?c},${ep.property().getName()?replace("CUSTOM:", "")}=${e},${ip.property().getName()?replace("CUSTOM:", "")}=${i}": { "model": "${modid}:${model}" }<#sep>,
         </#list>
+        <#if !e?is_last>,</#if>
         </#list>
+        <#if !b?is_last>,</#if>
         </#list>
         <#elseif customProps?has_content && customProps?size == 1>
         <#assign property = customProps[0]>
