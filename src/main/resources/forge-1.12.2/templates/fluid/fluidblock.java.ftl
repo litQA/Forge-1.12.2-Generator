@@ -9,7 +9,6 @@ public class ${name}Block extends BlockFluidClassic {
 	public ${name}Block() {
 		super(${package}.init.${JavaModName}Fluids.${registryname?upper_case}, Material.${data.type!"WATER"});
 		setUnlocalizedName("${modid}.${registryname}");
-		setRegistryName("${modid}:${registryname}");
 	}
 
 }

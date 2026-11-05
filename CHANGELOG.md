@@ -1,5 +1,14 @@
 # Changelog
 
+# 3.1.2-beta
+
+## Fixes
+
+- Fluid blocks no longer set their registry name in the constructor; the
+  generated block registry assigns it once, preventing a crash during
+  `TestModBlocks` static initialization.
+
+
 # 3.1.1-beta
 
 ## New Content
