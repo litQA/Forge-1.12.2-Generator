@@ -98,7 +98,7 @@
 
 ## Fixes
 
-Fixed 10 bug(s).
+Fixed 11 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -124,6 +124,9 @@ Fixed 10 bug(s).
 - Blockstate property procedure templates required a block input; when MCreator
   supplied no block input they failed generation instead of using the current
   trigger blockstate.
+- The block property setter template emitted a BlockState value expression as a
+  statement and did not understand `blockstate_from_deps` inputs, producing
+  broken ternary/parenthesis code.
 
 ## Known Limitations
 

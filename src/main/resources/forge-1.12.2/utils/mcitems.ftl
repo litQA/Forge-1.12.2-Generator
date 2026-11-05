@@ -132,6 +132,25 @@
 </#function>
 
 <#function mappedBlockToBlockStateCode mappedItem>
+    <#if mappedItem?is_string>
+        <#assign code = mappedItem?trim>
+        <#if code?starts_with("/*@BlockState*/")>
+            <#return code?replace("/*@BlockState*/", "")>
+        <#elseif code?starts_with("CUSTOM:")>
+            <#assign element = w.getWorkspace().getModElementByName(code?replace("CUSTOM:", ""))>
+            <#if element?? && element.getTypeString() == "block">
+                <#return package + ".init." + JavaModName + "Blocks." + element.getRegistryNameUpper() + ".getDefaultState()">
+            </#if>
+            <#return "net.minecraft.init.Blocks.STONE.getDefaultState()">
+        <#elseif code?has_content>
+            <#if code?contains("blockstate") || code?contains("world.getBlockState") || code?contains("getDefaultState")>
+                <#return code>
+            <#else>
+                <#return code + ".getDefaultState()">
+            </#if>
+        </#if>
+        <#return "net.minecraft.init.Blocks.STONE.getDefaultState()">
+    </#if>
     <#if mcItemIsCustom(mappedItem)>
         <#assign element = mcItemModElement(mappedItem)>
         <#if element?? && element.getTypeString() == "block">
@@ -148,6 +167,24 @@
 </#function>
 
 <#function mappedBlockToBlock mappedItem>
+    <#if mappedItem?is_string>
+        <#assign code = mappedItem?trim>
+        <#if code?starts_with("/*@BlockState*/")>
+            <#return code?replace("/*@BlockState*/", "") + ".getBlock()">
+        <#elseif code?starts_with("CUSTOM:")>
+            <#assign element = w.getWorkspace().getModElementByName(code?replace("CUSTOM:", ""))>
+            <#if element?? && element.getTypeString() == "block">
+                <#return package + ".init." + JavaModName + "Blocks." + element.getRegistryNameUpper()>
+            </#if>
+            <#return "net.minecraft.init.Blocks.STONE">
+        <#elseif code?has_content>
+            <#if code?contains("blockstate") || code?contains("world.getBlockState")>
+                <#return code + ".getBlock()">
+            </#if>
+            <#return code>
+        </#if>
+        <#return "net.minecraft.init.Blocks.STONE">
+    </#if>
     <#if mcItemIsCustom(mappedItem)>
         <#assign element = mcItemModElement(mappedItem)>
         <#if element?? && element.getTypeString() == "block">
@@ -162,3 +199,4 @@
         <#return blockCode>
     </#if>
 </#function>
+
