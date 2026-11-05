@@ -11,9 +11,6 @@ templates:
   - template: json/fluid_model.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
-  - template: json/fluid_states.json.ftl
-    writer: json
-    name: "@MODASSETSROOT/blockstates/@registryname.json"
   - template: json/bucket_model.json.ftl
     writer: json
     condition: generateBucket
@@ -32,10 +29,10 @@ localizationkeys:
     condition: generateBucket
 
 field_exclusions: [textureRenderOverlay, hasFog, fogColor, fogStartDistance,
-                   fogEndDistance, tintType, canMultiply, flowRate, levelDecrease,
+                   fogEndDistance, tintType, canMultiply, levelDecrease,
                    slopeFindDistance, spawnParticles, dripParticle, flowStrength,
-                   temperature, emissiveRendering, ignitedByLava, flammability,
+                   emissiveRendering, ignitedByLava, flammability,
                    fireSpreadSpeed, colorOnMap, onBlockAdded, onNeighbourChanges,
                    onTickUpdate, onEntityCollides, onRandomUpdateEvent,
                    onDestroyedByExplosion, flowCondition, beforeReplacingBlock,
-                   lightOpacity, tickRate]
+                   lightOpacity]

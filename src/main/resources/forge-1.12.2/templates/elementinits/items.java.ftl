@@ -91,6 +91,9 @@ public class ${JavaModName}Items {
 		for (Item item : REGISTRY) {
 			ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
 		}
+		<#list (types.fluids![]) as fluid>
+		${package}.client.${fluid.getModElement().getName()}FluidClient.register();
+		</#list>
 	}
 
 }

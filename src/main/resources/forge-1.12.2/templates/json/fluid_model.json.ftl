@@ -1,6 +1,15 @@
 {
-    "parent": "block/cube_all",
-    "textures": {
-        "all": "${data.textureStill.format("%s:blocks/%s")}"
+    "forge_marker": 1,
+    "defaults": {
+        "model": "forge:fluid"
+    },
+    "variants": {
+        "${registryname}": [
+            {
+                "custom": {
+                    "fluid": "${registryname}"
+                }
+            }
+        ]
     }
 }

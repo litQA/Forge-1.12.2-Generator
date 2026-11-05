@@ -1,5 +1,22 @@
 # Changelog
 
+# 3.1.7-beta
+
+## New Content
+
+- Fluid elements expose density, viscosity, temperature, luminosity and flow
+  rate; viscosity/temperature are applied to `Fluid`, and flow rate/tick rate
+  to `BlockFluidClassic`.
+
+## Fixes
+
+- Fluid custom state mapping is registered during `ModelRegistryEvent`, so it
+  is active when models load.
+- Restored the Forge fluid model, which provides fluid-height/flow rendering
+  instead of a static cube.
+- Growable plant growth is delayed and probabilistic, preventing instant growth.
+
+
 # 3.1.6-beta
 
 ## Fixes

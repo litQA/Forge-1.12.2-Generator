@@ -12,6 +12,7 @@ public class ${name}Fluid extends Fluid {
 		setLuminosity(${data.luminosity});
 		setDensity(${data.density});
 		setViscosity(${data.viscosity});
+		setTemperature(${data.temperature});
 	}
 
 }
