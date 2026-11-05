@@ -6,18 +6,18 @@
     index 1 -> registry name (example: stone#1)
 -->
 <#function mcItemRaw mappedItem>
-    <#if mappedItem?is_string>
-        <#return mappedItem>
-    <#else>
+    <#if mappedItem?is_hash>
         <#return mappedItem.getUnmappedValue()>
+    <#else>
+        <#return mappedItem?string>
     </#if>
 </#function>
 
 <#function mcItemMapped mappedItem index=0>
-    <#if mappedItem?is_string>
-        <#return mappedItem>
-    <#else>
+    <#if mappedItem?is_hash>
         <#return mappedItem.getMappedValue(index)>
+    <#else>
+        <#return mappedItem?string>
     </#if>
 </#function>
 

@@ -1,8 +1,0 @@
-# Creative tab mod element for Forge 1.12.2.
-# Tabs are rendered by the generated elementinits/tabs.java.ftl template.
-localizationkeys:
-  - key: itemGroup.@modid.@registryname
-    mapto: name
-
-# MCreator 2026.3 can hide the title of creative tabs, Forge 1.12.2 cannot.
-field_exclusions: [hideTitle]

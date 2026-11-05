@@ -8,7 +8,7 @@ public class ${JavaModName}Items {
 
 	private static final List<Item> REGISTRY = new ArrayList<>();
 
-	<#list items as item>
+	<#list types.items as item>
 	public static final Item ${item.getModElement().getRegistryNameUpper()} = register("${item.getModElement().getRegistryName()}", new ${item.getModElement().getName()}Item());
 	</#list>
 

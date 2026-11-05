@@ -1,7 +1,7 @@
+# Forge 1.12.2 creative tabs.
+# Custom tabs are resolved by utils/creativeTabs.ftl as fully qualified static
+# fields of the generated <Mod>Tabs class.
 _default: CreativeTabs.MISC
-_mcreator_prefix: "CUSTOM:"
-_mcreator_map_template: "Tab@NAME.tab"
-No creative tab entry: null
 BUILDING_BLOCKS: CreativeTabs.BUILDING_BLOCKS
 DECORATIONS: CreativeTabs.DECORATIONS
 REDSTONE: CreativeTabs.REDSTONE
@@ -12,3 +12,5 @@ TOOLS: CreativeTabs.TOOLS
 COMBAT: CreativeTabs.COMBAT
 BREWING: CreativeTabs.BREWING
 MATERIALS: CreativeTabs.MATERIALS
+# Forge 1.12.2 has no operator items tab; entries fall back to the miscellaneous tab.
+OP_BLOCKS: CreativeTabs.MISC

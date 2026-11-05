@@ -5,12 +5,14 @@ plugins {
 group = 'net.litqa.mcreator.generator'
 version = pluginVersion
 
-// MCreator version numbers use the <major><minor padded to three digits> form,
-// for example 2026.3 -> 2026003.
-def supportedVersion = {
-    def parts = mcreatorVersion.split('\\.')
-    return (parts[0] + parts[1].padLeft(3, '0')).toLong()
-}()
+// MCreator version numbers use the <major><minor padded to three digits> form for
+// releases (2026.3 -> 2026003). EAP builds additionally encode the build number
+// (2026.3.44621 -> 202600344621), because snapshot builds only accept an exact match.
+def versionParts = mcreatorVersion.split('\\.')
+def majorVersion = (versionParts[0] + versionParts[1].padLeft(3, '0')).toLong()
+def supportedVersion = versionParts.length > 2
+        ? (majorVersion.toString() + versionParts[2].padLeft(5, '0')).toLong()
+        : majorVersion
 
 java {
     toolchain {
@@ -41,7 +43,8 @@ tasks.named('processResources') {
                 mcVersion: mcVersion,
                 mcreatorVersion: mcreatorVersion,
                 pluginVersion: pluginVersion,
-                supportedVersion: supportedVersion
+                supportedVersion: supportedVersion,
+                majorVersion: majorVersion
         )
     }
 }
@@ -58,10 +61,11 @@ tasks.named('jar', Jar) {
 tasks.register('validateGenerator', JavaExec) {
     group = 'verification'
     description = 'Validates generator YAML, mappings and FreeMarker templates without launching MCreator.'
-    dependsOn tasks.named('validatorClasses')
+    dependsOn tasks.named('validatorClasses'), tasks.named('processResources')
     classpath = sourceSets.validator.runtimeClasspath
     mainClass = 'net.litqa.generator.forge1122.validator.GeneratorValidator'
-    args layout.projectDirectory.dir('src/main/resources').asFile.absolutePath
+    // Validate the expanded resources that are packaged into the plugin archive.
+    args layout.buildDirectory.dir('resources/main').get().asFile.absolutePath
     jvmArgs '-Dfile.encoding=UTF-8'
 }
 
