@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-<#if data.renderType == 13>
+<#if (data.renderType?is_number && data.renderType == 13) || (data.customModelName?contains("Crop"))>
 {
     "parent": "block/crop",
     "textures": {
@@ -7,7 +7,7 @@
         "particle": "${data.getParticleTexture().format("%s:blocks/%s")}"
     }
 }
-<#elseif data.renderType == 2>
+<#elseif (data.renderType?is_number && data.renderType == 2) || (data.customModelName?contains("Custom"))>
 {
     "parent": "${modid}:custom/${data.customModelName?split(":")[0]}",
     "textures": {

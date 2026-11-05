@@ -43,6 +43,11 @@ public class ${JavaModName}Blocks {
 		net.minecraftforge.fml.common.registry.GameRegistry.registerTileEntity(${package}.block.entity.${block.getModElement().getName()}BlockEntity.class, ${package}.${JavaModName}.MODID + ":${block.getModElement().getRegistryName()}");
 		</#if>
 		</#list>
+		<#list (types.plants![]) as plant>
+		<#if plant.hasTileEntity>
+		net.minecraftforge.fml.common.registry.GameRegistry.registerTileEntity(${package}.block.entity.${plant.getModElement().getName()}BlockEntity.class, ${package}.${JavaModName}.MODID + ":${plant.getModElement().getRegistryName()}");
+		</#if>
+		</#list>
 	}
 
 	@SubscribeEvent public static void registerBlocks(RegistryEvent.Register<Block> event) {

@@ -1,5 +1,22 @@
 # Changelog
 
+# 3.1.1-beta
+
+## New Content
+
+- Plant elements can opt into block NBT through a generated TileEntity and
+  registration.
+- Plant elements can force scheduled tick updates (`forceTicking`).
+
+## Fixes
+
+- Plant model selection no longer compares the GUI render-type model object
+  directly with an integer; cross/crop/custom selection falls back to the model
+  name.
+- Fluid client registration uses a 1.12.2 `StateMapperBase` instead of the
+  unavailable `FluidStateMapper` class.
+
+
 # 3.1.0-beta
 
 ## New Content

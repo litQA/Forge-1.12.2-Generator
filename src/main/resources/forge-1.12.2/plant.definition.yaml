@@ -4,6 +4,9 @@ templates:
   - template: block/blockitem.java.ftl
     condition: hasBlockItem
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItemBlock.java"
+  - template: block/tileentity.java.ftl
+    condition: hasTileEntity
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/entity/@NAMEBlockEntity.java"
   - template: json/plant_block.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
@@ -48,7 +51,7 @@ field_exclusions: [suspiciousStewEffect, suspiciousStewDuration, secondaryTreeCh
                    customBoundingBox, disableOffset, boundingBoxes, isSolid,
                    isWaterloggable, immuneToFire, isCustomSoundType, breakSound,
                    stepSound, placeSound, hitSound, fallSound, useLootTableForDrops,
-                   forceTicking, emissiveRendering, hasTileEntity, colorOnMap,
+                   emissiveRendering, colorOnMap,
                    creativePickItem, offsetType, aiPathNodeType, strippingResult,
                    ignitedByLava, jumpFactor, speedFactor, isBonemealTargetCondition,
                    bonemealSuccessCondition, frequencyOnChunks, generateFeature,

@@ -9,6 +9,7 @@ import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.block.BlockReed;
 import net.minecraft.block.SoundType;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -56,6 +57,28 @@ public class ${name}Block extends BlockBush {
 		return <#list data.canBePlacedOn as allowed>state.getBlock() == ${mappedBlockToBlock(allowed)}<#sep> || </#list>;
 	}
 	</#if>
+	</#if>
+
+	<#if data.hasTileEntity>
+	@Override public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Override public TileEntity createTileEntity(World world, IBlockState state) {
+		return new ${package}.block.entity.${name}BlockEntity();
+	}
+	</#if>
+
+	<#if data.forceTicking>
+	@Override public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+		super.onBlockAdded(world, pos, state);
+		world.scheduleUpdate(pos, this, 1);
+	}
+
+	@Override public void updateTick(World world, BlockPos pos, IBlockState state, java.util.Random random) {
+		super.updateTick(world, pos, state, random);
+		world.scheduleUpdate(pos, this, 1);
+	}
 	</#if>
 
 	<#if data.isReplaceable>
