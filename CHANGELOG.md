@@ -1,5 +1,17 @@
 # Changelog
 
+# 3.1.4-beta
+
+## Fixes
+
+- Growable plants now actually extend `BlockBush` (the earlier template change
+  was not written to the shipped template), so normal soil placement works.
+- Fluid client state mapping points back to the fluid still resource, the
+  format expected by Forge 1.12.2 fluid model loading.
+- Bucket models use the fluid still texture as a fallback when no custom bucket
+  texture is configured, avoiding a missing vanilla texture.
+
+
 # 3.1.3-beta
 
 ## Fixes

@@ -26,7 +26,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 <#if data.plantType == "growapable">
-public class ${name}Block extends BlockReed {
+public class ${name}Block extends BlockBush {
 <#elseif data.plantType == "double">
 public class ${name}Block extends BlockDoublePlant {
 <#else>

@@ -15,7 +15,7 @@ public class ${name}FluidClient {
 		ModelLoader.setCustomStateMapper(${package}.init.${JavaModName}Blocks.${registryname?upper_case},
 				new StateMapperBase() {
 					@Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-						return new ModelResourceLocation("${modid}:${registryname}", "fluid");
+						return new ModelResourceLocation(${package}.init.${JavaModName}Fluids.${registryname?upper_case}.getStill(), "fluid");
 					}
 				});
 		<#if data.generateBucket>
