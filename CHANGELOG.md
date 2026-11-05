@@ -1,0 +1,66 @@
+# Changelog
+
+## New Content
+
+- Generator plugin foundation for MCreator EAP 2026.3.44621 with plugin id
+  `generator-forge-1.12.2`, plugin weight 100 and EAP build-number aware version
+  support.
+- 2026.3-format `generator.yaml` for the `forge-1.12.2` generator, including
+  mod base templates, language file configuration, resource folders and the
+  Java model key for the legacy 1.12.2 renderer.
+- Self-contained Gradle 9.8.0 build for the plugin with a Java 25 toolchain,
+  local wrapper distribution URL and project-local Gradle caches.
+- ForgeGradle 2.3 / Gradle 4.10.3 / JDK 8 workspace base for generated mods,
+  including local wrapper distribution URL, workspace-local Gradle caches,
+  `mcmod.info` resource expansion and a guarded `mcreator.gradle` include.
+- Creative tab mod element: name, icon and search bar rendering through the
+  generated `<Mod>Tabs` class.
+- Item mod element: normal and tool models, rarity, creative tabs, stack size,
+  durability, enchantability, use duration, use animation, destroy speed,
+  melee damage and attack speed, container item / recipe remainder, food
+  properties, block harvesting and localized name.
+- Recipe mod element: shaped and shapeless crafting JSON, furnace smelting
+  registration, and furnace-based degradation for Blasting, Smoking and
+  Campfire cooking.
+- Complete 1.12.2 MCP name mappings for the implemented elements, including a
+  two-column blocks/items mapping used by both Java code and JSON generation.
+- Static generator validator that parses all YAML documents, parses all
+  FreeMarker templates, verifies template references and include paths, checks
+  plugin metadata and validates the two-column blocks/items mapping.
+- Headless MCreator render harness used for development verification of the
+  plugin discovery, workspace creation and template rendering pipeline.
+- Project documentation: README, changelog, migration report and support matrix.
+
+## Changes
+
+- The generator architecture was rebuilt on the Apache-2.0 `2021.1-v4.0.1`
+  Forge 1.12.2 reference generator instead of the incomplete 2025.3 community
+  snapshot, whose templates and workspace base mixed 1.13+ APIs into 1.12.2
+  code and could not be rendered.
+- Creative tabs are created in a dedicated generated initialization class, so
+  item initialization always runs after the custom tab fields are populated.
+- The generated plugin uses a single `<Mod>Items` registry class rather than the
+  ASM-tag based element registry of the 2021.1 reference generator, which has no
+  deterministic initialization order for creative tab dependencies.
+- The Forge build is locked to `14.23.5.2847`, the newest 1.12.2 build that
+  publishes the `-userdev` artifact needed by ForgeGradle 2.3.
+- Generated mod folders use the 2026.3 default `src/main/java` and
+  `src/main/resources` layout and the 1.12.2 asset paths
+  (`textures/items`, `textures/blocks`, `recipes`).
+
+## Known Limitations
+
+See `MIGRATION-REPORT.md` for the complete list. The most important current
+limitations are:
+
+- Only the creative tab, item and recipe mod elements are implemented.
+- Item procedure triggers, inventories, GUI binding, ranged behavior, music
+  discs, banner patterns, attribute modifiers, custom JSON/OBJ/Java models and
+  the other post-1.12.2 item features are not available yet.
+- Forge 1.12.2 supports one creative tab per item; multi-tab item selections
+  degrade to the first tab.
+- Workspace variables are not supported yet and stop code generation with an
+  explicit error message.
+- Blasting, Smoking and Campfire cooking recipes degrade to regular furnace
+  smelting; Stone cutting, Smithing and Brewing recipes fail generation
+  explicitly.

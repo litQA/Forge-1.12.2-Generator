@@ -25,8 +25,8 @@ import_formatter:
     Material: net.minecraft.block.material
     Nullable: javax.annotation
     SoundEvent: net.minecraft.util
-    Blocks: net.minecraft.block
-    Items: net.minecraft.item
+    Blocks: net.minecraft.init
+    Items: net.minecraft.init
     Multimap: com.google.common.collect
     ImmutableSet: com.google.common.collect
     Iterables: com.google.common.collect

@@ -1,0 +1,115 @@
+# Forge 1.12.2 Generator - Support Matrix
+
+Generator id: `forge-1.12.2`
+Plugin id: `generator-forge-1.12.2`
+Target: MCreator EAP `2026.3.44621`, Minecraft `1.12.2`, Forge `14.23.5.2847`
+
+Status vocabulary:
+
+- **Direct** - implemented with a native Forge 1.12.2 equivalent.
+- **Degraded** - implemented with a documented semantic difference.
+- **Unavailable** - not implemented in the current batch. The generator never
+  emits silent invalid code for these features.
+
+`新功能列表.txt` in the workspace root remains the canonical 2021.1-2026.3
+feature list. This matrix records how the generator handles each feature group.
+
+## Mod elements
+
+| Mod element | Status | Notes |
+| --- | --- | --- |
+| Creative tab | Direct | Name, icon, search bar. `hideTitle` has no 1.12.2 API and is excluded. |
+| Item | Degraded | Supported: normal/tool model, texture, name, rarity, creative tabs, stack size, durability, enchantability, use duration, use animation, destroy speed, destroy any block, melee damage, attack speed, recipe remainder, container item behaviour, food, creative tabs. Unavailable: procedures/triggers, inventories, GUI binding, ranged behaviour, JSON/OBJ/Java models, glow conditions, music disc, banner patterns, attribute modifier entries, repair items, fire immunity, piglin currency. Multiple tabs degrade to the first tab. |
+| Recipe | Degraded | Crafting (shaped/shapeless) and furnace smelting are direct. Blasting, Smoking and Campfire cooking degrade to furnace smelting. Stone cutting, Smithing and Brewing fail generation explicitly. |
+| Block | Unavailable | Planned for batch 2, including block states, multipart states, redstone conduction, custom light, block bases and loot tables. |
+| Plant | Unavailable | Planned for batch 3. |
+| Fluid | Unavailable | Planned for batch 3. |
+| Dimension | Unavailable | Planned for batch 4, including portal, void world gen and sky parameters. |
+| Biome | Unavailable | Planned for batch 4. |
+| Living entity | Unavailable | Planned for batch 5 (AI tasks, attributes, model layers, synced data). |
+| Special entity | Unavailable | Planned for batch 5 (boat, raft, chest raft). |
+| Projectile | Unavailable | Planned for batch 5. |
+| Armor | Unavailable | Planned for batch 3. |
+| Tool | Unavailable | Planned for batch 3. |
+| Item extension | Unavailable | Planned for batch 3. |
+| GUI / Overlay | Unavailable | Planned for batch 6. |
+| Key binding | Unavailable | Planned for batch 6. |
+| Particle | Unavailable | Planned for batch 6. |
+| Procedure | Unavailable | Planned for batch 7, including every procedure block and trigger. |
+| Advancement / achievement | Unavailable | Planned for batch 8. |
+| Loot table | Unavailable | Planned for batch 2/8. |
+| Enchantment | Unavailable | Planned for batch 3. |
+| Attribute | Unavailable | Planned for batch 3. |
+| Damage type | Unavailable | No native 1.12.2 damage-type registry; planned as a degraded implementation over `DamageSource` subclasses. |
+| Potion effect | Unavailable | Planned for batch 3/5. |
+| Potion item | Unavailable | Planned for batch 3/5. |
+| Structure / Feature | Unavailable | 1.12.2 has no data-driven worldgen registries; planned as Java-based generation in batch 8. |
+| Villager trade / profession | Unavailable | Planned for batch 8. |
+| Command / Function | Unavailable | Planned for batch 8. |
+| Game rule | Unavailable | Planned for batch 8. |
+| Painting / Banner pattern / Armor trim | Unavailable | Painting can be implemented in batch 8; banner patterns as recipes/materials; armor trims do not exist in 1.12.2 (Unavailable permanently). |
+| Music disc / Fuel / Tag (2021.1 legacy elements) | Unavailable | Music disc and fuel were merged into the item model in later MCreator versions and are not present as separate 2026.3 definitions. Tag elements are represented by 1.12.2 ore dictionary entries in the item/recipe batches. |
+
+## Cross-cutting features
+
+| Area | Status | Notes |
+| --- | --- | --- |
+| 2026.3 plugin metadata (`id`, `weight`, `supportedversions`, EAP build number) | Direct | Plugin id `generator-forge-1.12.2`, weight 100, supported versions `[202600344621, 2026003]`. |
+| 2026.3 `generator.yaml` | Direct | Base templates, language file, resource folders, Java model key, Gradle tasks and export path are declared. |
+| YAML merge semantics | Direct | The generator is self-contained; plugin weight guarantees precedence if another plugin ships the same `forge-1.12.2` resources. |
+| Generator fragments | Unavailable | The loader supports fragments, but ForgeGradle 2.3 has no mixin/accesstransformer pipeline. No fragments are declared so no invalid mixin code can be generated. |
+| Empty `types` lists | Direct | All templates read `types.*` and guard with `?has_content`. |
+| Field inclusions / exclusions | Direct | Item and recipe definitions expose only supported fields. |
+| MCP name mappings | Degraded | Full 1.12.2 lists are shipped for the implemented elements; unimplemented elements have no runtime mapping consumers yet. Unavailable modern values fall back to documented vanilla approximations. |
+| Resource generation (models, language, block states, loot tables, tags) | Degraded | Item models and language keys are generated; block states, loot tables and 1.12.2 ore dictionary tags are planned with their element batches. |
+| Gradle build chain | Direct | Plugin: Gradle 9.8.0 + Java 25. Generated mod: ForgeGradle 2.3 + Gradle 4.10.3 + Java 8, Forge `14.23.5.2847`. |
+| Forge `14.23.5.2864` | Unavailable | Forge stopped publishing the FG2.3 `-userdev` artifact after 2847. 2864 requires ForgeGradle 3+ (later batch). |
+| Workspace-local caches | Direct for wrapper builds | `gradlew` sets `GRADLE_USER_HOME=<project>/caches/gradle`; wrapper distributions point to local files. MCreator's own Tooling API build cannot be redirected from generator resources (platform limitation). |
+| Server-side build safety | Direct | No client-only classes are referenced from common code paths in the batch-1 templates except `@SideOnly(Side.CLIENT)` model registration, which is standard 1.12.2 practice. |
+| Generator validator | Direct | YAML, mappings, FreeMarker syntax, includes and template references are validated by `gradlew validateGenerator`. |
+| MCP tool compatibility | Direct | All definitions use standard 2026.3 YAML formats and do not add generator-specific keys that would fail standard YAML parsing. The generator does not implement an MCP server. |
+| Generation diagnostics | Degraded | MCreator reports the mod element name and template path on failure; unsupported features raise explicit `<#stop>` messages. Missing name mappings fall back to documented values instead of raising, so no mapping error can be produced for the implemented elements. |
+| Java 8 compatibility of generated code | Direct | All emitted code targets Java 8 APIs; `sourceCompatibility`/`targetCompatibility` are 1.8. |
+
+## Feature deltas 2021.1 - 2026.3
+
+The table lists representative feature groups from `新功能列表.txt`. A feature
+is marked Unavailable until its owning mod element is implemented.
+
+| Version | Representative new features | Status in this batch |
+| --- | --- | --- |
+| 2021.2 | Fluids, potion effects, buttons, extra redstone and fluid parameters, GUI checkbox | Unavailable |
+| 2021.3 | Fluid tick rate, direction iterators, dungeon structure options | Unavailable |
+| 2022.1 | Villager trades, food merged into items, random and vector procedure blocks, entity models | Food: Direct (item). Other: Unavailable. |
+| 2022.2 | Item extension, features, projectile blocks, command arguments, block state procedures | Unavailable |
+| 2022.3 | Terrain adaptation (duplicate entry in the canonical list) | Unavailable |
+| 2022.4 | Feature mod element, entity ranged attacks, GUI text localization, item type blocks | Unavailable |
+| 2023.1 | Rendered entity GUIs, loot table procedure blocks, feature placements, armor JSON/OBJ models | Unavailable |
+| 2023.2 | Villager profession, geode/ore features, step height, block bounding box generator | Unavailable |
+| 2023.3 | Shield events, damage source dependencies, item property overrides | Unavailable |
+| 2023.4 | Damage type element, synced entity data, team procedures, shields, tags in selectors | Unavailable |
+| 2024.1 | Jigsaw structures, tree features, tag management, debugging tools | Unavailable |
+| 2024.2 | Multiple creative tabs, vanilla textures, spring feature, team blocks | Degraded (items use the first tab only) |
+| 2024.3 | Attribute element, custom block state properties, projectile hitbox, more worldgen features | Unavailable |
+| 2024.4 | Resource pack workspace, sapling, waterlogging, dimension parameters, GUI sprite component | Unavailable |
+| 2025.1 | Attribute sentiment, structure/game event tags, potion triggers, emissive particles | Unavailable |
+| 2025.2 | Item/model display textures, archaeology loot, banner patterns, Java models for blocks/items, decimal division, global trigger parameters | Unavailable |
+| 2025.3 | Fall-on trigger, piglin currency, attribute blocks, GUI slider, item triggers, vector blocks, auto tags | Unavailable; the item `creativeTabs` and `animation` fields from this era are Direct. |
+| 2025.4 | Mouse buttons in key binds, cave biomes, GUI text shadow, translucent armor, entity session data | Unavailable |
+| 2026.1 | SemVer mod versioning, tool/armor rarity and repair items, item attack speed, block states driven by properties, sign bases, global vector scope | SemVer: Direct (workspace version is written to `mcmod.info`). Item attack speed: Direct. Other: Unavailable. |
+| 2026.2 | Advancement import/export, enchantment builder, armor attribute modifiers, dimension skybox, armor trims, raft, advancement predicates, clamp/lerp blocks, eye position, tick triggers, block inventory procedure blocks | Unavailable |
+| 2026.3 | Multipart block states, synced-data conditions, enchantment attribute effects, hide tab title, custom attack AI, item procedure blocks, void dimension, enchantment value modifiers, ray trace reset modes, strong power face, vector products, entity line of sight, force attack, dry foliage tint | Unavailable; `hideTitle` is explicitly excluded from the creative tab editor. |
+
+## Batch plan
+
+| Batch | Scope |
+| --- | --- |
+| 1 (this batch) | Foundation, creative tab, item, recipe, mappings, build chain, validator, documentation |
+| 2 | Blocks, block states/multipart states, block items, loot tables, ore dictionary tags |
+| 3 | Tools, armor, item extensions, attributes, enchantments, potion items/effects |
+| 4 | Plants, fluids, biomes, dimensions, portals, worldgen features |
+| 5 | Living entities, special entities, projectiles, AI tasks, synced data |
+| 6 | GUIs, overlays, key binds, particles, rendered entities |
+| 7 | Procedures, procedure blocks, global and element triggers, variables (WorldSavedData) |
+| 8 | Advancements, structures, worldgen, commands, functions, game rules, villager trades and professions, paintings |
+| 9 | Forge 2864 / ForgeGradle 3+ build chain upgrade, full coverage audit and stable-status promotion |
