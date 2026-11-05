@@ -69,7 +69,14 @@
         "half=top": { "model": "${modid}:${registryname}_slab_top" },
         "half=double": { "model": "${modid}:${registryname}_double" }
     <#else>
+        <#assign customProps = data.customProperties![]>
+        <#if customProps?has_content && customProps[0].value()?is_boolean>
+            <#assign customName = customProps[0].property().getName()?replace("CUSTOM:", "")>
+        "${customName}=false": { "model": "${modid}:${registryname}" },
+        "${customName}=true": { "model": "${modid}:${registryname}" }
+        <#else>
         "normal": { "model": "${modid}:${registryname}" }
+        </#if>
     </#if>
     }
 }

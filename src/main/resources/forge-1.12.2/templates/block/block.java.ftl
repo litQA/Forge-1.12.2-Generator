@@ -2,6 +2,11 @@
 <#include "/mcitems.ftl">
 <#include "/procedures.ftl">
 <#assign blockBase = data.blockBase!"">
+<#assign customProps = data.customProperties![]>
+<#assign customBool = []>
+<#if customProps?has_content && customProps[0].value()?is_boolean>
+    <#assign customBool = [customProps[0]]>
+</#if>
 package ${package}.block;
 
 import net.minecraft.block.Block;
@@ -11,6 +16,7 @@ import net.minecraft.block.BlockWall;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -153,7 +159,28 @@ public class ${name}Block extends Block {
 		setHardness(${data.hardness?c}f);
 		setResistance(${data.resistance?c}f);
 		setSoundType(SoundType.${generator.map(data.soundOnStep.getUnmappedValue(), "stepsounds")});
+		<#if customBool?has_content>
+		<#assign propName = customBool[0].property().getName()?replace("CUSTOM:", "")>
+		setDefaultState(this.blockState.getBaseState().withProperty(${propName?upper_case}, ${customBool[0].value()?c}));
+		</#if>
 	}
+
+	<#if customBool?has_content>
+	<#assign propName = customBool[0].property().getName()?replace("CUSTOM:", "")>
+	public static final PropertyBool ${propName?upper_case} = PropertyBool.create("${propName}");
+
+	@Override protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, ${propName?upper_case});
+	}
+
+	@Override public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(${propName?upper_case}, (meta & 1) != 0);
+	}
+
+	@Override public int getMetaFromState(IBlockState state) {
+		return state.getValue(${propName?upper_case}) ? 1 : 0;
+	}
+	</#if>
 </#if>
 
 	<#if blockBase != "Slab" && data.customDrop?? && !data.customDrop.isEmpty()>

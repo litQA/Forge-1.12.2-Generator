@@ -25,7 +25,7 @@
   registered through `GameRegistry.addSmelting`, and brewing recipes generated
   as per-element `IBrewingRecipe` implementations with potion-type aware
   inputs and outputs.
-- Block mod element for the default basic cube: per-face textures, cube model,
+- Block mod element for the default basic cube: per-face textures, custom boolean\n  block properties, cube model,
   block state, block item model, hardness, resistance, step sound, creative
   tabs, stack size, rarity, self/custom drops and XP range.
 - Stairs, slab, fence and wall block bases, including full block state/model
@@ -98,7 +98,7 @@
 
 ## Fixes
 
-Fixed 12 bug(s).
+Fixed 13 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -130,6 +130,8 @@ Fixed 12 bug(s).
 - Blockstate property templates called `getProperty(String)` on `IBlockState`;
   in 1.12.2 the lookup must go through `IBlockState.getBlock().getBlockState()`
   (the block state container).
+- Custom boolean block properties from the block editor were not generated in
+  the block class or blockstate, so procedures toggling them had no effect.
 
 ## Known Limitations
 
