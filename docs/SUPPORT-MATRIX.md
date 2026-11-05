@@ -22,8 +22,8 @@ feature list. This matrix records how the generator handles each feature group.
 | Item | Degraded | Supported: normal/tool model, texture, name, rarity, creative tabs, stack size, durability, enchantability, use duration, use animation, destroy speed, destroy any block, melee damage, attack speed, recipe remainder, container item behaviour, food, creative tabs. Unavailable: procedures/triggers, inventories, GUI binding, ranged behaviour, JSON/OBJ/Java models, glow conditions, music disc, banner patterns, attribute modifier entries, repair items, fire immunity, piglin currency. Multiple creative tabs are supported through a `getSubItems` override; the first selected tab remains the item default tab. |
 | Recipe | Direct | Crafting (shaped/shapeless) as 1.12.2 JSON; furnace smelting and brewing registered through generated Java code (`GameRegistry.addSmelting`, `BrewingRecipeRegistry`). Blasting, Smoking, Campfire cooking, Stone cutting and Smithing do not exist in Forge 1.12.2 and fail generation explicitly. |
 | Block | Degraded | Batch 3 supports basic cubes with per-face textures, boolean/integer/enum custom properties and per-state models/textures, plus cutout/translucent layers, stairs, slabs (bottom/top/double), fences and walls. All support block items with multi-tab support, self/custom drops and XP. Remaining bases, multipart state editing, inventories, energy, fluids, worldgen, redstone behavior, tool tiers and loot-table drops are unavailable. |
-| Plant | Unavailable | Planned for batch 3. |
-| Fluid | Unavailable | Planned for batch 3. |
+| Plant | Degraded | Batch 4 supports normal, sapling, growable and double plants with cross/crop/custom models, item textures, tooltips, drops, placement conditions and bonemeal procedures. Tree growth and world generation are unavailable. |
+| Fluid | Degraded | Batch 4 supports `Fluid`/`BlockFluidClassic`, still/flowing textures, bucket generation, bucket models and client fluid state mapping. Fog, overlays, custom flow conditions and fluid procedures are unavailable. |
 | Dimension | Unavailable | Planned for batch 4, including portal, void world gen and sky parameters. |
 | Biome | Unavailable | Planned for batch 4. |
 | Living entity | Unavailable | Planned for batch 5 (AI tasks, attributes, model layers, synced data). |
@@ -108,7 +108,7 @@ is marked Unavailable until its owning mod element is implemented.
 | 1 (this batch) | Foundation, creative tab, item, crafting/smelting/brewing recipes, mappings, build chain, validator, documentation |
 | 2 (this batch) | Basic cube blocks, block items, custom drops/XP, Ore Dictionary bridge for the tag editor |
 | 3 (this batch) | Stairs/slabs/fences/walls, per-face textures, transparent cubes, minimal procedures and block interaction triggers |
-| 4 | Plants, fluids, biomes, dimensions, portals, worldgen features |
+| 4 (this batch) | Plants (normal/sapling/growable/double) and basic fluids with buckets |
 | 5 | Living entities, special entities, projectiles, AI tasks, synced data |
 | 6 | GUIs, overlays, key binds, particles, rendered entities |
 | 7 | Remaining procedure blocks, global triggers, workspace variables (WorldSavedData) |

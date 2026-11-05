@@ -1,0 +1,38 @@
+templates:
+  - template: fluid/fluid.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/fluid/@NAMEFluid.java"
+  - template: fluid/fluidblock.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlock.java"
+  - template: fluid/fluidbucket.java.ftl
+    condition: generateBucket
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEBucket.java"
+  - template: fluid/fluidclient.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/@NAMEFluidClient.java"
+  - template: json/fluid_model.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/bucket_model.json.ftl
+    writer: json
+    condition: generateBucket
+    name: "@MODASSETSROOT/models/item/@registryname_bucket.json"
+
+base_types:
+  - block
+
+localizationkeys:
+  - key: fluid.@modid.@registryname
+    mapto: name
+  - key: tile.@modid.@registryname.name
+    mapto: name
+  - key: item.@modid.@registryname_bucket.name
+    mapto: bucketName
+    condition: generateBucket
+
+field_exclusions: [textureRenderOverlay, hasFog, fogColor, fogStartDistance,
+                   fogEndDistance, tintType, canMultiply, flowRate, levelDecrease,
+                   slopeFindDistance, spawnParticles, dripParticle, flowStrength,
+                   temperature, emissiveRendering, ignitedByLava, flammability,
+                   fireSpreadSpeed, colorOnMap, onBlockAdded, onNeighbourChanges,
+                   onTickUpdate, onEntityCollides, onRandomUpdateEvent,
+                   onDestroyedByExplosion, flowCondition, beforeReplacingBlock,
+                   lightOpacity, tickRate]

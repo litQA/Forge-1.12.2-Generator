@@ -20,6 +20,14 @@ public class ${JavaModName}Blocks {
 	</#if>
 	</#list>
 
+	<#list (types.plants![]) as plant>
+	public static final Block ${plant.getModElement().getRegistryNameUpper()} = register("${plant.getModElement().getRegistryName()}", new ${package}.block.${plant.getModElement().getName()}Block());
+	</#list>
+
+	<#list (types.fluids![]) as fluid>
+	public static final Block ${fluid.getModElement().getRegistryNameUpper()} = register("${fluid.getModElement().getRegistryName()}", new ${package}.block.${fluid.getModElement().getName()}Block());
+	</#list>
+
 	// Start of user code block custom blocks
 	// End of user code block custom blocks
 

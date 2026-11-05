@@ -1,0 +1,59 @@
+templates:
+  - template: plant/plant.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlock.java"
+  - template: block/blockitem.java.ftl
+    condition: hasBlockItem
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItemBlock.java"
+  - template: json/plant_block.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+  - template: json/plant_item.json.ftl
+    writer: json
+    condition: hasBlockItem
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/plant_states.json.ftl
+    writer: json
+    condition: "plantType %= normal"
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/plant_states.json.ftl
+    writer: json
+    condition: "plantType %= sapling"
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/plant_growable_states.json.ftl
+    writer: json
+    condition: "plantType %= growapable"
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/plant_double_states.json.ftl
+    writer: json
+    condition: "plantType %= double"
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/plant_double_bottom.json.ftl
+    writer: json
+    condition: "plantType %= double"
+    name: "@MODASSETSROOT/models/block/@registryname_bottom.json"
+  - template: json/plant_double_top.json.ftl
+    writer: json
+    condition: "plantType %= double"
+    name: "@MODASSETSROOT/models/block/@registryname_top.json"
+
+base_types:
+  - block
+
+localizationkeys:
+  - key: tile.@modid.@registryname.name
+    mapto: name
+
+field_exclusions: [suspiciousStewEffect, suspiciousStewDuration, secondaryTreeChance,
+                   trees, flowerTrees, megaTrees, growapableSpawnType,
+                   customBoundingBox, disableOffset, boundingBoxes, isSolid,
+                   isWaterloggable, immuneToFire, isCustomSoundType, breakSound,
+                   stepSound, placeSound, hitSound, fallSound, useLootTableForDrops,
+                   forceTicking, emissiveRendering, hasTileEntity, colorOnMap,
+                   creativePickItem, offsetType, aiPathNodeType, strippingResult,
+                   ignitedByLava, jumpFactor, speedFactor, isBonemealTargetCondition,
+                   bonemealSuccessCondition, frequencyOnChunks, generateFeature,
+                   restrictionBiomes, generationType, patchSize, generateAtAnyHeight,
+                   onBlockAdded, onNeighbourBlockChanges, onTickUpdate,
+                   onRandomUpdateEvent, onDestroyedByPlayer, onDestroyedByExplosion,
+                   onStartToDestroy, onEntityCollides, onBlockPlacedBy, onRightClicked,
+                   onEntityWalksOn, onHitByProjectile, onEntityFallsOn]

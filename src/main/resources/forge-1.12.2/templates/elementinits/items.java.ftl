@@ -38,6 +38,18 @@ public class ${JavaModName}Items {
 	</#if>
 	</#list>
 
+	<#list (types.plants![]) as plant>
+	<#if plant.hasBlockItem>
+	public static final Item ${plant.getModElement().getRegistryNameUpper()}_ITEM = register("${plant.getModElement().getRegistryName()}", new ${package}.item.${plant.getModElement().getName()}ItemBlock(${package}.init.${JavaModName}Blocks.${plant.getModElement().getRegistryNameUpper()}));
+	</#if>
+	</#list>
+
+	<#list (types.fluids![]) as fluid>
+	<#if fluid.generateBucket>
+	public static final Item ${fluid.getModElement().getRegistryNameUpper()}_BUCKET = register("${fluid.getModElement().getRegistryName()}_bucket", new ${package}.item.${fluid.getModElement().getName()}Bucket(${package}.init.${JavaModName}Blocks.${fluid.getModElement().getRegistryNameUpper()}));
+	</#if>
+	</#list>
+
 	// Start of user code block custom items
 	// End of user code block custom items
 

@@ -9,6 +9,9 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 public class ClientProxy${JavaModName} implements IProxy${JavaModName} {
 
 	@Override public void preInit(FMLPreInitializationEvent event) {
+		<#list (types.fluids![]) as fluid>
+		${package}.client.${fluid.getModElement().getName()}FluidClient.register();
+		</#list>
 	}
 
 	@Override public void init(FMLInitializationEvent event) {

@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-3.0.17-beta` |
+| Plugin version | `2026.3-3.1.0-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -96,6 +96,19 @@ through a dependency map (`world`, `x`, `y`, `z`, `entity`, `blockstate`,
 `direction`, `itemstack`). Global triggers are intentionally not implemented.
 Right-click procedures on slabs are not generated in this batch because the slab
 uses its own activation handler for double-slab merging.
+
+## Plants and fluids
+
+Plants support normal, sapling, growable and double-plant modes with cross,
+crop and custom JSON models, independent item textures, tooltips, drops,
+placement restrictions, bonemeal procedures, light and flammability. Saplings
+currently use normal plant placement and do not grow trees yet; world
+generation is not implemented in this batch.
+
+Fluids support still/flowing textures, `Fluid` registration,
+`BlockFluidClassic`, bucket generation, bucket models and client fluid state
+mapping. Fog, overlays, custom flow conditions and fluid block procedures are
+not implemented yet.
 
 ## Tags and the Ore Dictionary
 

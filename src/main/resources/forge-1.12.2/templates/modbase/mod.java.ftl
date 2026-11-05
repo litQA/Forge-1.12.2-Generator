@@ -32,10 +32,13 @@ public class ${JavaModName} {
 		<#if (types.tabs![])?has_content>
 		${package}.init.${JavaModName}Tabs.load();
 		</#if>
-		<#if (types.blocks![])?has_content>
+		<#if (types.fluids![])?has_content>
+		${package}.init.${JavaModName}Fluids.init();
+		</#if>
+		<#if (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Blocks.class);
 		</#if>
-		<#if (types.items![])?has_content || (types.blocks![])?has_content>
+		<#if (types.items![])?has_content || (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Items.class);
 		</#if>
 
