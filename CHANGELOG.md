@@ -98,7 +98,7 @@
 
 ## Fixes
 
-Fixed 18 bug(s).
+Fixed 19 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -141,6 +141,9 @@ Fixed 18 bug(s).
   returns Guava `com.google.common.base.Optional`.
 - Blocks with custom properties did not override `getMetaFromState`, so Forge
   crashed during block registration while enumerating block states.
+- Blockstates for multiple custom properties only covered the first state map
+  key, leaving bool/enum variants without models; all property combinations are
+  now generated and resolved against defined state models.
 - Integer block properties were missing from generated block classes, so the
   integer property procedure always read `-1`.
 

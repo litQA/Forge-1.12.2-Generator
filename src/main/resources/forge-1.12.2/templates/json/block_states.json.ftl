@@ -71,7 +71,33 @@
     <#else>
         <#assign customProps = data.customProperties![]>
         <#assign definedStates = data.getDefinedStates()![]>
-        <#if customProps?has_content && customProps?size == 1>
+        <#assign boolProps = []>
+        <#assign intProps = []>
+        <#assign enumProps = []>
+        <#list customProps as property>
+            <#if property.value()?is_boolean><#assign boolProps += [property]>
+            <#elseif property.value()?is_number><#assign intProps += [property]>
+            <#elseif property.value()?is_string><#assign enumProps += [property]>
+            </#if>
+        </#list>
+        <#if customProps?size == 3 && boolProps?has_content && intProps?has_content && enumProps?has_content>
+        <#assign bp = boolProps[0]><#assign ip = intProps[0]><#assign ep = enumProps[0]>
+        <#list [false, true] as b>
+        <#list ep.property().getArrayData() as e>
+        <#list ip.property().getMin()..ip.property().getMax() as i>
+        <#assign model = registryname>
+        <#list definedStates as state>
+            <#assign ok = true>
+            <#list state.stateMap.keySet() as key>
+                <#if (key.getName() == bp.property().getName() && state.stateMap.get(key) != b) || (key.getName() == ep.property().getName() && state.stateMap.get(key) != e) || (key.getName() == ip.property().getName() && state.stateMap.get(key) != i)><#assign ok = false></#if>
+            </#list>
+            <#if ok><#assign model = registryname + "_" + state?index></#if>
+        </#list>
+        "${bp.property().getName()?replace("CUSTOM:", "")}=${b?c},${ep.property().getName()?replace("CUSTOM:", "")}=${e},${ip.property().getName()?replace("CUSTOM:", "")}=${i}": { "model": "${modid}:${model}" }<#sep>,
+        </#list>
+        </#list>
+        </#list>
+        <#elseif customProps?has_content && customProps?size == 1>
         <#assign property = customProps[0]>
         <#assign customName = property.property().getName()?replace("CUSTOM:", "")>
         <#if property.value()?is_boolean>
