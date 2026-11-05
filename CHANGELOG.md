@@ -10,9 +10,11 @@
   Java model key for the legacy 1.12.2 renderer.
 - Self-contained Gradle 9.8.0 build for the plugin with a Java 25 toolchain,
   local wrapper distribution URL and project-local Gradle caches.
-- ForgeGradle 2.3 / Gradle 4.10.3 / JDK 8 workspace base for generated mods,
-  including local wrapper distribution URL, workspace-local Gradle caches,
-  `mcmod.info` resource expansion and a guarded `mcreator.gradle` include.
+- RetroFuturaGradle 2.0.6 / Gradle 9.8.0 / Java 8 toolchain workspace base for
+  generated mods, including local wrapper distribution URL, workspace-local
+  Gradle caches and a guarded `mcreator.gradle` include.
+- Foojay toolchain resolver configuration in the generated workspace, so a
+  Java 8 toolchain is provisioned automatically when no local JDK 8 is present.
 - Creative tab mod element: name, icon and search bar rendering through the
   generated `<Mod>Tabs` class.
 - Item mod element: normal and tool models, rarity, creative tabs, stack size,
@@ -42,8 +44,16 @@
 - The generated plugin uses a single `<Mod>Items` registry class rather than the
   ASM-tag based element registry of the 2021.1 reference generator, which has no
   deterministic initialization order for creative tab dependencies.
-- The Forge build is locked to `14.23.5.2847`, the newest 1.12.2 build that
-  publishes the `-userdev` artifact needed by ForgeGradle 2.3.
+- The Forge build is locked to `14.23.5.2847`, the 1.12.2 Forge version
+  supported by RetroFuturaGradle 2.0.6 and the newest build that still
+  publishes the legacy `-userdev` artifact.
+- The generated workspace build chain moved from ForgeGradle 2.3 / Gradle
+  4.10.3 to RetroFuturaGradle 2.0.6 / Gradle 9.8.0. MCreator 2026.3 sends a
+  Java 25 bytecode Gradle synchronization action (class file major version 69)
+  that Gradle 4.10.3 cannot parse or load; Gradle 9.8 runs on MCreator's Java 25
+  runtime and RetroFuturaGradle supplies the Java 8 compile/run toolchain.
+- The generated mod no longer requires MCreator's Gradle Java home override to
+  point at a JDK 8 installation.
 - Generated mod folders use the 2026.3 default `src/main/java` and
   `src/main/resources` layout and the 1.12.2 asset paths
   (`textures/items`, `textures/blocks`, `recipes`).

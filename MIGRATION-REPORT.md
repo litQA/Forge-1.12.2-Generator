@@ -27,8 +27,13 @@ The supplied 2025.3 community baseline could not be used as a foundation for a
    template cannot even be rendered.
 4. **Incompatible build chain.** The workspace base used ForgeGradle `7.0.40`
    with a Gradle 9.7.1 wrapper. Forge 1.12.2 cannot be built through that
-   combination; the mod must be built with ForgeGradle 2.3, Gradle 4.10.3 and
-   JDK 8.
+   combination. The legacy alternative (ForgeGradle 2.3 with Gradle 4.10.3) is
+   also fundamentally incompatible with MCreator 2026.3, because MCreator sends
+   a Java 25 bytecode synchronization action to whatever Gradle distribution the
+   workspace declares. Gradle 4.10.3 cannot parse class file major version 69
+   and cannot load the action, so the workspace fails during synchronization.
+   The 1.12.2 build chain must therefore run on a modern Gradle while still
+   compiling and running the mod with Java 8.
 5. **Modern-only mappings in data lists.** For example the baseline biome data
    list contains 1.19+ biomes (`mangrove_swamp`, `windswept hills`) that do not
    exist in 1.12.2.
@@ -36,7 +41,11 @@ The supplied 2025.3 community baseline could not be used as a foundation for a
 The project therefore uses the Apache-2.0 licensed official
 `MCreator/Generator-Forge-1.12.2` reference repository (tag `2021.1-v4.0.1`) as
 the source of proven 1.12.2 API code, and re-applies the 2026.3 generator format
-and mod element data model on top of it.
+and mod element data model on top of it. The generated mod is built with
+**RetroFuturaGradle 2.0.6 on Gradle 9.8.0**, with a Java 8 toolchain for
+compilation and runtime. This is the only combination that satisfies both the
+modern Gradle requirement of MCreator 2026.3 and the Java 8 requirement of
+Forge 1.12.2.
 
 ## 2026.3 architecture adaptations
 
@@ -45,9 +54,9 @@ and mod element data model on top of it.
 | Definitions are merged across plugins by YAML merge policy. | The plugin ships one self-contained `forge-1.12.2` generator. `plugin.json` uses `weight: 100` so its resources win over same-named resources from lower-weight plugins. |
 | `types` is provided as an empty list when no element of a type exists. | All templates iterate `types.<plural>` and guard with `?has_content`; base templates use `condition: "${types.tabs?has_content}"` style conditions. |
 | Mod element base types are declared by YAML (`base_types`). | Not required for the batch-1 element set (creative tab, item, recipe). The item registry is generated from `types.items` in `elementinits/items.java.ftl`. |
-| Generator fragments (`*.fragment.yaml`). | The loader supports fragments, but ForgeGradle 2.3 has no mixin/accesstransformer integration. This generator declares no fragments and therefore cannot accidentally emit 1.13+ mixin artefacts. The design allows adding fragments in later batches when a 1.12.2 use case exists. |
+| Generator fragments (`*.fragment.yaml`). | The loader supports fragments, but the 1.12.2 build has no mixin/accesstransformer pipeline. This generator declares no fragments and therefore cannot accidentally emit 1.13+ mixin artefacts. The design allows adding fragments in later batches when a 1.12.2 use case exists. |
 | Field availability is configured per generator (`field_inclusions` / `field_exclusions`). | The item and recipe definitions use `field_inclusions` to expose only the fields implemented by this batch. Unsupported fields are absent from the editor instead of silently generating incomplete code. |
-| Gradle task names and export path are configured in `generator.yaml`. | `runClient`, `runServer` and `build/libs/modid-1.0.jar` are used. The workspace wrapper pins Gradle 4.10.3. |
+| Gradle task names and export path are configured in `generator.yaml`. | `runClient`, `runServer` and `build/libs/modid-1.0.jar` are used. The workspace wrapper pins Gradle 9.8.0 and RetroFuturaGradle handles the 1.12.2 build. |
 
 ## Mod element support (batch 1)
 
@@ -134,16 +143,20 @@ them as unavailable.
 
 - Plugin build: Gradle 9.8.0, Java 25 toolchain, local distribution URL, caches
   inside the project (`gradlew` sets `GRADLE_USER_HOME`).
-- Generated mod: ForgeGradle 2.3-SNAPSHOT, Gradle 4.10.3, JDK 8 compile, Forge
-  `14.23.5.2847`.
-- `14.23.5.2847` is chosen because Forge stopped publishing the `-userdev`
-  artifact required by ForgeGradle 2.3 after build `2847`. Build `2864` is
-  therefore unusable with the required ForgeGradle 2.3 toolchain; switching to
-  2864 requires moving to ForgeGradle 3+ in a later batch.
-- MCreator 2026.3 runs on Java 25. Its Gradle integration accepts a Java home
-  override in the preferences; it must be set to a JDK 8 installation before
-  building a 1.12.2 workspace. This is a platform prerequisite, documented in
-  the README.
+- Generated mod: RetroFuturaGradle 2.0.6, Gradle 9.8.0, Java 8 toolchain, MCP
+  snapshot `20171003`, Forge `1.12.2-14.23.5.2847`.
+- Gradle 9.8 runs on MCreator's Java 25 runtime, so MCreator's Java 25 Gradle
+  synchronization action can be parsed and loaded. RetroFuturaGradle then
+  compiles and runs the mod with a Java 8 toolchain. The previous ForgeGradle
+  2.3 / Gradle 4.10.3 chain failed with `Unsupported class file major version
+  69` for exactly this reason.
+- No MCreator Java home override to JDK 8 is needed. The Gradle JVM stays on
+  Java 25 (or any Gradle 9.8 supported JDK). If no local JDK 8 is present, the
+  Foojay toolchain resolver configured in the generated `settings.gradle`
+  provisions one into the Gradle user home.
+- `14.23.5.2847` is RetroFuturaGradle's supported 1.12.2 Forge version and the
+  newest build that still publishes the legacy `-userdev` artifact. Build `2864`
+  is not used by the RFG 2.0.6 1.12.2 defaults.
 
 ## Known Limitations
 
@@ -163,8 +176,10 @@ them as unavailable.
    stops generation with an explicit error instead of emitting broken code.
 6. **Procedures and triggers.** No procedure blocks, global triggers or element
    triggers are implemented, so no procedure code can be generated yet.
-7. **Java 8 prerequisite.** MCreator's Gradle Java home override must point to a
-   JDK 8 installation. MCreator still needs Java 25 to run its own UI.
+7. **Toolchain provisioning.** A Java 8 toolchain is required for compilation and
+   runtime. It is auto-detected when installed, otherwise downloaded through the
+   Foojay resolver. Machines without network access must install a JDK 8 and let
+   Gradle detect it (or set `org.gradle.java.installations.paths`).
 8. **Cache redirection under MCreator.** The wrapper-based builds created by
    this project keep all Gradle caches in `<project>/caches/gradle`. MCreator's
    Tooling API removes `GRADLE_USER_HOME` from the environment and does not
@@ -188,12 +203,18 @@ them as unavailable.
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |
-| ForgeGradle 2.3 / Gradle 4.10.3 / JDK 8 compile | `BUILD SUCCESSFUL`; `build/libs/modid-1.0.jar` produced. Only deprecation notes for `setUnlocalizedName` (expected on 1.12.2). |
+| RetroFuturaGradle 2.0.6 / Gradle 9.8.0 / Java 8 toolchain | `BUILD SUCCESSFUL`; `build/libs/modid-1.0.jar` (reobfuscated) and `modid-1.0-dev.jar` produced. Only deprecation notes for `setUnlocalizedName` (expected on 1.12.2). |
+| ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 
 The generated-mod build used the exact workspace base, templates and generated
 sources that are packaged in the plugin archive. The build was started through
-the generated workspace wrapper with `JAVA_HOME` pointing to JDK 8 and
-`GRADLE_USER_HOME` pointing to the workspace-local `caches/gradle` folder.
+the generated workspace wrapper with Gradle 9.8 running on Java 25 and a Java 8
+toolchain for compilation; `GRADLE_USER_HOME` pointed to the workspace-local
+`caches/gradle` folder. MCP mappings are the 1.12.2 snapshot `20171003`, which
+is also what MCreator 1.12.2 uses (`setUnlocalizedName`, `getTabIconItem`). The
+MCP `stable` channel is intentionally not used because it contains Mojang
+official names (`setTranslationKey`, `createIcon`) that do not match the 1.12.2
+API used by MCreator.
 
 Remaining acceptance item: launch the Forge 1.12.2 client and verify the test
 item, creative tab and recipe in game. Per the delivery specification this

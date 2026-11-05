@@ -57,19 +57,19 @@ feature list. This matrix records how the generator handles each feature group.
 | 2026.3 plugin metadata (`id`, `weight`, `supportedversions`, EAP build number) | Direct | Plugin id `generator-forge-1.12.2`, weight 100, supported versions `[202600344621, 2026003]`. |
 | 2026.3 `generator.yaml` | Direct | Base templates, language file, resource folders, Java model key, Gradle tasks and export path are declared. |
 | YAML merge semantics | Direct | The generator is self-contained; plugin weight guarantees precedence if another plugin ships the same `forge-1.12.2` resources. |
-| Generator fragments | Unavailable | The loader supports fragments, but ForgeGradle 2.3 has no mixin/accesstransformer pipeline. No fragments are declared so no invalid mixin code can be generated. |
+| Generator fragments | Unavailable | The loader supports fragments, but the 1.12.2 build has no mixin/accesstransformer pipeline. No fragments are declared so no invalid mixin code can be generated. |
 | Empty `types` lists | Direct | All templates read `types.*` and guard with `?has_content`. |
 | Field inclusions / exclusions | Direct | Item and recipe definitions expose only supported fields. |
 | MCP name mappings | Degraded | Full 1.12.2 lists are shipped for the implemented elements; unimplemented elements have no runtime mapping consumers yet. Unavailable modern values fall back to documented vanilla approximations. |
 | Resource generation (models, language, block states, loot tables, tags) | Degraded | Item models and language keys are generated; block states, loot tables and 1.12.2 ore dictionary tags are planned with their element batches. |
-| Gradle build chain | Direct | Plugin: Gradle 9.8.0 + Java 25. Generated mod: ForgeGradle 2.3 + Gradle 4.10.3 + Java 8, Forge `14.23.5.2847`. |
-| Forge `14.23.5.2864` | Unavailable | Forge stopped publishing the FG2.3 `-userdev` artifact after 2847. 2864 requires ForgeGradle 3+ (later batch). |
+| Gradle build chain | Direct | Plugin: Gradle 9.8.0 + Java 25. Generated mod: RetroFuturaGradle 2.0.6 + Gradle 9.8.0 + Java 8 toolchain, Forge `14.23.5.2847`. Gradle 9.8 is required because MCreator 2026.3 sends a Java 25 synchronization action (class file major version 69) that legacy Gradle cannot parse or load. |
+| Forge `14.23.5.2864` | Unavailable | RetroFuturaGradle 2.0.6 targets `1.12.2-14.23.5.2847` for 1.12.2. 2864 is planned with a later RFG upgrade. |
 | Workspace-local caches | Direct for wrapper builds | `gradlew` sets `GRADLE_USER_HOME=<project>/caches/gradle`; wrapper distributions point to local files. MCreator's own Tooling API build cannot be redirected from generator resources (platform limitation). |
 | Server-side build safety | Direct | No client-only classes are referenced from common code paths in the batch-1 templates except `@SideOnly(Side.CLIENT)` model registration, which is standard 1.12.2 practice. |
 | Generator validator | Direct | YAML, mappings, FreeMarker syntax, includes and template references are validated by `gradlew validateGenerator`. |
 | MCP tool compatibility | Direct | All definitions use standard 2026.3 YAML formats and do not add generator-specific keys that would fail standard YAML parsing. The generator does not implement an MCP server. |
 | Generation diagnostics | Degraded | MCreator reports the mod element name and template path on failure; unsupported features raise explicit `<#stop>` messages. Missing name mappings fall back to documented values instead of raising, so no mapping error can be produced for the implemented elements. |
-| Java 8 compatibility of generated code | Direct | All emitted code targets Java 8 APIs; `sourceCompatibility`/`targetCompatibility` are 1.8. |
+| Java 8 compatibility of generated code | Direct | RetroFuturaGradle compiles and runs the mod with a Java 8 toolchain; all emitted code targets Java 8 APIs. Gradle itself runs on Java 25. |
 
 ## Feature deltas 2021.1 - 2026.3
 
@@ -112,4 +112,4 @@ is marked Unavailable until its owning mod element is implemented.
 | 6 | GUIs, overlays, key binds, particles, rendered entities |
 | 7 | Procedures, procedure blocks, global and element triggers, variables (WorldSavedData) |
 | 8 | Advancements, structures, worldgen, commands, functions, game rules, villager trades and professions, paintings |
-| 9 | Forge 2864 / ForgeGradle 3+ build chain upgrade, full coverage audit and stable-status promotion |
+| 9 | Forge 2864 / RetroFuturaGradle upgrade, full coverage audit and stable-status promotion |
