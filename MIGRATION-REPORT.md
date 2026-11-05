@@ -150,7 +150,8 @@ A minimal procedure element is implemented with a dependency-map entry point:
 `public static void executeProcedure(Map<String, Object> dependencies)`.
 
 Supported procedure block templates: world/entity chat, set block, remove block,
-play sound, give item, call procedure, return value and print. Standard Blockly
+get current blockstate, get/set boolean and integer blockstate properties, play
+sound, give item, call procedure, return value and print. Standard Blockly
 flow/math/logic/text/variable blocks come from MCreator itself. Procedures with a
 return value use the generated return type.
 
@@ -291,7 +292,7 @@ them as unavailable.
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (30 YAML documents, 51 templates, 37 template references) |
+| Static validator | `VALIDATION PASSED` (30 YAML documents, 58 templates, 37 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |

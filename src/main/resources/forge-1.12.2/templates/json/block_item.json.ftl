@@ -1,3 +1,4 @@
+<#assign blockBase = data.blockBase!"">
 {
-    "parent": "${modid}:block/${registryname}<#if data.blockBase == 'Stairs'><#elseif data.blockBase == 'Slab'>_slab<#elseif data.blockBase == 'Fence' || data.blockBase == 'Wall'>_inventory</#if>"
+    "parent": "${modid}:block/${registryname}<#if blockBase == 'Stairs'><#elseif blockBase == 'Slab'>_slab<#elseif blockBase == 'Fence' || blockBase == 'Wall'>_inventory</#if>"
 }

@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-3.0.0-beta` |
+| Plugin version | `2026.3-3.0.1-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -72,6 +72,8 @@ A minimal procedure element is available. Supported procedure blocks are:
 
 - world/entity chat messages;
 - set block and remove block;
+- get the current blockstate and get/set boolean or integer blockstate
+  properties (for testing trigger contexts and block state changes);
 - play sound;
 - give an item to a player;
 - call another procedure and return values.

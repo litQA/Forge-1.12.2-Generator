@@ -1,6 +1,7 @@
 <#-- @formatter:off -->
 <#include "/mcitems.ftl">
 <#include "/procedures.ftl">
+<#assign blockBase = data.blockBase!"">
 package ${package}.block;
 
 import net.minecraft.block.Block;
@@ -31,7 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-<#if data.blockBase == "Stairs">
+<#if blockBase == "Stairs">
 public class ${name}Block extends BlockStairs {
 
 	public ${name}Block() {
@@ -41,7 +42,7 @@ public class ${name}Block extends BlockStairs {
 		setResistance(${data.resistance?c}f);
 		setSoundType(SoundType.${generator.map(data.soundOnStep.getUnmappedValue(), "stepsounds")});
 	}
-<#elseif data.blockBase == "Fence">
+<#elseif blockBase == "Fence">
 public class ${name}Block extends BlockFence {
 
 	public ${name}Block() {
@@ -51,7 +52,7 @@ public class ${name}Block extends BlockFence {
 		setResistance(${data.resistance?c}f);
 		setSoundType(SoundType.${generator.map(data.soundOnStep.getUnmappedValue(), "stepsounds")});
 	}
-<#elseif data.blockBase == "Wall">
+<#elseif blockBase == "Wall">
 public class ${name}Block extends BlockWall {
 
 	public ${name}Block() {
@@ -61,7 +62,7 @@ public class ${name}Block extends BlockWall {
 		setResistance(${data.resistance?c}f);
 		setSoundType(SoundType.${generator.map(data.soundOnStep.getUnmappedValue(), "stepsounds")});
 	}
-<#elseif data.blockBase == "Slab">
+<#elseif blockBase == "Slab">
 public class ${name}Block extends Block {
 
 	public static final PropertyEnum<SlabPart> HALF = PropertyEnum.create("half", SlabPart.class);
@@ -155,13 +156,13 @@ public class ${name}Block extends Block {
 	}
 </#if>
 
-	<#if data.blockBase != "Slab" && data.customDrop?? && !data.customDrop.isEmpty()>
+	<#if blockBase != "Slab" && data.customDrop?? && !data.customDrop.isEmpty()>
 	@Override public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		drops.add(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
 	}
 	</#if>
 
-	<#if data.blockBase != "Slab" && data.xpAmountMax gt 0>
+	<#if blockBase != "Slab" && data.xpAmountMax gt 0>
 	@Override public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune) {
 		return ${data.xpAmountMin} + (int) (Math.random() * ${data.xpAmountMax - data.xpAmountMin + 1});
 	}
@@ -253,7 +254,7 @@ public class ${name}Block extends Block {
 	}
 	</#if>
 
-	<#if data.blockBase != "Slab" && hasProcedure(data.onRightClicked)>
+	<#if blockBase != "Slab" && hasProcedure(data.onRightClicked)>
 	@Override public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		double x = pos.getX(), y = pos.getY(), z = pos.getZ();
 		IBlockState blockstate = state;

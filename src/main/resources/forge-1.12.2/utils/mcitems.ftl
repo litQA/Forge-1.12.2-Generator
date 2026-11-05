@@ -6,16 +6,28 @@
     index 1 -> registry name (example: stone#1)
 -->
 <#function mcItemRaw mappedItem>
-    <#if mappedItem?is_hash>
-        <#return mappedItem.getUnmappedValue()>
+    <#if !mappedItem??>
+        <#return "">
+    <#elseif mappedItem?is_hash>
+        <#assign raw = (mappedItem.getUnmappedValue())!"" >
+        <#if raw?has_content>
+            <#return raw>
+        </#if>
+        <#return (mappedItem.getMappedValue(0))!"" >
     <#else>
         <#return mappedItem?string>
     </#if>
 </#function>
 
 <#function mcItemMapped mappedItem index=0>
-    <#if mappedItem?is_hash>
-        <#return mappedItem.getMappedValue(index)>
+    <#if !mappedItem??>
+        <#return "">
+    <#elseif mappedItem?is_hash>
+        <#assign value = (mappedItem.getMappedValue(index))!"" >
+        <#if value?has_content>
+            <#return value>
+        </#if>
+        <#return (mappedItem.getUnmappedValue())!"" >
     <#else>
         <#return mappedItem?string>
     </#if>
@@ -127,6 +139,26 @@
         </#if>
         <#return "net.minecraft.init.Blocks.STONE.getDefaultState()">
     <#else>
-        <#return mcItemMapped(mappedItem, 0)?split("#")[0] + ".getDefaultState()">
+        <#assign blockCode = mcItemMapped(mappedItem, 0)?split("#")[0]>
+        <#if !blockCode?has_content>
+            <#return "net.minecraft.init.Blocks.STONE.getDefaultState()">
+        </#if>
+        <#return blockCode + ".getDefaultState()">
+    </#if>
+</#function>
+
+<#function mappedBlockToBlock mappedItem>
+    <#if mcItemIsCustom(mappedItem)>
+        <#assign element = mcItemModElement(mappedItem)>
+        <#if element?? && element.getTypeString() == "block">
+            <#return package + ".init." + JavaModName + "Blocks." + element.getRegistryNameUpper()>
+        </#if>
+        <#return "net.minecraft.init.Blocks.STONE">
+    <#else>
+        <#assign blockCode = mcItemMapped(mappedItem, 0)?split("#")[0]>
+        <#if !blockCode?has_content>
+            <#return "net.minecraft.init.Blocks.STONE">
+        </#if>
+        <#return blockCode>
     </#if>
 </#function>

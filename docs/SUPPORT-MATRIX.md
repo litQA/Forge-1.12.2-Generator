@@ -35,7 +35,7 @@ feature list. This matrix records how the generator handles each feature group.
 | GUI / Overlay | Unavailable | Planned for batch 6. |
 | Key binding | Unavailable | Planned for batch 6. |
 | Particle | Unavailable | Planned for batch 6. |
-| Procedure | Degraded | Preview in batch 3: chat, set/remove block, play sound, give item, call procedure and return values. Block triggers: right click, added, destroyed by player, entity walk, scheduled/random tick and neighbour change. Global triggers and the remaining procedure block catalog are unavailable. |
+| Procedure | Degraded | Preview in batch 3: chat, set/remove block, get current blockstate, get/set boolean and integer blockstate properties, play sound, give item, call procedure and return values. Block triggers: right click, added, destroyed by player, entity walk, scheduled/random tick and neighbour change. Global triggers and the remaining procedure block catalog are unavailable. |
 | Advancement / achievement | Unavailable | Planned for batch 8. |
 | Loot table | Unavailable | Planned for batch 2/8. |
 | Enchantment | Unavailable | Planned for batch 3. |

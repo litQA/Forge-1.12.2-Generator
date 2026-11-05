@@ -31,7 +31,7 @@
 - Stairs, slab, fence and wall block bases, including full block state/model
   sets, slab double placement/drops and multipart fence/wall models.
 - Cutout and translucent render layer support for transparent cubes.
-- Minimal procedure element with world/entity chat, set/remove block, play
+- Minimal procedure element with world/entity chat, set/remove block, get/set block state properties, play
   sound, give item, call-procedure and return-value blocks.
 - Block interaction triggers that call procedures: right click, block added,
   destroyed by player, entity walk, scheduled tick, random tick and neighbour
@@ -96,7 +96,7 @@
 
 ## Fixes
 
-Fixed 6 bug(s).
+Fixed 7 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -110,6 +110,11 @@ Fixed 6 bug(s).
   so recipes using vanilla blocks failed to compile.
 - Basic blocks ignored the per-face texture fields and always rendered the
   `texture` field as a single `cube_all` texture.
+- Block elements without a stored `blockBase` value failed FreeMarker rendering,
+  so their block class and blockstate were not generated.
+- The `block_add` procedure block crashed when the block input exposed only its
+  mapped value; MCItem mapping now falls back between unmapped and mapped
+  values.
 
 ## Known Limitations
 

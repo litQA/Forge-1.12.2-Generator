@@ -1,5 +1,6 @@
 <#-- @formatter:off -->
-<#if data.blockBase == "Fence">
+<#assign blockBase = data.blockBase!"">
+<#if blockBase == "Fence">
 {
     "multipart": [
         { "apply": { "model": "${modid}:block/${registryname}_post" } },
@@ -9,7 +10,7 @@
         { "when": { "east": "true" }, "apply": { "model": "${modid}:block/${registryname}", "y": 90, "uvlock": true } }
     ]
 }
-<#elseif data.blockBase == "Wall">
+<#elseif blockBase == "Wall">
 {
     "multipart": [
         { "when": { "up": "true" }, "apply": { "model": "${modid}:block/${registryname}_post" } },
@@ -22,7 +23,7 @@
 <#else>
 {
     "variants": {
-    <#if data.blockBase == "Stairs">
+    <#if blockBase == "Stairs">
         "facing=east,half=bottom,shape=straight": { "model": "${modid}:block/${registryname}" },
         "facing=west,half=bottom,shape=straight": { "model": "${modid}:block/${registryname}", "y": 180, "uvlock": true },
         "facing=south,half=bottom,shape=straight": { "model": "${modid}:block/${registryname}", "y": 90, "uvlock": true },
@@ -63,7 +64,7 @@
         "facing=west,half=bottom,shape=outer_left": { "model": "${modid}:block/${registryname}_outer", "y": 90, "uvlock": true },
         "facing=south,half=bottom,shape=outer_left": { "model": "${modid}:block/${registryname}_outer" },
         "facing=north,half=bottom,shape=outer_left": { "model": "${modid}:block/${registryname}_outer", "y": 180, "uvlock": true }
-    <#elseif data.blockBase == "Slab">
+    <#elseif blockBase == "Slab">
         "half=bottom": { "model": "${modid}:block/${registryname}_slab" },
         "half=top": { "model": "${modid}:block/${registryname}_slab_top" },
         "half=double": { "model": "${modid}:block/${registryname}_double" }
