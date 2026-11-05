@@ -78,7 +78,7 @@
 
 ## Fixes
 
-Fixed 4 bug(s).
+Fixed 5 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -88,6 +88,8 @@ Fixed 4 bug(s).
 - Furnace smelting recipes were never registered because the recipes
   initialization template was not part of the base templates and was not called
   from the mod init event.
+- Generated recipe and brewing classes did not import `net.minecraft.init.Blocks`,
+  so recipes using vanilla blocks failed to compile.
 
 ## Known Limitations
 
