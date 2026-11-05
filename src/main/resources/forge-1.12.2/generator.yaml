@@ -84,6 +84,9 @@ base_templates:
   - template: elementinits/items.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameItems.java"
     condition: "${types.items?has_content}"
+  - template: elementinits/recipes.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameRecipes.java"
+    condition: "${types.recipes?has_content}"
 
 language_file:
   format: keyvalue

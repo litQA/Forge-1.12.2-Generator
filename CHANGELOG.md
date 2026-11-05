@@ -22,8 +22,9 @@
   melee damage and attack speed, container item / recipe remainder, food
   properties, block harvesting and localized name.
 - Recipe mod element: shaped and shapeless crafting JSON, furnace smelting
-  registration, and furnace-based degradation for Blasting, Smoking and
-  Campfire cooking.
+  registered through `GameRegistry.addSmelting`, and brewing recipes generated
+  as per-element `IBrewingRecipe` implementations with potion-type aware
+  inputs and outputs.
 - Complete 1.12.2 MCP name mappings for the implemented elements, including a
   two-column blocks/items mapping used by both Java code and JSON generation.
 - Static generator validator that parses all YAML documents, parses all
@@ -66,16 +67,27 @@
   grid.
 - The exported plugin archive is always named `generator-forge-1.12.2.zip`
   instead of embedding the plugin version in the file name.
+- Furnace smelting and brewing recipes are now generated in the `<Mod>Recipes`
+  initialization class, which is registered in `generator.yaml` and called from
+  the generated mod `init` event.
+- Blasting, Smoking, Campfire cooking, Stone cutting and Smithing are rejected
+  at generation time with an explicit message because these recipe types do not
+  exist in Forge 1.12.2.
+- `potions.yaml` now maps potion types to the 1.12.2 `PotionTypes` constants used
+  by brewing recipes.
 
 ## Fixes
 
-Fixed 3 bug(s).
+Fixed 4 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
   input selectors were hidden by the previous field inclusion configuration.
 - The plugin export file name changed with every version instead of staying
   `generator-forge-1.12.2.zip`.
+- Furnace smelting recipes were never registered because the recipes
+  initialization template was not part of the base templates and was not called
+  from the mod init event.
 
 ## Known Limitations
 
@@ -91,6 +103,5 @@ limitations are:
   item `getSubItems` override.
 - Workspace variables are not supported yet and stop code generation with an
   explicit error message.
-- Blasting, Smoking and Campfire cooking recipes degrade to regular furnace
-  smelting; Stone cutting, Smithing and Brewing recipes fail generation
-  explicitly.
+- Blasting, Smoking, Campfire cooking, Stone cutting and Smithing recipes fail
+  generation explicitly because those recipe types do not exist in Forge 1.12.2.

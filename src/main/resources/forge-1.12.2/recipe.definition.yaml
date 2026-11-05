@@ -1,30 +1,42 @@
 templates:
+  # Crafting recipes are data driven in 1.12.2.
   - template: json/crafting.json.ftl
     writer: json
     condition: "recipeType %= Crafting"
     name: "@MODASSETSROOT/recipes/@registryname.json"
 
-  # Unsupported 1.16+ recipe types fail generation explicitly. Blasting, Smoking
-  # and Campfire cooking are handled by elementinits/recipes.java.ftl as regular
-  # furnace smelting recipes (documented degradation).
+  # Furnace and brewing recipes are registered through Java code in
+  # elementinits/recipes.java.ftl. The brewing implementation needs the generic
+  # IBrewingRecipe API so potion-type specific inputs and outputs are supported.
+  - template: recipe/brewingrecipe.java.ftl
+    condition: "recipeType %= Brewing"
+    name: "@SRCROOT/@BASEPACKAGEPATH/recipe/@NAMEBrewingRecipe.java"
+
+  # The following recipe types do not exist in Forge 1.12.2. They are listed in
+  # the editor for MCreator compatibility, but generation is stopped with an
+  # explicit message instead of emitting invalid or unrelated recipes.
+  - template: modbase/unsupported.ftl
+    condition: "recipeType %= Blasting"
+    variables: "feature=recipe type 'Blasting' (no blast furnace in Forge 1.12.2)"
+    name: "@SRCROOT/@BASEPACKAGEPATH/recipe/@NAMERecipeBlastingUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "recipeType %= Smoking"
+    variables: "feature=recipe type 'Smoking' (no smoker in Forge 1.12.2)"
+    name: "@SRCROOT/@BASEPACKAGEPATH/recipe/@NAMERecipeSmokingUnsupported.java"
+  - template: modbase/unsupported.ftl
+    condition: "recipeType %= Campfire cooking"
+    variables: "feature=recipe type 'Campfire cooking' (no campfire cooking in Forge 1.12.2)"
+    name: "@SRCROOT/@BASEPACKAGEPATH/recipe/@NAMERecipeCampfireUnsupported.java"
   - template: modbase/unsupported.ftl
     condition: "recipeType %= Stone cutting"
-    variables: "feature=recipe type 'Stone cutting'"
+    variables: "feature=recipe type 'Stone cutting' (no stonecutter in Forge 1.12.2)"
     name: "@SRCROOT/@BASEPACKAGEPATH/recipe/@NAMERecipeStonecuttingUnsupported.java"
   - template: modbase/unsupported.ftl
     condition: "recipeType %= Smithing"
-    variables: "feature=recipe type 'Smithing'"
+    variables: "feature=recipe type 'Smithing' (no smithing table in Forge 1.12.2)"
     name: "@SRCROOT/@BASEPACKAGEPATH/recipe/@NAMERecipeSmithingUnsupported.java"
-  - template: modbase/unsupported.ftl
-    condition: "recipeType %= Brewing"
-    variables: "feature=recipe type 'Brewing'"
-    name: "@SRCROOT/@BASEPACKAGEPATH/recipe/@NAMERecipeBrewingUnsupported.java"
 
-# Fields that have no implementation in this batch. Exclusions are used instead
-# of inclusions because inclusion cleanup hides every component it could not map
-# by reflection, which includes the recipe slot grid and result/input selectors.
-field_exclusions: [unlockingItems, cookingBookCategory, craftingBookCategory,
-                   stoneCuttingInputStack, stoneCuttingReturnStack,
-                   smithingInputStack, smithingInputAdditionStack, smithingInputTemplateStack,
-                   smithingReturnStack, brewingInputStack, brewingIngredientStack,
-                   brewingReturnStack]
+# Metadata fields that do not exist in 1.12.2 are hidden. Type-specific panels
+# stay visible so that the element remains editable; unsupported recipe types
+# are rejected by the explicit stop templates above.
+field_exclusions: [unlockingItems, cookingBookCategory, craftingBookCategory]

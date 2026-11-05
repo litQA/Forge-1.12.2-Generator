@@ -40,6 +40,10 @@ public class ${JavaModName} {
 	}
 
 	@Mod.EventHandler public void init(FMLInitializationEvent event) {
+		<#if (types.recipes![])?has_content>
+		${package}.init.${JavaModName}Recipes.init();
+		</#if>
+
 		proxy.init(event);
 	}
 

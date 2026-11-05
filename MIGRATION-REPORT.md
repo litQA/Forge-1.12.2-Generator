@@ -101,17 +101,21 @@ unusable item):
 
 ### Recipe
 
-Direct implementation for shaped and shapeless crafting JSON and for furnace
-smelting registration (generated through `GameRegistry.addSmelting`).
+Direct implementation for:
 
-Degraded implementation:
+- shaped and shapeless crafting recipes as 1.12.2 JSON files;
+- furnace smelting recipes, registered through
+  `GameRegistry.addSmelting(ItemStack, ItemStack, float)` in the generated
+  `<Mod>Recipes` class (1.12.2 furnace recipes are code-registered, not data
+  driven);
+- brewing recipes, generated as a per-element `IBrewingRecipe` implementation
+  and registered through `BrewingRecipeRegistry.addRecipe(...)`. Potion inputs
+  and outputs use `POTION:<PotionType>` values and are matched with
+  `PotionUtils.getPotionFromItem`.
 
-- Blasting, Smoking, and Campfire cooking recipes are registered as regular
-  furnace smelting recipes. Their type-specific cooking times cannot be
-  represented in 1.12.2.
-
-Explicitly unavailable: Stone cutting, Smithing and Brewing recipes stop code
-generation with a message that names the unsupported recipe type.
+Explicitly unavailable (generation stops with a message naming the recipe
+type): Blasting, Smoking, Campfire cooking, Stone cutting and Smithing. These
+recipe types do not exist in Forge 1.12.2.
 
 ### Other mod elements
 
@@ -171,9 +175,9 @@ them as unavailable.
    `getSubItems` override. Forge 1.12.2 still has a single default tab
    (`setCreativeTab`), so tab sorting and the "search" tab use the first
    selected tab.
-4. **Recipe degradation.** Blasting, Smoking and Campfire cooking become
-   furnace smelting recipes. Stone cutting, Smithing and Brewing fail code
-   generation explicitly.
+4. **Unsupported recipe types.** Blasting, Smoking, Campfire cooking, Stone
+   cutting and Smithing do not exist in Forge 1.12.2 and fail code generation
+   explicitly. Crafting, furnace smelting and brewing are implemented.
 5. **Workspace variables.** Global workspace variables have no WorldSavedData
    implementation in this batch. If variables exist, `variableslist.java.ftl`
    stops generation with an explicit error instead of emitting broken code.
@@ -202,12 +206,13 @@ them as unavailable.
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (28 YAML documents, 18 templates, 15 template references) |
+| Static validator | `VALIDATION PASSED` (28 YAML documents, 19 templates, 17 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |
 | RetroFuturaGradle 2.0.6 / Gradle 9.8.0 / Java 8 toolchain | `BUILD SUCCESSFUL`; `build/libs/modid-1.0.jar` (reobfuscated) and `modid-1.0-dev.jar` produced. Only deprecation notes for `setUnlocalizedName` (expected on 1.12.2). |
 | Multi-tab item (`CUSTOM:ModTab` + `FOOD`) | `BUILD SUCCESSFUL`; generated item contains the `getSubItems` override and both tab entries. In-game membership is part of the user's real-device test. |
+| Crafting + smelting + brewing recipe workspace | `BUILD SUCCESSFUL`; the generated `<Mod>Recipes` class registers a furnace recipe through `GameRegistry.addSmelting` and a brewing recipe through `BrewingRecipeRegistry`, with a potion-type aware `IBrewingRecipe` implementation. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 
 The generated-mod build used the exact workspace base, templates and generated

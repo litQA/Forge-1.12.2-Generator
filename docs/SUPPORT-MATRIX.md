@@ -20,7 +20,7 @@ feature list. This matrix records how the generator handles each feature group.
 | --- | --- | --- |
 | Creative tab | Direct | Name, icon, search bar. `hideTitle` has no 1.12.2 API and is excluded. |
 | Item | Degraded | Supported: normal/tool model, texture, name, rarity, creative tabs, stack size, durability, enchantability, use duration, use animation, destroy speed, destroy any block, melee damage, attack speed, recipe remainder, container item behaviour, food, creative tabs. Unavailable: procedures/triggers, inventories, GUI binding, ranged behaviour, JSON/OBJ/Java models, glow conditions, music disc, banner patterns, attribute modifier entries, repair items, fire immunity, piglin currency. Multiple creative tabs are supported through a `getSubItems` override; the first selected tab remains the item default tab. |
-| Recipe | Degraded | Crafting (shaped/shapeless) and furnace smelting are direct. Blasting, Smoking and Campfire cooking degrade to furnace smelting. Stone cutting, Smithing and Brewing fail generation explicitly. |
+| Recipe | Direct | Crafting (shaped/shapeless) as 1.12.2 JSON; furnace smelting and brewing registered through generated Java code (`GameRegistry.addSmelting`, `BrewingRecipeRegistry`). Blasting, Smoking, Campfire cooking, Stone cutting and Smithing do not exist in Forge 1.12.2 and fail generation explicitly. |
 | Block | Unavailable | Planned for batch 2, including block states, multipart states, redstone conduction, custom light, block bases and loot tables. |
 | Plant | Unavailable | Planned for batch 3. |
 | Fluid | Unavailable | Planned for batch 3. |
@@ -104,7 +104,7 @@ is marked Unavailable until its owning mod element is implemented.
 
 | Batch | Scope |
 | --- | --- |
-| 1 (this batch) | Foundation, creative tab, item, recipe, mappings, build chain, validator, documentation |
+| 1 (this batch) | Foundation, creative tab, item, crafting/smelting/brewing recipes, mappings, build chain, validator, documentation |
 | 2 | Blocks, block states/multipart states, block items, loot tables, ore dictionary tags |
 | 3 | Tools, armor, item extensions, attributes, enchantments, potion items/effects |
 | 4 | Plants, fluids, biomes, dimensions, portals, worldgen features |

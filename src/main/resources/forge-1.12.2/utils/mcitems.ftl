@@ -99,3 +99,15 @@
 <#function hasMetadata mappedItem>
     <#return mcItemMapped(mappedItem, 0)?contains("#")>
 </#function>
+
+<#function mappedMCItemToIngredient mappedItem>
+    <#if mcItemIsTag(mappedItem)>
+        <#assign ore = mcItemRaw(mappedItem)?replace("TAG:", "")?replace("mod:", modid + ":")?replace(":", "")?replace("/", "")?lower_case>
+        <#return "new net.minecraftforge.oredict.OreIngredient(\"" + ore + "\")">
+    <#elseif mcItemMapped(mappedItem, 1)?starts_with("#")>
+        <#return "new net.minecraftforge.oredict.OreIngredient(\"" + mcItemMapped(mappedItem, 1)?replace("#", "") + "\")">
+    <#else>
+        <#return "net.minecraft.item.crafting.Ingredient.fromStacks(" + mappedMCItemToItemStackCode(mappedItem, 1) + ")">
+    </#if>
+</#function>
+

@@ -7,7 +7,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.2-beta` |
+| Plugin version | `2026.3-1.0.3-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -38,6 +38,16 @@ synchronization action. RetroFuturaGradle keeps the 1.12.2 build semantics
 No MCreator "Java home override" to a JDK 8 is required anymore. Leave the
 Gradle JVM at MCreator's bundled JDK (Java 25) or any JDK supported by
 Gradle 9.8.
+
+## Recipe support
+
+- Crafting (shaped and shapeless) is generated as 1.12.2 JSON.
+- Furnace smelting is registered in Java through `GameRegistry.addSmelting`.
+- Brewing is generated as a per-element `IBrewingRecipe` and registered through
+  `BrewingRecipeRegistry.addRecipe`; potion inputs and outputs use
+  `POTION:<PotionType>` values.
+- Blasting, Smoking, Campfire cooking, Stone cutting and Smithing do not exist
+  in Forge 1.12.2 and stop generation with an explicit message.
 
 ## Requirements
 
