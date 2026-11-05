@@ -85,7 +85,7 @@ public class ${name}Block extends BlockBush {
 	<#if data.forceTicking>
 	@Override public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		super.onBlockAdded(world, pos, state);
-		world.scheduleUpdate(pos, this, 1);
+		world.scheduleUpdate(pos, this, <#if data.plantType == "growapable">20<#else>1</#if>);
 	}
 
 	@Override public void updateTick(World world, BlockPos pos, IBlockState state, java.util.Random random) {
@@ -95,11 +95,11 @@ public class ${name}Block extends BlockBush {
 		while (world.getBlockState(pos.down(height)).getBlock() == this) {
 			height++;
 		}
-		if (height < ${data.growapableMaxHeight} && world.isAirBlock(pos.up())) {
+		if (height < ${data.growapableMaxHeight} && world.isAirBlock(pos.up()) && world.rand.nextInt(8) == 0) {
 			world.setBlockState(pos.up(), getDefaultState(), 3);
 		}
 		</#if>
-		world.scheduleUpdate(pos, this, 1);
+		world.scheduleUpdate(pos, this, <#if data.plantType == "growapable">20 + random.nextInt(20)<#else>1</#if>);
 	}
 	</#if>
 

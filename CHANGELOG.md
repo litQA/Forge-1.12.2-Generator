@@ -1,5 +1,16 @@
 # Changelog
 
+# 3.1.6-beta
+
+## Fixes
+
+- Growable plants no longer grow to maximum height immediately; growth is
+  random and scheduled with a delay.
+- Fluid blocks generate a normal blockstate and cube model instead of relying
+  on the unavailable custom fluid state mapper.
+- Bucket models fall back to the fluid still texture.
+
+
 # 3.1.5-beta
 
 ## New Content
