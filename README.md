@@ -1,3 +1,5 @@
+<img width="1000" alt="forge generator banner 1 12 2" src="https://github.com/user-attachments/assets/8ea8bc7f-0b7d-4069-9e63-9cf6a08d9e41" />
+
 # Forge 1.12.2 Generator for MCreator 2026.3
 
 MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
