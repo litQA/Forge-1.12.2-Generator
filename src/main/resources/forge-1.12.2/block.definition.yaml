@@ -136,7 +136,7 @@ templates:
 
 list_templates:
   - name: "Block state models"
-    listData: data.getStateCombinations()
+    listData: data.getDefinedStates()
     forEach:
       - template: json/block_state_model.json.ftl
         writer: json

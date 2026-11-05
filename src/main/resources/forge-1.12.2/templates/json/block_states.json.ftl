@@ -69,29 +69,34 @@
         "half=top": { "model": "${modid}:${registryname}_slab_top" },
         "half=double": { "model": "${modid}:${registryname}_double" }
     <#else>
-        <#assign combos = (data.getStateCombinations?? && data.getStateCombinations()?has_content)?then(data.getStateCombinations(), [])>
         <#assign customProps = data.customProperties![]>
-        <#if combos?has_content>
-        <#list combos as model>
-        "<#list model.stateMap.keySet() as property>${property.getName()?replace("CUSTOM:", "")}=${model.stateMap.get(property)}<#sep>,</#list>": { "model": "${modid}:${registryname}_${model?index}" }<#sep>,
-        </#list>
-        <#elseif customProps?has_content && customProps?size == 1>
+        <#assign definedStates = data.getDefinedStates()![]>
+        <#if customProps?has_content && customProps?size == 1>
         <#assign property = customProps[0]>
         <#assign customName = property.property().getName()?replace("CUSTOM:", "")>
         <#if property.value()?is_boolean>
-        "${customName}=false": { "model": "${modid}:${registryname}" },
-        "${customName}=true": { "model": "${modid}:${registryname}" }
+        <#list [false, true] as value>
+        <#assign model = registryname>
+        <#list definedStates as state><#list state.stateMap.keySet() as key><#if key.getName() == property.property().getName() && state.stateMap.get(key) == value><#assign model = registryname + "_" + state?index></#if></#list></#list>
+        "${customName}=${value?c}": { "model": "${modid}:${model}" }<#sep>,
+        </#list>
         <#elseif property.value()?is_number>
         <#list property.property().getMin()..property.property().getMax() as value>
-        "${customName}=${value}": { "model": "${modid}:${registryname}" }<#sep>,
+        <#assign model = registryname>
+        <#list definedStates as state><#list state.stateMap.keySet() as key><#if key.getName() == property.property().getName() && state.stateMap.get(key) == value><#assign model = registryname + "_" + state?index></#if></#list></#list>
+        "${customName}=${value}": { "model": "${modid}:${model}" }<#sep>,
         </#list>
         <#elseif property.value()?is_string>
         <#list property.property().getArrayData() as value>
-        "${customName}=${value}": { "model": "${modid}:${registryname}" }<#sep>,
+        <#assign model = registryname>
+        <#list definedStates as state><#list state.stateMap.keySet() as key><#if key.getName() == property.property().getName() && state.stateMap.get(key) == value><#assign model = registryname + "_" + state?index></#if></#list></#list>
+        "${customName}=${value}": { "model": "${modid}:${model}" }<#sep>,
         </#list>
-        <#else>
-        "normal": { "model": "${modid}:${registryname}" }
         </#if>
+        <#elseif combos?has_content>
+        <#list combos as model>
+        "<#list model.stateMap.keySet() as property>${property.getName()?replace("CUSTOM:", "")}=${model.stateMap.get(property)}<#sep>,</#list>": { "model": "${modid}:${registryname}_${model?index}" }<#sep>,
+        </#list>
         <#else>
         "normal": { "model": "${modid}:${registryname}" }
         </#if>
