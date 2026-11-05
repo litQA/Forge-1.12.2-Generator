@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-3.0.6-beta` |
+| Plugin version | `2026.3-3.0.7-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -60,11 +60,17 @@ All bases support hardness, resistance, step sound, creative tabs, stack size,
 rarity, optional block items with multi-tab support, self/custom drops and XP
 ranges. Transparent cubes can select Cutout or Translucent render layers.
 
+Basic cubes support custom boolean, integer and enum properties. The block
+editor's state entries can assign a texture set per property combination; the
+generator emits one block model per state and maps each combination to it, so
+changing a property can also change the block appearance (the 2026.1 block-state
+texture feature).
+
 Block bases that are not implemented yet (leaves, trapdoors, panes, doors,
 fence gates, end rods, pressure plates, buttons, flower pots and signs) stop
 generation with an explicit message instead of generating a wrong model.
-Custom block states, multipart state editing, tile entities, inventories,
-energy, fluids, world generation and tool tiers remain unavailable.
+Multipart state editing, tile entities, inventories, energy, fluids, world
+generation and tool tiers remain unavailable.
 
 ## Procedures (preview)
 

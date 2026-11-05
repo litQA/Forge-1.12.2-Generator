@@ -69,11 +69,29 @@
         "half=top": { "model": "${modid}:${registryname}_slab_top" },
         "half=double": { "model": "${modid}:${registryname}_double" }
     <#else>
+        <#assign combos = (data.getStateCombinations?? && data.getStateCombinations()?has_content)?then(data.getStateCombinations(), [])>
         <#assign customProps = data.customProperties![]>
-        <#if customProps?has_content && customProps[0].value()?is_boolean>
-            <#assign customName = customProps[0].property().getName()?replace("CUSTOM:", "")>
+        <#if combos?has_content>
+        <#list combos as model>
+        "<#list model.stateMap.keySet() as property>${property.getName()?replace("CUSTOM:", "")}=${model.stateMap.get(property)}<#sep>,</#list>": { "model": "${modid}:${registryname}_${model?index}" }<#sep>,
+        </#list>
+        <#elseif customProps?has_content && customProps?size == 1>
+        <#assign property = customProps[0]>
+        <#assign customName = property.property().getName()?replace("CUSTOM:", "")>
+        <#if property.value()?is_boolean>
         "${customName}=false": { "model": "${modid}:${registryname}" },
         "${customName}=true": { "model": "${modid}:${registryname}" }
+        <#elseif property.value()?is_number>
+        <#list property.property().getMin()..property.property().getMax() as value>
+        "${customName}=${value}": { "model": "${modid}:${registryname}" }<#sep>,
+        </#list>
+        <#elseif property.value()?is_string>
+        <#list property.property().getArrayData() as value>
+        "${customName}=${value}": { "model": "${modid}:${registryname}" }<#sep>,
+        </#list>
+        <#else>
+        "normal": { "model": "${modid}:${registryname}" }
+        </#if>
         <#else>
         "normal": { "model": "${modid}:${registryname}" }
         </#if>

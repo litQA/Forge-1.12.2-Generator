@@ -135,13 +135,15 @@ Direct implementation for these bases:
 All bases support hardness, resistance, 1.12.2 `SoundType`, creative tabs, stack
 size, rarity, optional `ItemBlock` registration with multi-tab support, self or
 custom drops and XP ranges. Transparent blocks can set a cutout or translucent
-`BlockRenderLayer` and disable full-cube rendering.
+`BlockRenderLayer` and disable full-cube rendering. Basic cubes support custom
+boolean, integer and enum properties; state entries with their own texture set
+generate per-state models, so property changes can also change the appearance.
 
 Leaves, trapdoors, panes, doors, fence gates, end rods, pressure plates,
 buttons, flower pots and signs stop generation with an explicit message.
-Custom block states, multipart state editing, tile entities/inventories, energy,
-fluids, world generation, redstone behavior, tool tiers, loot-table drops and
-vibration remain unavailable.
+Multipart state editing, tile entities/inventories, energy, fluids, world
+generation, redstone behavior, tool tiers, loot-table drops and vibration remain
+unavailable.
 
 ### Procedures (batch 3 preview)
 

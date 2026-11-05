@@ -4,9 +4,17 @@
 <#assign blockBase = data.blockBase!"">
 <#assign customProps = data.customProperties![]>
 <#assign customBool = []>
-<#if customProps?has_content && customProps[0].value()?is_boolean>
-    <#assign customBool = [customProps[0]]>
-</#if>
+<#assign customInt = []>
+<#assign customEnum = []>
+<#list customProps as property>
+    <#if property.value()?is_boolean>
+        <#assign customBool += [property]>
+    <#elseif property.value()?is_number>
+        <#assign customInt += [property]>
+    <#elseif property.value()?is_string>
+        <#assign customEnum += [property]>
+    </#if>
+</#list>
 package ${package}.block;
 
 import net.minecraft.block.Block;
@@ -159,26 +167,42 @@ public class ${name}Block extends Block {
 		setHardness(${data.hardness?c}f);
 		setResistance(${data.resistance?c}f);
 		setSoundType(SoundType.${generator.map(data.soundOnStep.getUnmappedValue(), "stepsounds")});
-		<#if customBool?has_content>
-		<#assign propName = customBool[0].property().getName()?replace("CUSTOM:", "")>
-		setDefaultState(this.blockState.getBaseState().withProperty(${propName?upper_case}, ${customBool[0].value()?c}));
+		<#if customBool?has_content || customInt?has_content || customEnum?has_content>
+		setDefaultState(this.blockState.getBaseState()
+			<#list customBool as property>
+				.withProperty(${property.property().getName()?replace("CUSTOM:", "")?upper_case}, ${property.value()?c})</#list>
+			<#list customInt as property>
+				.withProperty(${property.property().getName()?replace("CUSTOM:", "")?upper_case}, ${property.value()?c})</#list>
+			<#list customEnum as property>
+				.withProperty(${property.property().getName()?replace("CUSTOM:", "")?upper_case}, ${property.property().getName()?replace("CUSTOM:", "")?upper_case}Enum.${property.value()?upper_case?replace(" ", "_")?replace("-", "_")})</#list>
+		);
 		</#if>
 	}
 
-	<#if customBool?has_content>
-	<#assign propName = customBool[0].property().getName()?replace("CUSTOM:", "")>
+	<#list customBool as property>
+	<#assign propName = property.property().getName()?replace("CUSTOM:", "")>
 	public static final PropertyBool ${propName?upper_case} = PropertyBool.create("${propName}");
+	</#list>
+	<#list customInt as property>
+	<#assign propName = property.property().getName()?replace("CUSTOM:", "")>
+	public static final PropertyInteger ${propName?upper_case} = PropertyInteger.create("${propName}", ${property.property().getMin()?c}, ${property.property().getMax()?c});
+	</#list>
+	<#list customEnum as property>
+	<#assign propName = property.property().getName()?replace("CUSTOM:", "")>
+	public enum ${propName?upper_case}Enum implements IStringSerializable {
+		<#list property.property().getArrayData() as value>${value?upper_case?replace(" ", "_")?replace("-", "_")}<#sep>, </#list>;
 
+		@Override public String getName() {
+			return name().toLowerCase(java.util.Locale.ROOT);
+		}
+	}
+
+	public static final PropertyEnum<${propName?upper_case}Enum> ${propName?upper_case} = PropertyEnum.create("${propName}", ${propName?upper_case}Enum.class);
+	</#list>
+
+	<#if customBool?has_content || customInt?has_content || customEnum?has_content>
 	@Override protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, ${propName?upper_case});
-	}
-
-	@Override public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(${propName?upper_case}, (meta & 1) != 0);
-	}
-
-	@Override public int getMetaFromState(IBlockState state) {
-		return state.getValue(${propName?upper_case}) ? 1 : 0;
+		return new BlockStateContainer(this<#list customBool as property>, ${property.property().getName()?replace("CUSTOM:", "")?upper_case}</#list><#list customInt as property>, ${property.property().getName()?replace("CUSTOM:", "")?upper_case}</#list><#list customEnum as property>, ${property.property().getName()?replace("CUSTOM:", "")?upper_case}</#list>);
 	}
 	</#if>
 </#if>

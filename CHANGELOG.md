@@ -98,7 +98,7 @@
 
 ## Fixes
 
-Fixed 13 bug(s).
+Fixed 14 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -132,6 +132,8 @@ Fixed 13 bug(s).
   (the block state container).
 - Custom boolean block properties from the block editor were not generated in
   the block class or blockstate, so procedures toggling them had no effect.
+- Integer block properties were missing from generated block classes, so the
+  integer property procedure always read `-1`.
 
 ## Known Limitations
 

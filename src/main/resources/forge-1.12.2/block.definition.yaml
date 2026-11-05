@@ -121,6 +121,14 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
 
 
+list_templates:
+  - name: "Block state models"
+    listData: data.getStateCombinations()
+    forEach:
+      - template: json/block_state_model.json.ftl
+        writer: json
+        name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+
 base_types:
   - block
 
@@ -134,11 +142,11 @@ localizationkeys:
 # the remaining block bases are not implemented. Exclusions are used instead of
 # inclusions to keep grouped editor controls visible.
 field_exclusions: [renderType, customModelName, rotationMode, enablePitch, emissiveRendering,
-                   displayFluidOverlay, multipartModel, states, animations, itemTexture,
+                   displayFluidOverlay, multipartModel, animations, itemTexture,
                    particleTexture, blockSetType, pottedPlant, leavesParticleType,
                    leavesParticleChance, signEntityTexture, signGUITexture, tintType, isItemTinted,
                    connectedSides, disableOffset, boundingBoxes,
-                   customProperties, specialInformation, hasGravity, isWaterloggable, immuneToFire,
+                   specialInformation, hasGravity, isWaterloggable, immuneToFire,
                    destroyTool, useLootTableForDrops, requiresCorrectTool, enchantPowerBonus,
                    plantsGrowOn, canRedstoneConnect, hasCustomOpacity, lightOpacity, isReplaceable, canProvidePower, forceRedstoneConductor,
                    emittedRedstonePower, colorOnMap, noteBlockInstrument, creativePickItem, offsetType,
