@@ -6,6 +6,8 @@
 <#assign customBool = []>
 <#assign customInt = []>
 <#assign customEnum = []>
+<#assign harvestLevel = 0>
+<#if (data.vanillaToolTier!"") == "STONE"><#assign harvestLevel = 1><#elseif (data.vanillaToolTier!"") == "IRON"><#assign harvestLevel = 2><#elseif (data.vanillaToolTier!"") == "DIAMOND"><#assign harvestLevel = 3></#if>
 <#list customProps as property>
     <#if property.value()?is_boolean>
         <#assign customBool += [property]>
@@ -43,6 +45,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -240,6 +243,60 @@ public class ${name}Block extends Block {
 		return false;
 	}
 	</#if>
+	</#if>
+
+	<#if data.destroyTool?has_content && data.destroyTool != "Not specified">
+	{
+		setHarvestLevel("${data.destroyTool}", ${harvestLevel});
+	}
+	<#if data.requiresCorrectTool>
+	@Override public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
+		if (!super.canHarvestBlock(world, pos, player)) {
+			return false;
+		}
+		ItemStack held = player.getHeldItemMainhand();
+		return held.getItem().getHarvestLevel(held, "${data.destroyTool}", player, world.getBlockState(pos)) >= ${harvestLevel};
+	}
+	</#if>
+	</#if>
+
+	<#if hasProcedure(data.placingCondition)>
+	@Override public boolean canPlaceBlockAt(World world, BlockPos pos) {
+		double x = pos.getX(), y = pos.getY(), z = pos.getZ();
+		IBlockState blockstate = getDefaultState();
+		Entity entity = null;
+		EnumFacing direction = null;
+		ItemStack itemstack = ItemStack.EMPTY;
+		return <@procedureOBJToConditionCode data.placingCondition/>;
+	}
+
+	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
+		double x = pos.getX(), y = pos.getY(), z = pos.getZ();
+		IBlockState blockstate = state;
+		Entity entity = null;
+		EnumFacing direction = null;
+		ItemStack itemstack = ItemStack.EMPTY;
+		return <@procedureOBJToConditionCode data.placingCondition/>;
+	}
+
+	<#if !hasProcedure(data.onNeighbourBlockChanges)>
+	@Override public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		super.neighborChanged(state, world, pos, block, fromPos);
+		if (!canBlockStay(world, pos, state)) {
+			world.destroyBlock(pos, true);
+		}
+	}
+	</#if>
+	</#if>
+
+	<#if data.hasInventory>
+	@Override public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Override public TileEntity createTileEntity(World world, IBlockState state) {
+		return new ${package}.block.entity.${name}BlockEntity();
+	}
 	</#if>
 
 	<#if blockBase != "Slab" && data.customDrop?? && !data.customDrop.isEmpty()>

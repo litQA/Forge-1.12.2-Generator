@@ -34,12 +34,7 @@ public class ${JavaModName}Items {
 
 	<#list types.blocks as block>
 	<#if block.getModElement().getTypeString() == "block" && block.hasBlockItem>
-	public static final Item ${block.getModElement().getRegistryNameUpper()}_ITEM = registerBlockItem("${block.getModElement().getRegistryName()}",
-			${package}.init.${JavaModName}Blocks.${block.getModElement().getRegistryNameUpper()}, ${block.maxStackSize}, EnumRarity.${block.rarity}, new CreativeTabs[] {
-<#list block.creativeTabs as creativeTab>
-				${creativeTabValue([creativeTab])}<#if creativeTab?has_next>,</#if>
-</#list>
-			});
+	public static final Item ${block.getModElement().getRegistryNameUpper()}_ITEM = register("${block.getModElement().getRegistryName()}", new ${package}.item.${block.getModElement().getName()}ItemBlock(${package}.init.${JavaModName}Blocks.${block.getModElement().getRegistryNameUpper()}));
 	</#if>
 	</#list>
 

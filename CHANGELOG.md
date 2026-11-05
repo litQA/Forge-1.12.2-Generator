@@ -98,7 +98,7 @@
 
 ## Fixes
 
-Fixed 21 bug(s).
+Fixed 22 bug(s).
 
 - Creative tab selections after the first entry were ignored for items.
 - Recipe elements could not be created because the recipe slot grid, result and
@@ -150,6 +150,12 @@ Fixed 21 bug(s).
   crop/cross models were rendered with opaque cube lighting.
 - Added the pass-through (`isNotColidable`) option with null collision and
   `isPassable` support.
+- Added configurable harvest tool/level with `setHarvestLevel` and a
+  requires-correct-tool check.
+- Added placement-condition procedures in `canPlaceBlockAt`/`canBlockStay`.
+- Added optional TileEntity generation and registration for blocks with
+  inventory opt-in.
+- Added independent block item textures and fixed/procedure item tooltips.
 - Integer block properties were missing from generated block classes, so the
   integer property procedure always read `-1`.
 

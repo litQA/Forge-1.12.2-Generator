@@ -29,6 +29,12 @@ templates:
     writer: json
     condition: hasBlockItem
     name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: block/blockitem.java.ftl
+    condition: hasBlockItem
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItemBlock.java"
+  - template: block/tileentity.java.ftl
+    condition: hasInventory
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/entity/@NAMEBlockEntity.java"
 
   # Stairs
   - template: json/stairs.json.ftl
@@ -155,21 +161,21 @@ localizationkeys:
 # the remaining block bases are not implemented. Exclusions are used instead of
 # inclusions to keep grouped editor controls visible.
 field_exclusions: [rotationMode, enablePitch, emissiveRendering,
-                   displayFluidOverlay, multipartModel, animations, itemTexture,
+                   displayFluidOverlay, multipartModel, animations, 
                    particleTexture, blockSetType, pottedPlant, leavesParticleType,
                    leavesParticleChance, signEntityTexture, signGUITexture, tintType, isItemTinted,
                    connectedSides, disableOffset, boundingBoxes,
-                   specialInformation, hasGravity, isWaterloggable, immuneToFire,
-                   destroyTool, useLootTableForDrops, requiresCorrectTool, enchantPowerBonus,
+                   hasGravity, isWaterloggable, immuneToFire,
+                   useLootTableForDrops, enchantPowerBonus,
                    plantsGrowOn, canRedstoneConnect, hasCustomOpacity, lightOpacity, isReplaceable, canProvidePower, forceRedstoneConductor,
                    emittedRedstonePower, colorOnMap, noteBlockInstrument, creativePickItem, offsetType,
                    aiPathNodeType, beaconColorModifier, strippingResult, ignitedByLava, flammability,
                    fireSpreadSpeed, isLadder, slipperiness, speedFactor, jumpFactor, reactionToPushing,
                    isCustomSoundType, breakSound, fallSound, hitSound, placeSound,
-                   stepSound, luminance, unbreakable, vanillaToolTier, additionalHarvestCondition,
-                   placingCondition, isBonemealable, isBonemealTargetCondition, bonemealSuccessCondition,
+                   stepSound, luminance, unbreakable, additionalHarvestCondition,
+                   isBonemealable, isBonemealTargetCondition, bonemealSuccessCondition,
                    onBonemealSuccess, sensitiveToVibration, vibrationalEvents, vibrationSensitivityRadius,
-                   canReceiveVibrationCondition, onReceivedVibration, hasInventory, guiBoundTo,
+                   canReceiveVibrationCondition, onReceivedVibration, guiBoundTo,
                    openGUIOnRightClick, inventorySize, inventoryStackSize, inventoryDropWhenDestroyed,
                    inventoryComparatorPower, inventoryOutSlotIDs, inventoryInSlotIDs,
                    inventoryAutomationTakeCondition, inventoryAutomationPlaceCondition,

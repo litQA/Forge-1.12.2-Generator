@@ -29,6 +29,14 @@ public class ${JavaModName}Blocks {
 		return block;
 	}
 
+	public static void initTileEntities() {
+		<#list types.blocks as block>
+		<#if block.hasInventory>
+		net.minecraftforge.fml.common.registry.GameRegistry.registerTileEntity(${package}.block.entity.${block.getModElement().getName()}BlockEntity.class, ${package}.${JavaModName}.MODID + ":${block.getModElement().getRegistryName()}");
+		</#if>
+		</#list>
+	}
+
 	@SubscribeEvent public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(REGISTRY.toArray(new Block[0]));
 	}

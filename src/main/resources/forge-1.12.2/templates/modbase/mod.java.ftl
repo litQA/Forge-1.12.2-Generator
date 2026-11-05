@@ -43,6 +43,9 @@ public class ${JavaModName} {
 	}
 
 	@Mod.EventHandler public void init(FMLInitializationEvent event) {
+		<#if (types.blocks![])?has_content>
+		${package}.init.${JavaModName}Blocks.initTileEntities();
+		</#if>
 		<#if w.getWorkspace().getTagElements()?size != 0>
 		${package}.init.${JavaModName}OreDictionary.init();
 		</#if>
