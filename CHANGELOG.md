@@ -1,5 +1,32 @@
 # Changelog
 
+# 2026.3-1.0.5.43-beta
+
+## Changes
+
+- Block editing now exposes "use custom loot table". When enabled, generated
+  `getDrops` resolves `assets/<modid>/loot_tables/blocks/<registryname>.json`
+  through the world loot table manager; the matching Loot table element must use
+  the `blocks/<registryname>` name.
+- Loot table JSON pools now include stable `pool_<index>` names required by
+  Forge 1.12.2's pool reader.
+
+## Fixes
+
+Fixed 2 bug(s).
+
+- Custom potion effects now explicitly remove their attribute modifiers by UUID
+  when the effect ends, so milk removes movement-speed and health bonuses.
+- Loot tables no longer fail with `Missing name entry for pool #0`.
+
+## Known Limitations
+
+- A block using a custom loot table must reference an existing Loot table
+  element named `blocks/<block registry name>`; otherwise it drops nothing.
+- Slab custom-loot-table drops generate one table roll regardless of double-slab
+  state.
+
+
 # 2026.3-1.0.4.42-beta
 
 ## Fixes

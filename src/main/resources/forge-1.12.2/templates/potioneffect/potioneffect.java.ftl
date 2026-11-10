@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
@@ -30,11 +31,17 @@ public class ${name}MobEffect extends Potion {
 		setBeneficial();
 		</#if>
 		<#list (data.modifiers![]) as modifier>
-		registerPotionAttributeModifier(${modifier.attribute},
-				java.util.UUID.nameUUIDFromBytes("${modid}:${registryname}:${modifier?index}".getBytes(java.nio.charset.StandardCharsets.UTF_8)).toString(),
+		registerPotionAttributeModifier(${modifier.attribute}, modifierId(${modifier?index}).toString(),
 				${modifier.amount?c}d, ${getAttributeOperation(modifier.operation)});
 		</#list>
 	}
+
+	<#if (data.modifiers![])?has_content>
+	private static java.util.UUID modifierId(int index) {
+		return java.util.UUID.nameUUIDFromBytes(("${modid}:${registryname}:" + index)
+				.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+	}
+	</#if>
 
 	<#if data.isInstant>
 	@Override public boolean isInstant() {
@@ -65,14 +72,22 @@ public class ${name}MobEffect extends Potion {
 	}
 	</#if>
 
-	<#if hasProcedure(data.onExpired)>
+	<#if (data.modifiers![])?has_content || hasProcedure(data.onExpired)>
 	@Override public void removeAttributesModifiersFromEntity(EntityLivingBase entity, AbstractAttributeMap attributeMap, int amplifier) {
 		super.removeAttributesModifiersFromEntity(entity, attributeMap, amplifier);
+		<#list (data.modifiers![]) as modifier>
+		IAttributeInstance modifierInstance${modifier?index} = attributeMap.getAttributeInstance(${modifier.attribute});
+		if (modifierInstance${modifier?index} != null) {
+			modifierInstance${modifier?index}.removeModifier(modifierId(${modifier?index}));
+		}
+		</#list>
+		<#if hasProcedure(data.onExpired)>
 		double x = entity.posX;
 		double y = entity.posY;
 		double z = entity.posZ;
 		World world = entity.world;
 		<@procedureOBJToCode data.onExpired/>
+		</#if>
 	}
 	</#if>
 

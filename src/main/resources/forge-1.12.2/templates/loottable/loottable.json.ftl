@@ -4,6 +4,7 @@
     "pools": [
         <#list data.pools as pool>
         {
+            "name": "pool_${pool?index}",
             <#if pool.minrolls == pool.maxrolls>
             "rolls": ${pool.minrolls},
             <#else>

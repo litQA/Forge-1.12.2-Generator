@@ -17,6 +17,17 @@
         <#assign customEnum += [property]>
     </#if>
 </#list>
+<#macro blockLootTableDrops>
+		if (world instanceof WorldServer) {
+			WorldServer worldServer = (WorldServer) world;
+			LootTable table = worldServer.getLootTableManager()
+					.getLootTableFromLocation(new ResourceLocation("${modid}:blocks/${registryname}"));
+			LootContext context = new LootContext.Builder(worldServer).withLuck(fortune).build();
+			drops.addAll(table.generateLootForPools(worldServer.rand, context));
+		} else {
+			super.getDrops(drops, world, pos, state, fortune);
+		}
+</#macro>
 package ${package}.block;
 
 import net.minecraft.block.Block;
@@ -42,11 +53,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -145,6 +160,9 @@ public class ${name}Block extends Block {
 	}
 
 	@Override public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		<#if data.useLootTableForDrops>
+		<@blockLootTableDrops/>
+		<#else>
 		int count = state.getValue(HALF) == SlabPart.DOUBLE ? 2 : 1;
 		<#if data.customDrop?? && !data.customDrop.isEmpty()>
 		ItemStack drop = ${mappedMCItemToItemStackCode(data.customDrop, 1)};
@@ -152,6 +170,7 @@ public class ${name}Block extends Block {
 		drops.add(drop);
 		<#else>
 		drops.add(new ItemStack(this, count));
+		</#if>
 		</#if>
 	}
 
@@ -299,9 +318,15 @@ public class ${name}Block extends Block {
 	}
 	</#if>
 
-	<#if blockBase != "Slab" && data.customDrop?? && !data.customDrop.isEmpty()>
+	<#if blockBase != "Slab" && !data.useLootTableForDrops && data.customDrop?? && !data.customDrop.isEmpty()>
 	@Override public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		drops.add(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
+	}
+	</#if>
+
+	<#if blockBase != "Slab" && data.useLootTableForDrops>
+	@Override public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		<@blockLootTableDrops/>
 	}
 	</#if>
 

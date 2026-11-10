@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.4.42-beta` |
+| Plugin version | `2026.3-1.0.5.43-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -167,14 +167,18 @@ to consuming one item instead of producing an invalid cast. Composting has no
 `LootTableList`, and supports pools, rolls, bonus rolls, item/empty entries,
 weights, count ranges and enchant-with-levels functions. Modern top-level table
 types, entry silk-touch/fortune/explosion-decay conditions and loot modifiers
-are excluded rather than emitted as invalid JSON.
+are excluded rather than emitted as invalid JSON. Block elements can enable "use
+custom loot table"; the block then resolves
+`assets/<modid>/loot_tables/blocks/<registryname>.json`, so a Loot table element
+must be named `blocks/<registryname>`.
 
 **Potion effect** generates a `Potion` subclass with category, color, custom
 status icon, attribute modifiers, instant/beneficial flags and optional
-start/tick/expire/hurt/death procedures. Honey curing and custom particle
-rendering are hidden because 1.13+ APIs are unavailable. Modern effect entries
-not present in 1.12.2 fall back to `MobEffects.SPEED` through the mapping
-default.
+start/tick/expire/hurt/death procedures. Attribute modifiers are removed by
+their stable UUIDs when the effect expires or is cured, including milk.
+Honey curing and custom particle rendering are hidden because 1.13+ APIs are
+unavailable. Modern effect entries not present in 1.12.2 fall back to
+`MobEffects.SPEED` through the mapping default.
 
 **Potion item** generates a registered `PotionType` with multiple effects and
 vanilla potion item localization. Custom potion types appear in the brewing
@@ -322,14 +326,13 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.4.42-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.5.43-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
    `VALIDATION PASSED` (42 YAML documents, 97 FTL templates, 73 template
    references).
 3. The full `test_workspaces/test-1/src/main/java` source tree was compiled
    against the 1.12.2 classes with `javac --release 8`: `PASSED`. This includes
-   the regenerated enchantment and armor sources after the tag/enum and
-   `ArmorMaterial` fixes.
+   the custom block loot-table drop path and potion attribute cleanup path.
 4. The enchantment and armor templates were rendered with FreeMarker using the
    test element data, then compiled with `javac --release 8`: `PASSED`.
 5. The generated shield class shape was compiled against the test workspace's
@@ -343,10 +346,13 @@ plugin-branch-2026.3/
    rendered with FreeMarker using mock element data, then compiled with
    `javac --release 8`: `PASSED`.
 9. The rendered loot table JSON parsed successfully and contains native 1.12.2
-   pool/roll/entry/function fields.
+   pool names, roll/entry/function fields.
 10. A void dispense-result procedure was rendered and compiled with
     `javac --release 8`: `PASSED`; no `void`-to-`ItemStack` cast is emitted.
-11. The built zip was copied to
+11. A direct 1.12.2 attribute-map probe confirmed that the generated potion
+    effect applies and removes both movement-speed and max-health modifiers by
+    UUID.
+12. The built zip was copied to
     `MCreatorEAP2026344621/plugins/generator-forge-1.12.2.zip`; source and
     installed SHA-256 hashes match.
 

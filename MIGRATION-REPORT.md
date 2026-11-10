@@ -224,16 +224,20 @@ dispense conditions and returned itemstacks are supported. Composting has no
 1.12.2 equivalent and is excluded.
 
 Loot tables are native JSON under `assets/<modid>/loot_tables` and are
-registered with `LootTableList`. Pools, rolls, bonus rolls, item/empty entries,
-weights, count ranges and enchant-with-levels are supported. Modern table types,
-silk-touch/fortune/explosion-decay conditions and loot modifiers are excluded.
+registered with `LootTableList`. Pools carry stable `pool_<index>` names required
+by Forge 1.12.2; rolls, bonus rolls, item/empty entries, weights, count ranges
+and enchant-with-levels are supported. Blocks can enable custom loot-table drops,
+which resolve `assets/<modid>/loot_tables/blocks/<registryname>.json` through
+the world loot table manager. Modern table types, silk-touch/fortune/explosion-
+decay conditions and loot modifiers are excluded.
 
 Potion effects generate `Potion` subclasses with category, color, icon,
-attribute modifiers, instant/beneficial state and optional procedures. Potion
-items generate a registered `PotionType` with multiple `PotionEffect` entries,
-vanilla potion item localization and splash/lingering brewing conversions.
-Honey curing, custom particle rendering and a dedicated potion item class are
-not available in 1.12.2.
+attribute modifiers, instant/beneficial state and optional procedures. Attribute
+modifiers are removed explicitly by their stable UUIDs when the effect expires
+or is cured, including by milk. Potion items generate a registered `PotionType`
+with multiple `PotionEffect` entries, vanilla potion item localization and
+splash/lingering brewing conversions. Honey curing, custom particle rendering
+and a dedicated potion item class are not available in 1.12.2.
 
 ### Localization keys
 
@@ -371,7 +375,8 @@ generator, and the support matrix marks them as unavailable.
 | Basic cube block + block item + Ore Dictionary tags | `BUILD SUCCESSFUL`; the generated `<Mod>Blocks`/`<Mod>Items` classes register a block and its item, and `<Mod>OreDictionary` registers `oreTest`/`ingotTest` entries from `BLOCKS`/`ITEMS` tags. |
 | Stairs/slab/fence/wall bases and per-face textures | All block state/model JSON parses, and the generated block classes compile with RFG (`BUILD SUCCESSFUL`). |
 | Block procedure triggers | Generated right-click/added/tick calls were compiled against a stub procedure class (`BUILD SUCCESSFUL`). The procedure block templates and MCreator-side procedure editor need the user test. |
-| New elements (item extension, loot table, potion effect, potion item) | FreeMarker render + `javac --release 8` `PASSED`; loot table JSON parses with native 1.12.2 pools/entries/functions. |
+| New elements (item extension, loot table, potion effect, potion item) | FreeMarker render + `javac --release 8` `PASSED`; loot table JSON parses with named pools/entries/functions. |
+| Block custom loot table + potion attribute cleanup | Test workspace full `javac --release 8` `PASSED`; direct 1.12.2 attribute-map probe removes movement-speed/max-health modifiers by UUID. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 
 The generated-mod build used the exact workspace base, templates and generated
