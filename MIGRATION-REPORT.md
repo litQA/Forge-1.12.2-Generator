@@ -209,8 +209,11 @@ Tools generate the native 1.12.2 pickaxe, axe, spade, hoe, sword, shears and
 explicitly instead of producing an invalid model; shield GUI textures are hidden.
 
 Armor, custom enchantments and custom attributes use the 1.12.2 material,
-registry and entity-construction APIs. Their remaining limitations are listed
-in the support matrix and in the changelog.
+registry and entity-construction APIs. Enchantment `supportedItems` tags are
+translated to native `EnumEnchantmentType` categories where possible; custom
+tags fall back to Ore Dictionary entries. The invalid `TAG:` Java emission and
+the missing `ArmorMaterial` argument separator from the previous batch are
+fixed. Remaining limitations are listed in the support matrix and changelog.
 
 ### Other mod elements
 

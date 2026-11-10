@@ -1,5 +1,35 @@
 # Changelog
 
+# 2026.3-1.0.1.38-beta
+
+## Changes
+
+- Enchantment `supportedItems` tags are translated to 1.12.2
+  `EnumEnchantmentType` categories where an equivalent exists, and to
+  `OreDictionary` lookups for custom tags. `TAG:` identifiers are no longer
+  emitted as Java expressions.
+- Enchantment rarity is derived from the weight because 1.12.2 exposes weight
+  through `Enchantment.Rarity`, not through an overridable `getWeight()` method.
+
+## Fixes
+
+Fixed 3 bug(s).
+
+- Added the missing separator between the armor equip sound and toughness
+  arguments in `EnumHelper.addArmorMaterial`.
+- Removed the invalid `getWeight()` override from generated enchantments.
+- Removed the `TAG:`-based `canApply(ItemStack)` emission that caused javac
+  syntax errors.
+
+## Known Limitations
+
+- `minecraft:enchantable/weapon` maps to the 1.12.2 `WEAPON` category, which
+  covers swords but not modern axes; custom tag entries fall back to Ore
+  Dictionary names and may be empty when no matching ore entry exists.
+- Build number 38 is a one-time continuation of the persisted build sequence;
+  subsequent builds resume normal incrementing.
+
+
 # 2026.3-1.0.0.1-beta
 
 ## New Content

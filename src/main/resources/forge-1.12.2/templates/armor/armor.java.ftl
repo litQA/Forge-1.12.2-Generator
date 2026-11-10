@@ -35,8 +35,9 @@ public class ${name}Item {
 			${data.maxDamage}, new int[] { ${data.damageValueBoots}, ${data.damageValueLeggings}, ${data.damageValueBody}, ${data.damageValueHelmet} },
 			${data.enchantability},
 			<#if data.equipSound?? && data.equipSound.getUnmappedValue()?has_content>
-			(SoundEvent) SoundEvent.REGISTRY.getObject(new ResourceLocation("${data.equipSound}")),
-			<#else>null</#if> ${data.toughness?c}f);
+			(SoundEvent) SoundEvent.REGISTRY.getObject(new ResourceLocation("${data.equipSound.getUnmappedValue()}")),
+			<#else>null,
+			</#if> ${data.toughness?c}f);
 
 	<#macro armorPiece className enable slot textureName="" info="" tick="" index=0>
 	<#if enable>

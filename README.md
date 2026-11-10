@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.0.1-beta` |
+| Plugin version | `2026.3-1.0.1.38-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -268,20 +268,25 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.1.38-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
    `VALIDATION PASSED` (37 YAML documents, 89 FTL templates, 65 template
    references).
-3. The generated shield class shape was compiled against the test workspace's
-   1.12.2 classes with `javac --release 8`: `PASSED`. This covers `ItemShield`,
-   `isShield`, the custom display name, enchantability, repair items and
-   offhand attribute modifiers.
-4. The generated `blocking` item-model override and `<registryname>_0` model
+3. The full `test_workspaces/test-1/src/main/java` source tree was compiled
+   against the 1.12.2 classes with `javac --release 8`: `PASSED`. This includes
+   the regenerated enchantment and armor sources after the tag/enum and
+   `ArmorMaterial` fixes.
+4. The enchantment and armor templates were rendered with FreeMarker using the
+   test element data, then compiled with `javac --release 8`: `PASSED`.
+5. The generated shield class shape was compiled against the test workspace's
+   1.12.2 classes with `javac --release 8`: `PASSED`.
+6. The generated `blocking` item-model override and `<registryname>_0` model
    were validated as JSON and checked for the `minecraft:blocking` predicate and
    generated model path.
 
-Real-game blocking, durability loss, model switching and shield sounds are
-intentionally left to the user, as required by the delivery specification.
+Real-game client startup, enchantment application, armor rendering and shield
+blocking remain for the user's in-game test, as required by the delivery
+specification.
 
 ## Attribution
 

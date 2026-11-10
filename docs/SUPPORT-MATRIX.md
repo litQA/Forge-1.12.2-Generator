@@ -29,7 +29,7 @@ feature list. This matrix records how the generator handles each feature group.
 | Living entity | Unavailable | Planned for batch 5 (AI tasks, attributes, model layers, synced data). |
 | Special entity | Unavailable | Planned for batch 5 (boat, raft, chest raft). |
 | Projectile | Unavailable | Planned for batch 5. |
-| Armor | Degraded | Armor/tool batch supports four armor pieces and custom materials; custom armor models/layer textures must be supplied by the project. | Planned for batch 3. |
+| Armor | Degraded | Armor/tool batch supports four armor pieces and custom materials; custom armor models/layer textures must be supplied by the project. |
 | Tool | Degraded | Armor/tool batch supports the main 1.12.2 tool classes and shields. Shields use `ItemShield` with native blocking, durability, repair items, enchantability, rarity, tooltips, triggers and a generated blocking model; custom blocking models/GUI textures and banner decoration are unavailable. Fishing rods are intentionally unsupported. |
 | Item extension | Unavailable | Planned for batch 3. |
 | GUI / Overlay | Unavailable | Planned for batch 6. |
@@ -38,8 +38,8 @@ feature list. This matrix records how the generator handles each feature group.
 | Procedure | Degraded | Preview in batch 3: chat, set/remove block, get current blockstate, get/set boolean and integer blockstate properties, play sound, give item, call procedure and return values. Block triggers: right click, added, destroyed by player, entity walk, scheduled/random tick and neighbour change. Global triggers and the remaining procedure block catalog are unavailable. |
 | Advancement / achievement | Unavailable | Planned for batch 8. |
 | Loot table | Unavailable | Planned for batch 2/8. |
-| Enchantment | Unavailable | Planned for batch 3. |
-| Attribute | Unavailable | Planned for batch 3. |
+| Enchantment | Degraded | Custom `Enchantment` subclasses support max level, weight-derived rarity, incompatibility, supported slots, supported-item tags/items and partial effect components. Modern item tags map to 1.12.2 `EnumEnchantmentType` categories or Ore Dictionary lookups; unsupported tags fall back explicitly. |
+| Attribute | Degraded | Custom `RangedAttribute` values are registered on players, selected entities or all living entities through `EntityConstructing`. 1.12.2 has no global attribute registry; modifier slot mapping remains partial. |
 | Damage type | Unavailable | No native 1.12.2 damage-type registry; planned as a degraded implementation over `DamageSource` subclasses. |
 | Potion effect | Unavailable | Planned for batch 3/5. |
 | Potion item | Unavailable | Planned for batch 3/5. |
