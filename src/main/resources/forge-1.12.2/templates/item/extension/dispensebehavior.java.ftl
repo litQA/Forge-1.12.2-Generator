@@ -28,7 +28,7 @@ public class ${name}ItemExtension {
 				<#else>
 				boolean success = true;
 				</#if>
-				<#if hasProcedure(data.dispenseResultItemstack)>
+				<#if hasReturnValueOf(data.dispenseResultItemstack, "itemstack")>
 				if (success) {
 					ItemStack result = <@procedureOBJToItemstackCode data.dispenseResultItemstack/>;
 					if (result != null && !result.isEmpty()) {

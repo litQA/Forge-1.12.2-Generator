@@ -24,6 +24,14 @@
 }
 </#macro>
 
+<#function hasReturnValueOf object type>
+    <#if hasProcedure(object) && object.getReturnValueType??>
+        <#return object.getReturnValueType(generator.getWorkspace()) == type>
+    <#else>
+        <#return false>
+    </#if>
+</#function>
+
 <#macro procedureOBJToCode object="">
     <#if hasProcedure(object) && object?is_hash>
         <@procedureToCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace())/>

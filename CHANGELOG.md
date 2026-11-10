@@ -1,5 +1,25 @@
 # Changelog
 
+# 2026.3-1.0.4.42-beta
+
+## Fixes
+
+Fixed 2 bug(s).
+
+- Item extension dispense result procedures are now emitted only when the
+  selected procedure returns an itemstack; void procedures no longer produce an
+  invalid `void`-to-`ItemStack` cast.
+- Item extension global templates are generated for every item extension
+  element, so `<Mod>Fuels` is present whenever the base mod registers it.
+
+## Known Limitations
+
+- The dispense result procedure must explicitly use an itemstack return type;
+  void procedures fall back to consuming one item.
+- Fuel and dispense procedure dependency maps must use the available
+  `itemstack`, `world`, `x`, `y`, `z` and `direction` variables.
+
+
 # 2026.3-1.0.3.41-beta
 
 ## New Content

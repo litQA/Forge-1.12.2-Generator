@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.3.41-beta` |
+| Plugin version | `2026.3-1.0.4.42-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -157,8 +157,10 @@ definition keys must be kept in this form together.
 `FurnaceFuelBurnTimeEvent` and custom dispenser behavior through
 `BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY`. Fixed and procedure-based fuel
 values, fuel success conditions, dispense success conditions and returned
-itemstack procedures are generated. Composting has no 1.12.2 equivalent and is
-excluded.
+itemstack procedures are generated. A returned-itemstack procedure is emitted
+only when its return type is actually an itemstack; void procedures fall back
+to consuming one item instead of producing an invalid cast. Composting has no
+1.12.2 equivalent and is excluded.
 
 **Loot table** emits native 1.12.2 JSON under
 `assets/<modid>/loot_tables/<name>.json`, registers the table through
@@ -320,7 +322,7 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.3.41-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.4.42-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
    `VALIDATION PASSED` (42 YAML documents, 97 FTL templates, 73 template
    references).
@@ -342,7 +344,9 @@ plugin-branch-2026.3/
    `javac --release 8`: `PASSED`.
 9. The rendered loot table JSON parsed successfully and contains native 1.12.2
    pool/roll/entry/function fields.
-10. The built zip was copied to
+10. A void dispense-result procedure was rendered and compiled with
+    `javac --release 8`: `PASSED`; no `void`-to-`ItemStack` cast is emitted.
+11. The built zip was copied to
     `MCreatorEAP2026344621/plugins/generator-forge-1.12.2.zip`; source and
     installed SHA-256 hashes match.
 

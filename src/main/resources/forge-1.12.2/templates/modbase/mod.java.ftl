@@ -47,7 +47,7 @@ public class ${JavaModName} {
 		<#if (types.items![])?has_content || (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.tools![])?has_content || (types.armors![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Items.class);
 		</#if>
-		<#if w.getGElementsOfType('itemextension')?filter(e -> e.enableFuel)?size != 0>
+		<#if w.hasElementsOfType("itemextension")>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Fuels.class);
 		</#if>
 		<#if w.hasElementsOfType("potioneffect")>
@@ -79,7 +79,7 @@ public class ${JavaModName} {
 		<#if w.hasElementsOfType("loottable")>
 		${package}.init.${JavaModName}Loottables.load();
 		</#if>
-		<#if w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0>
+		<#if w.hasElementsOfType("itemextension")>
 		${package}.init.${JavaModName}ItemExtensions.load();
 		</#if>
 	}
