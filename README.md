@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.5.43-beta` |
+| Plugin version | `2026.3-1.0.6.44-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -326,7 +326,7 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.5.43-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.6.44-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
    `VALIDATION PASSED` (42 YAML documents, 97 FTL templates, 73 template
    references).
@@ -352,7 +352,11 @@ plugin-branch-2026.3/
 11. A direct 1.12.2 attribute-map probe confirmed that the generated potion
     effect applies and removes both movement-speed and max-health modifiers by
     UUID.
-12. The built zip was copied to
+12. A fixed-value `NumberProcedure` fuel was rendered through
+    `elementinits/fuels.java.ftl` and compiled with `javac --release 8`:
+    `PASSED`; the fuel class is generated without treating the fixed value as a
+    callable procedure.
+13. The built zip was copied to
     `MCreatorEAP2026344621/plugins/generator-forge-1.12.2.zip`; source and
     installed SHA-256 hashes match.
 

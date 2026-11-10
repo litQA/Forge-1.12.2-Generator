@@ -5,7 +5,8 @@
     <#elseif object?is_string>
         <#return object?has_content && object != "null">
     <#else>
-        <#return object.getName() != "null">
+        <#assign procedureName = (object.getName())!"" >
+        <#return procedureName?has_content && procedureName != "null">
     </#if>
 </#function>
 
