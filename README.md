@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.7.46-beta` |
+| Plugin version | `2026.3-1.0.8.47-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -195,6 +195,25 @@ creative tab and can be converted to splash/lingering variants through generated
 brewing recipes. The element uses vanilla potion, splash potion, lingering
 potion and tipped-arrow items; it does not create a new item class.
 
+## Dimensions and biomes
+
+**Biome** generates a registered 1.12.2 `Biome` with climate, rainfall, top and
+filler blocks, water/grass/foliage/sky colors, spawn entries, vanilla tree
+types and optional overworld biome placement. Stronghold and village placement
+are supported. Custom tree generators, modern climate/noise fields, cave and
+nether biome injection, ambient sounds/particles and modern structure placement
+are hidden because 1.12.2 has no equivalent data-driven registries.
+
+**Dimension** generates a `WorldProvider`, a `DimensionType` registration and a
+custom biome provider that uses the selected dimension biomes. Normal, Nether,
+End and Void chunk generators are available; Void uses a minimal empty chunk
+generator. Sky light, fog/cloud height, fixed time, ambient light, coordinate
+scale, respawn/bed/weather behavior and player enter/leave procedures are
+mapped. Portals and igniters are not implemented in this batch; use another
+mod/command with the registered dimension id to enter the dimension. Modern
+noise/aquifer settings, custom skyboxes and custom filler/fluid/sea-level
+terrain are hidden.
+
 ## Tags and the Ore Dictionary
 
 Forge 1.12.2 has no tag registry. The generator keeps MCreator's tag editor
@@ -335,9 +354,9 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.7.46-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.8.47-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
-   `VALIDATION PASSED` (42 YAML documents, 97 FTL templates, 73 template
+   `VALIDATION PASSED` (44 YAML documents, 103 FTL templates, 79 template
    references).
 3. The full `test_workspaces/test-1/src/main/java` source tree was compiled
    against the 1.12.2 classes with `javac --release 8`: `PASSED`. This includes
@@ -369,13 +388,16 @@ plugin-branch-2026.3/
     `javac --release 8`; a direct 1.12.2 attribute-map probe confirmed its
     deterministic movement-speed modifier is removed on unequip
     (`0.7 -> 3.7 -> 0.7`).
-14. The built zip was copied to
+14. Biome and dimension templates were rendered with FreeMarker and compiled
+    with `javac --release 8` for Normal, Nether, End, Void and custom-effects
+    variants; the combined biome/dimension/mod templates also compile.
+15. The built zip was copied to
     `MCreatorEAP2026344621/plugins/generator-forge-1.12.2.zip`; source and
     installed SHA-256 hashes match.
 
 In-game item names, enchantment names, armor/shield tooltips, fuel/dispense
-behavior, loot table loading and potion effects remain for the user's next test,
-as required by the delivery specification.
+behavior, loot table loading, potion effects and dimension/biome behavior remain
+for the user's next test, as required by the delivery specification.
 
 ## Attribution
 

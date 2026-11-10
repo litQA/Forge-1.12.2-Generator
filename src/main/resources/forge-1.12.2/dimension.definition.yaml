@@ -1,0 +1,29 @@
+templates:
+  - template: dimension/dimension.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEWorldProvider.java"
+  - template: dimension/dimension_biomeprovider.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEBiomeProvider.java"
+  - template: dimension/chunkgenerator_void.java.ftl
+    condition: "worldGenType %= Void gen"
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEChunkGeneratorVoid.java"
+
+global_templates:
+  - template: elementinits/dimensions.java.ftl
+    condition: "${(dimensions![])?has_content}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDimensions.java"
+
+# 1.12.2 uses WorldProvider + DimensionType; modern dimension JSON, custom
+# skyboxes, aquifers, noise settings, raids/piglins and portal services are not
+# available in this batch.
+field_exclusions: [biomesInDimensionCaves, mainFillerBlock, fluidBlock, seaLevel,
+                   generateOreVeins, generateAquifers, horizontalNoiseSize, verticalNoiseSize,
+                   infiniburnTag, skyType, enableCustomSkyboxTextures,
+                   skyboxTextureUp, skyboxTextureDown, skyboxTextureNorth, skyboxTextureSouth,
+                   skyboxTextureWest, skyboxTextureEast, enableCustomSunMoonTextures,
+                   sunTexture, moonTexture, sunHeightAffectsFog,
+                   piglinSafe, hasRaids, minMonsterSpawnLightLimit, maxMonsterSpawnLightLimit,
+                   monsterSpawnBlockLightLimit,
+                   portalFrame, portalParticles, portalLuminance, portalSound,
+                   enableIgniter, igniterName, igniterRarity, specialInformation, creativeTabs,
+                   texture, portalTexture, enablePortal, portalMakeCondition, portalUseCondition,
+                   whenPortaTriggerlUsed, onPortalTickUpdate]

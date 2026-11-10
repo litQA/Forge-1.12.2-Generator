@@ -1,0 +1,30 @@
+templates:
+  - template: biome/biome.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/biome/@NAMEBiome.java"
+
+global_templates:
+  - template: elementinits/biomes.java.ftl
+    writer: java
+    condition: "${(biomes![])?has_content}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBiomes.java"
+
+localizationkeys:
+  - key: biome.@modid.@registryname
+    mapto: name
+
+# 1.12.2 has no data-driven biome climate/noise, cave/nether biome injection,
+# ambient biome sounds, biome particles or modern structure placement. Custom
+# tree generators are also deferred; vanilla tree types and spawn lists are
+# generated in this batch.
+field_exclusions: [underwaterBlock, fogColor, waterFogColor, dryFoliageColor,
+                   ambientSound, additionsSound, music, moodSound, moodSoundDelay,
+                   spawnParticles, particleToSpawn, particlesProbability,
+                   spawnInCaves, spawnBiomeNether,
+                   genTemperature, genHumidity, genContinentalness, genErosion, genWeirdness, genDepth,
+                   treeType, minHeight, treeStem, treeBranch, treeVines, treeFruits,
+                   defaultFeatures,
+                   spawnMineshaft, spawnMineshaftMesa, spawnPillagerOutpost,
+                   spawnDesertPyramid, spawnSwampHut, spawnIgloo, spawnOceanMonument,
+                   spawnShipwreck, spawnShipwreckBeached, spawnBuriedTreasure, oceanRuinType,
+                   spawnNetherBridge, spawnNetherFossil, spawnBastionRemnant, spawnEndCity,
+                   spawnRuinedPortal, spawnWoodlandMansion, spawnJungleTemple]

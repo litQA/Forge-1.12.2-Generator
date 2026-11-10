@@ -1,5 +1,31 @@
 # Changelog
 
+# 2026.3-1.0.8.47-beta
+
+## Changes
+
+- Added the 1.12.2 **Biome** element: biome registration, climate/rainfall,
+  top/filler blocks, water/grass/foliage/sky colors, spawn lists, vanilla tree
+  types and optional overworld biome placement. Stronghold and village
+  placement are supported.
+- Added the 1.12.2 **Dimension** element: `WorldProvider` and `DimensionType`
+  registration, custom biome provider, Normal/Nether/End/Void chunk generators,
+  fog/cloud/fixed-time/ambient-light settings, sky light and bed/respawn/weather
+  behavior, plus player enter/leave procedures.
+
+## Known Limitations
+
+- Dimension portals, portal igniters, custom skyboxes, custom sun/moon textures,
+  modern dimension JSON, aquifers, noise settings, raids/piglin settings and
+  custom filler/fluid/sea-level terrain are hidden or ignored in this batch.
+  Dimensions can be reached through another mod/command using the registered
+  dimension id.
+- Biome custom tree generators, climate/noise parameters, cave/nether biome
+  injection, ambient sounds/particles and modern structure placement are hidden.
+- Raw `javax.annotation.Nullable` is avoided in generated sources because it is
+  not present in the generator's Java 8 compile classpath.
+
+
 # 2026.3-1.0.7.46-beta
 
 ## Fixes

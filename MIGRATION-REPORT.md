@@ -245,6 +245,23 @@ with multiple `PotionEffect` entries, vanilla potion item localization and
 splash/lingering brewing conversions. Honey curing, custom particle rendering
 and a dedicated potion item class are not available in 1.12.2.
 
+### Dimensions and biomes (batch 4)
+
+Biomes generate registered `Biome` subclasses with climate/rainfall, top and
+filler blocks, colors, spawn entries, vanilla tree types, overworld placement,
+stronghold/village placement and a `RegistryEvent.Register<Biome>` initializer.
+Custom tree generators and modern climate/noise, cave/nether injection, sounds,
+particles and structure placement fields are hidden.
+
+Dimensions generate a `WorldProvider`, a `DimensionType` registered through
+Forge's `DimensionManager`, and a custom `BiomeProvider` over the selected
+dimension biomes. Normal, Nether, End and Void chunk generators are supported;
+Void uses a minimal empty `IChunkGenerator`. Fog, clouds, fixed time, ambient
+light, sky light, respawn/bed/weather behavior and player enter/leave procedures
+are mapped. Portals, igniters, custom skyboxes, aquifers/noise settings and
+modern dimension JSON are hidden; dimension entry currently needs another
+mod/command using the registered dimension id.
+
 ### Localization keys
 
 The generator now emits canonical 1.12.2 keys: item-like elements use
@@ -368,13 +385,18 @@ generator, and the support matrix marks them as unavailable.
 17. **Potion item coverage.** Potion items are registered as `PotionType`
     entries on vanilla potion items, not as a new item class. Splash and
     lingering variants are added through custom brewing recipes.
+18. **Dimension/biome coverage.** Dimensions have no portal/igniter in this
+    batch and use vanilla 1.12.2 chunk generators rather than custom filler/fluid
+    terrain. Biome custom trees and modern climate/noise/structure features are
+    hidden. Generated dimension/biome sources avoid `javax.annotation.Nullable`
+    because that annotation is not on the generator's Java 8 compile classpath.
 
 ## Verification log
 
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (42 YAML documents, 97 templates, 73 template references) |
+| Static validator | `VALIDATION PASSED` (44 YAML documents, 103 templates, 79 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |
@@ -386,6 +408,7 @@ generator, and the support matrix marks them as unavailable.
 | Block procedure triggers | Generated right-click/added/tick calls were compiled against a stub procedure class (`BUILD SUCCESSFUL`). The procedure block templates and MCreator-side procedure editor need the user test. |
 | New elements (item extension, loot table, potion effect, potion item) | FreeMarker render + `javac --release 8` `PASSED`; loot table JSON parses with named pools/entries/functions. |
 | Block custom loot table + potion attribute cleanup | Test workspace full `javac --release 8` `PASSED`; direct 1.12.2 attribute-map probe removes movement-speed/max-health modifiers by UUID. |
+| Biome + dimension (Normal/Nether/End/Void/custom effects) | FreeMarker render + `javac --release 8` `PASSED`; generated biome, dimension, void chunk generator, biome provider, registries and combined mod class compile together. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 
 The generated-mod build used the exact workspace base, templates and generated
@@ -399,7 +422,7 @@ official names (`setTranslationKey`, `createIcon`) that do not match the 1.12.2
 API used by MCreator.
 
 Remaining acceptance item: launch the Forge 1.12.2 client and verify item
-extensions, loot tables, potion effects and potion items in game. Per the
-delivery specification this real-device test is performed by the user before the
-next batch starts.
+extensions, loot tables, potion effects, potion items, biomes and dimensions in
+game. Per the delivery specification this real-device test is performed by the
+user before the next batch starts.
 

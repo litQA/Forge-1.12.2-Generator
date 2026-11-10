@@ -32,6 +32,12 @@ public class ${JavaModName} {
 		<#if (types.tabs![])?has_content>
 		${package}.init.${JavaModName}Tabs.load();
 		</#if>
+		<#if (types.biomes![])?has_content>
+		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Biomes.class);
+		</#if>
+		<#if (types.dimensions![])?has_content>
+		${package}.init.${JavaModName}Dimensions.load();
+		</#if>
 		<#if (types.fluids![])?has_content>
 		${package}.init.${JavaModName}Fluids.init();
 		</#if>
@@ -61,6 +67,9 @@ public class ${JavaModName} {
 	}
 
 	@Mod.EventHandler public void init(FMLInitializationEvent event) {
+		<#if (types.biomes![])?has_content>
+		${package}.init.${JavaModName}Biomes.init();
+		</#if>
 		<#if (types.blocks![])?has_content>
 		${package}.init.${JavaModName}Blocks.initTileEntities();
 		</#if>
