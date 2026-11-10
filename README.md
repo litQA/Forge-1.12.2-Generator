@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.6.45-beta` |
+| Plugin version | `2026.3-1.0.7.46-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -118,6 +118,10 @@ durability, repair items, enchantability, rarity, tooltips, tool triggers and
 attribute modifiers. A `blocking` item-model predicate selects the generated
 `<registryname>_0` model while the shield is raised.
 
+Tools with multiple creative tabs override `getSubItems`, so every selected tab
+is populated. Attribute modifiers use deterministic UUIDs, allowing 1.12.2 to
+remove an in-hand bonus when the tool is unequipped.
+
 Custom shield blocking models (`blockingRenderType` 1 and 2) are rejected
 explicitly, and shield GUI textures are hidden by the generator definition. Custom shields cannot use
 the vanilla `builtin/entity` shield renderer or banner-pattern rendering,
@@ -170,7 +174,12 @@ types, entry silk-touch/fortune/explosion-decay conditions and loot modifiers
 are excluded rather than emitted as invalid JSON. Block elements can enable "use
 custom loot table"; the block then resolves
 `assets/<modid>/loot_tables/blocks/<registryname>.json`, so a Loot table element
-must be named `blocks/<registryname>`.
+must be named `blocks/<registryname>`. The 2026.3 shared editor still displays
+the fortune and silk-touch controls for individual entries; the 1.12.2
+generator ignores those two values because its loot-table JSON template has no
+equivalent conditions. MCreator generator field exclusions cannot reach
+dynamically-created entry components, so hiding those controls needs an upstream
+GUI change.
 
 **Potion effect** generates a `Potion` subclass with category, color, custom
 status icon, attribute modifiers, instant/beneficial flags and optional
@@ -326,7 +335,7 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.6.45-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.7.46-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
    `VALIDATION PASSED` (42 YAML documents, 97 FTL templates, 73 template
    references).
@@ -356,7 +365,11 @@ plugin-branch-2026.3/
     `elementinits/fuels.java.ftl` and compiled with `javac --release 8`:
     `PASSED`; the fuel class is generated without treating the fixed value as a
     callable procedure.
-13. The built zip was copied to
+13. A generated multi-tab pickaxe was rendered and compiled with
+    `javac --release 8`; a direct 1.12.2 attribute-map probe confirmed its
+    deterministic movement-speed modifier is removed on unequip
+    (`0.7 -> 3.7 -> 0.7`).
+14. The built zip was copied to
     `MCreatorEAP2026344621/plugins/generator-forge-1.12.2.zip`; source and
     installed SHA-256 hashes match.
 

@@ -28,6 +28,7 @@ import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -63,6 +64,13 @@ public class ${name}Item extends Item {
 	private static final Item.ToolMaterial MATERIAL = EnumHelper.addToolMaterial("${registryname?upper_case}", ${harvestLevel},
 			${data.usageCount}, ${data.efficiency?c}f, ${(data.damageVsEntity - 4)?c}f, ${data.enchantability});
 	</#if>
+	<#if (data.creativeTabs?size > 1)>
+	private static final CreativeTabs[] CREATIVE_TABS = new CreativeTabs[] {
+		<#list data.creativeTabs as creativeTab>
+		${creativeTabValue([creativeTab])}<#if creativeTab?has_next>,</#if>
+		</#list>
+	};
+	</#if>
 
 	public ${name}Item() {
 		<#if data.toolType == "Pickaxe">
@@ -85,6 +93,17 @@ public class ${name}Item extends Item {
 		<#if data.creativeTabs?has_content>setCreativeTab(${creativeTabValue([data.creativeTabs[0]])});</#if>
 		<#if data.rarity != "COMMON">/* rarity override below */</#if>
 	}
+
+	<#if (data.creativeTabs?size > 1)>
+	@Override public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		for (CreativeTabs supportedTab : CREATIVE_TABS) {
+			if (supportedTab == tab) {
+				items.add(new ItemStack(this));
+				return;
+			}
+		}
+	}
+	</#if>
 
 	<#if data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "Special" || data.toolType == "MultiTool">
 	@Override public int getItemEnchantability() {
@@ -169,7 +188,9 @@ public class ${name}Item extends Item {
 		com.google.common.collect.Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(slot);
 		if (slot == EntityEquipmentSlot.MAINHAND<#if data.toolType == "Shield"> || slot == EntityEquipmentSlot.OFFHAND</#if>) {
 			<#list data.attributeModifiers as modifier>
-			multimap.put(${modifier.attribute}.getName(), new AttributeModifier("${registryname}_${modifier?index}", ${modifier.amount?c}d,
+			multimap.put(${modifier.attribute}.getName(), new AttributeModifier(
+					java.util.UUID.nameUUIDFromBytes("${modid}:${registryname}:${modifier?index}".getBytes(java.nio.charset.StandardCharsets.UTF_8)),
+					"${registryname}_${modifier?index}", ${modifier.amount?c}d,
 					<#if modifier.operation == "ADD_PERCENTAGE" || modifier.operation == "MULTIPLY_TOTAL">2<#elseif modifier.operation == "MULTIPLY_BASE">1<#else>0</#if>));
 			</#list>
 		}

@@ -8,6 +8,10 @@ global_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameLoottables.java"
 
 # 1.12.2 has no top-level loot table type or modern entry conditions.
+# 2026.3's shared LootTableGUI creates the entry fortune/silk-touch controls
+# inside dynamic list entries; ModElementGUI's field-exclusion traversal only
+# follows component fields and cannot reach them. The extra paths below are
+# retained for older GUIs that exposed the Pool/Entry components directly.
 field_exclusions: [type, lootTableToModify,
                    Pool.Entry.silkTouchMode, Pool.Entry.affectedByFortune,
                    Pool.Entry.explosionDecay]

@@ -1,5 +1,27 @@
 # Changelog
 
+# 2026.3-1.0.7.46-beta
+
+## Fixes
+
+Fixed 2 bug(s).
+
+- Tool and armor attribute modifiers now use deterministic UUIDs. The old
+  `AttributeModifier(String, ...)` constructor generated a random UUID on every
+  call, so unequipping could not remove the modifier and in-hand bonuses stayed
+  active permanently.
+- Tools selected in multiple creative tabs now generate `getSubItems` for every
+  selected tab, matching item behavior. Previously only the first tab was used.
+
+## Known Limitations
+
+- MCreator 2026.3's shared loot-table editor creates the fortune and silk-touch
+  controls directly inside dynamically generated entry panels. Generator
+  `field_exclusions` can only address component fields, not those list entries;
+  the 1.12.2 generator ignores both values. Hiding the controls requires an
+  upstream MCreator GUI change.
+
+
 # 2026.3-1.0.6.45-beta
 
 ## Fixes

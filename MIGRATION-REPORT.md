@@ -203,10 +203,13 @@ interface while the generator emits Ore Dictionary registrations:
 ### Tools, armor, enchantments and attributes
 
 Tools generate the native 1.12.2 pickaxe, axe, spade, hoe, sword, shears and
-`ItemShield` subclasses. Shields use the native blocking use action and
-`isShield` contract, with a generated `blocking` item-model predicate and
-`<registryname>_0` blocking model. Custom shield blocking models are rejected
-explicitly instead of producing an invalid model; shield GUI textures are hidden.
+`ItemShield` subclasses. Tools in multiple creative tabs override `getSubItems`
+so every selected tab is populated. In-hand attribute modifiers use deterministic
+UUIDs, so 1.12.2 removes them when the tool is unequipped. Shields use the native
+blocking use action and `isShield` contract, with a generated `blocking`
+item-model predicate and `<registryname>_0` blocking model. Custom shield
+blocking models are rejected explicitly instead of producing an invalid model;
+shield GUI textures are hidden.
 
 Armor, custom enchantments and custom attributes use the 1.12.2 material,
 registry and entity-construction APIs. Enchantment `supportedItems` tags are
@@ -229,7 +232,10 @@ by Forge 1.12.2; rolls, bonus rolls, item/empty entries, weights, count ranges
 and enchant-with-levels are supported. Blocks can enable custom loot-table drops,
 which resolve `assets/<modid>/loot_tables/blocks/<registryname>.json` through
 the world loot table manager. Modern table types, silk-touch/fortune/explosion-
-decay conditions and loot modifiers are excluded.
+decay conditions and loot modifiers are excluded. The shared 2026.3 editor still
+shows entry fortune/silk-touch controls; MCreator's field-exclusion traversal
+cannot reach dynamically-created list-entry components, so 1.12.2 ignores those
+values until the upstream GUI supports exclusion paths for list entries.
 
 Potion effects generate `Potion` subclasses with category, color, icon,
 attribute modifiers, instant/beneficial state and optional procedures. Attribute
@@ -305,10 +311,10 @@ generator, and the support matrix marks them as unavailable.
 2. **Item feature coverage.** Procedures, GUI inventories, ranged behaviour,
    custom models and the other item features listed above are unavailable and
    the corresponding editor fields are hidden.
-3. **Creative tabs.** Multiple tab membership is implemented through an item
-   `getSubItems` override. Forge 1.12.2 still has a single default tab
-   (`setCreativeTab`), so tab sorting and the "search" tab use the first
-   selected tab.
+3. **Creative tabs.** Multiple tab membership is implemented through
+   `getSubItems` overrides for items and tools. Forge 1.12.2 still has a single
+   default tab (`setCreativeTab`), so tab sorting and the "search" tab use the
+   first selected tab.
 4. **Unsupported recipe types.** Blasting, Smoking, Campfire cooking, Stone
    cutting and Smithing do not exist in Forge 1.12.2 and fail code generation
    explicitly. Crafting, furnace smelting and brewing are implemented.
@@ -352,7 +358,10 @@ generator, and the support matrix marks them as unavailable.
     dispense values use the preview procedure runtime.
 15. **Loot table coverage.** The generator emits native 1.12.2 JSON but does not
     support modern loot modifiers, top-level table types or entry
-    silk-touch/fortune/explosion-decay conditions. Those fields are hidden.
+    silk-touch/fortune/explosion-decay conditions. The shared 2026.3 editor still
+    displays the entry fortune/silk-touch controls; generator field exclusions
+    cannot address dynamically-created list-entry components, so those values
+    are ignored until an upstream GUI change.
 16. **Potion effect coverage.** Honey curing and custom particle rendering are
     unavailable. Custom icons are rendered through the 1.12.2 potion HUD/
     inventory hooks.
