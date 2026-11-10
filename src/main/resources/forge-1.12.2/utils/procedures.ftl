@@ -2,6 +2,10 @@
 <#function hasProcedure object="">
     <#if !object??>
         <#return false>
+    <#elseif object?is_hash>
+        <#-- MCreator procedure beans are exposed as hashes by the template wrapper. -->
+        <#assign procedureName = (object.getName())!"" >
+        <#return procedureName?has_content && procedureName != "null">
     <#elseif object?is_string>
         <#return object?has_content && object != "null">
     <#else>

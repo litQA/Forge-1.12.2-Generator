@@ -1,15 +1,17 @@
 # Changelog
 
-# 2026.3-1.0.6.44-beta
+# 2026.3-1.0.6.45-beta
 
 ## Fixes
 
 Fixed 1 bug(s).
 
 - Fixed-value `NumberProcedure` objects are no longer mistaken for callable
-  procedures when their name is null. This prevents
-  `elementinits/fuels.java.ftl` from failing with a null `procedureToRetvalCode`
-  name and restores automatic generation of `<Mod>Fuels`.
+  procedures when their name is null. MCreator exposes these beans as both hash
+  and string models, so `hasProcedure` now checks the hash/name path before the
+  string path. This prevents `elementinits/fuels.java.ftl` from failing with a
+  null `procedureToRetvalCode` name and restores automatic generation of
+  `<Mod>Fuels`.
 
 ## Known Limitations
 
