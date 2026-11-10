@@ -24,6 +24,7 @@ import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemShears;
+import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
@@ -32,6 +33,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -51,6 +53,8 @@ public class ${name}Item extends ItemHoe {
 public class ${name}Item extends ItemSword {
 <#elseif data.toolType == "Shears">
 public class ${name}Item extends ItemShears {
+<#elseif data.toolType == "Shield">
+public class ${name}Item extends ItemShield {
 <#else>
 public class ${name}Item extends Item {
 </#if>
@@ -75,16 +79,26 @@ public class ${name}Item extends Item {
 		super();
 		</#if>
 		setUnlocalizedName("${modid}.${registryname}");
-		<#if data.toolType == "Shears" || data.toolType == "Special" || data.toolType == "MultiTool">
+		<#if data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "Special" || data.toolType == "MultiTool">
 		setMaxDamage(${data.usageCount});
 		</#if>
 		<#if data.creativeTabs?has_content>setCreativeTab(${creativeTabValue([data.creativeTabs[0]])});</#if>
 		<#if data.rarity != "COMMON">/* rarity override below */</#if>
 	}
 
-	<#if data.toolType == "Shears" || data.toolType == "Special" || data.toolType == "MultiTool">
+	<#if data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "Special" || data.toolType == "MultiTool">
 	@Override public int getItemEnchantability() {
 		return ${data.enchantability};
+	}
+	</#if>
+
+	<#if data.toolType == "Shield">
+	@Override public boolean isShield(ItemStack stack, EntityLivingBase entity) {
+		return stack.getItem() == this;
+	}
+
+	@Override public String getItemStackDisplayName(ItemStack stack) {
+		return I18n.translateToLocal("item.${modid}.${registryname}.name");
 	}
 	</#if>
 
@@ -153,7 +167,7 @@ public class ${name}Item extends Item {
 	<#if data.attributeModifiers?has_content>
 	@Override public com.google.common.collect.Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot slot) {
 		com.google.common.collect.Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(slot);
-		if (slot == EntityEquipmentSlot.MAINHAND) {
+		if (slot == EntityEquipmentSlot.MAINHAND<#if data.toolType == "Shield"> || slot == EntityEquipmentSlot.OFFHAND</#if>) {
 			<#list data.attributeModifiers as modifier>
 			multimap.put(${modifier.attribute}.getName(), new AttributeModifier("${registryname}_${modifier?index}", ${modifier.amount?c}d,
 					<#if modifier.operation == "ADD_PERCENTAGE" || modifier.operation == "MULTIPLY_TOTAL">2<#elseif modifier.operation == "MULTIPLY_BASE">1<#else>0</#if>));

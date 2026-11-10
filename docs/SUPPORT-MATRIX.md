@@ -30,7 +30,7 @@ feature list. This matrix records how the generator handles each feature group.
 | Special entity | Unavailable | Planned for batch 5 (boat, raft, chest raft). |
 | Projectile | Unavailable | Planned for batch 5. |
 | Armor | Degraded | Armor/tool batch supports four armor pieces and custom materials; custom armor models/layer textures must be supplied by the project. | Planned for batch 3. |
-| Tool | Degraded | Armor/tool batch supports the main 1.12.2 tool classes. Fishing rods are intentionally unsupported; shields are scheduled for the next batch. | Planned for batch 3. |
+| Tool | Degraded | Armor/tool batch supports the main 1.12.2 tool classes and shields. Shields use `ItemShield` with native blocking, durability, repair items, enchantability, rarity, tooltips, triggers and a generated blocking model; custom blocking models/GUI textures and banner decoration are unavailable. Fishing rods are intentionally unsupported. |
 | Item extension | Unavailable | Planned for batch 3. |
 | GUI / Overlay | Unavailable | Planned for batch 6. |
 | Key binding | Unavailable | Planned for batch 6. |
@@ -87,8 +87,8 @@ is marked Unavailable until its owning mod element is implemented.
 | 2022.4 | Feature mod element, entity ranged attacks, GUI text localization, item type blocks | Unavailable |
 | 2023.1 | Rendered entity GUIs, loot table procedure blocks, feature placements, armor JSON/OBJ models | Unavailable |
 | 2023.2 | Villager profession, geode/ore features, step height, block bounding box generator | Unavailable |
-| 2023.3 | Shield events, damage source dependencies, item property overrides | Unavailable |
-| 2023.4 | Damage type element, synced entity data, team procedures, shields, tags in selectors | Unavailable |
+| 2023.3 | Shield events, damage source dependencies, item property overrides | Shield block/break behavior: Direct through `ItemShield`; global shield procedure triggers: Unavailable. |
+| 2023.4 | Damage type element, synced entity data, team procedures, shields, tags in selectors | Shield tool mode: Degraded (native blocking, generated model; custom blocking models and banner rendering unavailable). Other features: Unavailable. |
 | 2024.1 | Jigsaw structures, tree features, tag management, debugging tools | Unavailable |
 | 2024.2 | Multiple creative tabs, vanilla textures, spring feature, team blocks | Multiple creative tabs: Direct. Other features: Unavailable. |
 | 2024.3 | Attribute element, custom block state properties, projectile hitbox, more worldgen features | Unavailable |

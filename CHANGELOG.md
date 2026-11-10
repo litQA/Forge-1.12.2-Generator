@@ -1,5 +1,34 @@
 # Changelog
 
+# 2026.3-1.0.0.1-beta
+
+## New Content
+
+- Shield tool mode now generates a real Forge 1.12.2 `ItemShield` subclass with
+  blocking use action, durability, repair items, enchantability, rarity,
+  tooltips, tool triggers and attribute modifiers.
+- Shield items generate a `blocking` item-model predicate and the
+  `<registryname>_0` blocking model with first-person and third-person display
+  transforms.
+
+## Changes
+
+- Versioning now follows
+  `major.minor.patch.build-type` under the fixed MCreator branch prefix
+  (`2026.3-1.0.0.1-beta`).
+
+## Known Limitations
+
+- Custom shield blocking models (`blockingRenderType` 1 and 2) and GUI
+  textures remain unavailable; the generator explicitly stops instead of
+  emitting an invalid custom blocking model.
+- Banner-pattern rendering and the vanilla shield's `builtin/entity` model are
+  unavailable because Forge 1.12.2 binds that renderer to the vanilla shield
+  item only. Custom shields use the generated flat blocking model.
+- Shield attribute modifiers apply in both hands because 1.12.2 generator
+  support for per-slot attribute modifier entries is still incomplete.
+
+
 # 3.2.1-beta
 
 ## New Content

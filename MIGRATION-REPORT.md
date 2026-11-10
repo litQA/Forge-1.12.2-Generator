@@ -200,16 +200,27 @@ interface while the generator emits Ore Dictionary registrations:
 - The declared `tags` specification keeps MCreator's tag workflow active and
   writes inert JSON files under the unused `data/` folder.
 
+### Tools, armor, enchantments and attributes
+
+Tools generate the native 1.12.2 pickaxe, axe, spade, hoe, sword, shears and
+`ItemShield` subclasses. Shields use the native blocking use action and
+`isShield` contract, with a generated `blocking` item-model predicate and
+`<registryname>_0` blocking model. Custom shield blocking models are rejected
+explicitly instead of producing an invalid model; shield GUI textures are hidden.
+
+Armor, custom enchantments and custom attributes use the 1.12.2 material,
+registry and entity-construction APIs. Their remaining limitations are listed
+in the support matrix and in the changelog.
+
 ### Other mod elements
 
-All other 2026.3 mod elements (blocks, plants, fluids, dimensions, biomes,
-living entities, special entities, projectiles, GUIs, overlays, procedures,
-triggers, advancements, loot tables, structures, features, enchantments,
-attributes, potions, commands, functions, key bindings, particles, paintings,
-banner patterns, armor trims, tools, armor, item extensions, etc.) are planned
-for later batches. They are not silently generated: MCreator reports that no
-definition exists for the type in this generator, and the support matrix marks
-them as unavailable.
+All other 2026.3 mod elements (dimensions, biomes, living entities, special
+entities, projectiles, GUIs, overlays, global triggers, advancements, loot
+tables, structures, features, potions, commands, functions, key bindings,
+particles, paintings, banner patterns, armor trims, item extensions, etc.) are
+planned for later batches. They are not silently generated: MCreator reports
+that no definition exists for the type in this generator, and the support
+matrix marks them as unavailable.
 
 ## Name mappings and MCP compatibility
 
@@ -274,21 +285,27 @@ them as unavailable.
 8. **Tag coverage.** Only `ITEMS` and `BLOCKS` tags are mapped to the Ore
    Dictionary. Nested tag references are ignored, and non-item/block tag types
    have no 1.12.2 equivalent.
-9. **Toolchain provisioning.** A Java 8 toolchain is required for compilation and
+9. **Shield rendering.** Forge 1.12.2 binds the vanilla `builtin/entity` shield
+   renderer and banner-pattern decoration to `Items.SHIELD`; custom shields
+   therefore use a generated flat blocking model. Custom shield blocking models
+   (`blockingRenderType` 1 and 2) are rejected explicitly, and shield GUI
+   textures are hidden. Shield attribute modifiers apply in either hand because
+   per-slot attribute modifier entries are not fully mapped.
+10. **Toolchain provisioning.** A Java 8 toolchain is required for compilation and
    runtime. It is auto-detected when installed, otherwise downloaded through the
    Foojay resolver. Machines without network access must install a JDK 8 and let
    Gradle detect it (or set `org.gradle.java.installations.paths`).
-8. **Cache redirection under MCreator.** The wrapper-based builds created by
+11. **Cache redirection under MCreator.** The wrapper-based builds created by
    this project keep all Gradle caches in `<project>/caches/gradle`. MCreator's
    Tooling API removes `GRADLE_USER_HOME` from the environment and does not
    provide a generator-level setting for the Gradle user home, so a build
    started by MCreator's own Gradle integration uses MCreator's cache location.
    No generator resource can override that without patching MCreator.
-9. **Sound and language resources.** Sound definitions are only generated when
+12. **Sound and language resources.** Sound definitions are only generated when
    sound elements exist; the sound element type itself belongs to a later
    batch. The language file is written by MCreator's localization system from
    the localization keys declared by the definitions, not by a template.
-10. **No in-game verification in this batch.** Per the delivery specification,
+13. **No in-game verification in this batch.** Per the delivery specification,
     the generator stops after a zero-error compile/build and waits for the
     user's real-device test.
 

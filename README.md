@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-3.2.1-beta` |
+| Plugin version | `2026.3-1.0.0.1-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -112,9 +112,22 @@ not implemented yet.
 
 ## Tool limitations
 
+Shields are generated as a Forge 1.12.2 `ItemShield` subclass. Blocking uses the
+native use action, `isShield` damage handling, shield block/break sounds,
+durability, repair items, enchantability, rarity, tooltips, tool triggers and
+attribute modifiers. A `blocking` item-model predicate selects the generated
+`<registryname>_0` model while the shield is raised.
+
+Custom shield blocking models (`blockingRenderType` 1 and 2) are rejected
+explicitly, and shield GUI textures are hidden by the generator definition. Custom shields cannot use
+the vanilla `builtin/entity` shield renderer or banner-pattern rendering,
+because Forge 1.12.2 binds those to the vanilla shield item. Shield attribute
+modifiers currently apply in both hands, since per-slot attribute modifier
+entries are not fully mapped yet.
+
 Fishing rods are intentionally not adapted for the current 1.12.2 tool
-implementation. Shields are scheduled for the next batch; the current Shield
-tool mode falls back to a basic item.\n
+implementation.
+
 ## Tags and the Ore Dictionary
 
 Forge 1.12.2 has no tag registry. The generator keeps MCreator's tag editor
@@ -253,23 +266,22 @@ plugin-branch-2026.3/
 
 ## Verification performed in this batch
 
-1. `gradlew.bat build` with JDK 25: `BUILD SUCCESSFUL`.
+1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
+   `BUILD SUCCESSFUL`, producing
+   `build/dist/generator-forge-1.12.2.zip`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
-   `VALIDATION PASSED`.
-3. Headless MCreator renderer: the plugin is discovered and accepted by
-   MCreator 2026.3.44621, a workspace is created, and the base, tab, item,
-   recipe, basic/stairs/slab/fence/wall block and Ore Dictionary templates
-   render without errors.
-4. Generated sources are compiled with RetroFuturaGradle 2.0.6 / Gradle 9.8.0 /
-   Java 8 toolchain: `BUILD SUCCESSFUL`, producing `build/libs/modid-1.0.jar`.
-   The test workspace contains a two-tab item, five block bases with block
-   items and custom drops, crafting/smelting/brewing recipes, `ITEMS`/`BLOCKS`
-   tags mapped to Ore Dictionary entries, and block procedure triggers compiled
-   against a stub procedure. The procedure editor and generated procedure code
-   need the user real-device test.
+   `VALIDATION PASSED` (37 YAML documents, 89 FTL templates, 65 template
+   references).
+3. The generated shield class shape was compiled against the test workspace's
+   1.12.2 classes with `javac --release 8`: `PASSED`. This covers `ItemShield`,
+   `isShield`, the custom display name, enchantability, repair items and
+   offhand attribute modifiers.
+4. The generated `blocking` item-model override and `<registryname>_0` model
+   were validated as JSON and checked for the `minecraft:blocking` predicate and
+   generated model path.
 
-In-game verification is intentionally left to the user, as required by the
-delivery specification.
+Real-game blocking, durability loss, model switching and shield sounds are
+intentionally left to the user, as required by the delivery specification.
 
 ## Attribution
 
