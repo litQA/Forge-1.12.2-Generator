@@ -1,0 +1,13 @@
+global_templates:
+  - template: elementinits/potions.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNamePotions.java"
+
+localizationkeys:
+  - key: potion.effect.@registryname
+    mapto: potionName
+  - key: splash_potion.effect.@registryname
+    mapto: splashName
+  - key: lingering_potion.effect.@registryname
+    mapto: lingeringName
+  - key: tipped_arrow.effect.@registryname
+    mapto: arrowName

@@ -1,6 +1,7 @@
 # 1.12.2 potion types used by brewing recipes (POTION: values).
 # Potion effects (MobEffects.*) are a separate concept and are not used here.
 _default: PotionTypes.WATER
+_mcreator_map_template: "@JavaModNamePotions.@REGISTRYNAME"
 WATER: PotionTypes.WATER
 MUNDANE: PotionTypes.MUNDANE
 THICK: PotionTypes.THICK

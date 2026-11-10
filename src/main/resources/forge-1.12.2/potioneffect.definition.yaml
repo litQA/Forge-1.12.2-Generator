@@ -1,0 +1,14 @@
+templates:
+  - template: potioneffect/potioneffect.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/potion/@NAMEMobEffect.java"
+
+global_templates:
+  - template: elementinits/potioneffects.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameMobEffects.java"
+
+localizationkeys:
+  - key: effect.@modid.@registryname
+    mapto: effectName
+
+# 1.13+ honey curing and custom particle rendering are not available in 1.12.2.
+field_exclusions: [isCuredbyHoney, particle]

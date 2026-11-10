@@ -62,4 +62,22 @@
         <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace())/>
     </#if>
 </#macro>
+
+<#macro procedureOBJToNumberCode object="">
+    <#if hasProcedure(object) && object?is_hash && object.getDependencies??>
+        ((Number) <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace())/>).doubleValue()
+    <#elseif object??>
+        ${(object.getFixedValue())?c}
+    <#else>
+        0
+    </#if>
+</#macro>
+
+<#macro procedureOBJToItemstackCode object="">
+    <#if hasProcedure(object) && object?is_hash && object.getDependencies??>
+        (ItemStack) <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace())/>
+    <#else>
+        ItemStack.EMPTY
+    </#if>
+</#macro>
 <#-- @formatter:on -->

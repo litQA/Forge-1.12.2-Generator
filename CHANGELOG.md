@@ -1,5 +1,40 @@
 # Changelog
 
+# 2026.3-1.0.3.41-beta
+
+## New Content
+
+- Item extension element: Forge 1.12.2 `FurnaceFuelBurnTimeEvent` fuel values
+  and `IBehaviorDispenseItem` dispenser behavior, including fixed/procedure
+  fuel values and dispense conditions/returned itemstacks.
+- Loot table element: native 1.12.2 JSON in `assets/<modid>/loot_tables`, with
+  `LootTableList` registration, pools, rolls, bonus rolls, item/empty entries,
+  weights, count ranges and enchant-with-levels.
+- Potion effect element: custom `Potion` subclasses with category, color, icon,
+  attribute modifiers, instant/beneficial flags and optional
+  start/tick/expire/hurt/death procedures.
+- Potion item element: registered `PotionType` entries with multiple effects,
+  vanilla potion localization and splash/lingering brewing conversions.
+
+## Changes
+
+- Added 1.12.2 `MobEffects.*` mappings and custom potion-effect/potion-type
+  mapping templates.
+- Added base-mod initialization hooks for fuel events, dispenser behavior,
+  loot table registration and potion/potion-effect registration.
+- Added `procedureOBJToNumberCode` and `procedureOBJToItemstackCode` helpers for
+  item-extension procedures.
+
+## Known Limitations
+
+- Composting is unavailable in 1.12.2 and is hidden.
+- Loot modifiers, top-level table types and silk-touch/fortune/explosion-decay
+  entry conditions are hidden.
+- Honey curing and custom potion particle rendering are unavailable.
+- Potion items use vanilla potion/splash/lingering/tipped-arrow items; no custom
+  potion item class is generated.
+
+
 # 2026.3-1.0.2.40-beta
 
 ## Changes

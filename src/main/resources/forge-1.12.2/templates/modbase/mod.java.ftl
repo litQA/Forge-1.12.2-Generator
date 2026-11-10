@@ -47,6 +47,15 @@ public class ${JavaModName} {
 		<#if (types.items![])?has_content || (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.tools![])?has_content || (types.armors![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Items.class);
 		</#if>
+		<#if w.getGElementsOfType('itemextension')?filter(e -> e.enableFuel)?size != 0>
+		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Fuels.class);
+		</#if>
+		<#if w.hasElementsOfType("potioneffect")>
+		${package}.init.${JavaModName}MobEffects.init();
+		</#if>
+		<#if w.hasElementsOfType("potion")>
+		${package}.init.${JavaModName}Potions.init();
+		</#if>
 
 		proxy.preInit(event);
 	}
@@ -67,6 +76,12 @@ public class ${JavaModName} {
 
 	@Mod.EventHandler public void postInit(FMLPostInitializationEvent event) {
 		proxy.postInit(event);
+		<#if w.hasElementsOfType("loottable")>
+		${package}.init.${JavaModName}Loottables.load();
+		</#if>
+		<#if w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0>
+		${package}.init.${JavaModName}ItemExtensions.load();
+		</#if>
 	}
 
 	@Mod.EventHandler public void serverLoad(FMLServerStartingEvent event) {

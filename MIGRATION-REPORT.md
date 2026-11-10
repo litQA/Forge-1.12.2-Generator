@@ -215,6 +215,26 @@ tags fall back to Ore Dictionary entries. The invalid `TAG:` Java emission and
 the missing `ArmorMaterial` argument separator from the previous batch are
 fixed. Remaining limitations are listed in the support matrix and changelog.
 
+### Item extensions, loot tables and potions
+
+Item extensions use Forge 1.12.2's `FurnaceFuelBurnTimeEvent` for fuel values
+and `BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY` with `IBehaviorDispenseItem`
+for dispenser behavior. Fixed and procedure fuel values, fuel conditions,
+dispense conditions and returned itemstacks are supported. Composting has no
+1.12.2 equivalent and is excluded.
+
+Loot tables are native JSON under `assets/<modid>/loot_tables` and are
+registered with `LootTableList`. Pools, rolls, bonus rolls, item/empty entries,
+weights, count ranges and enchant-with-levels are supported. Modern table types,
+silk-touch/fortune/explosion-decay conditions and loot modifiers are excluded.
+
+Potion effects generate `Potion` subclasses with category, color, icon,
+attribute modifiers, instant/beneficial state and optional procedures. Potion
+items generate a registered `PotionType` with multiple `PotionEffect` entries,
+vanilla potion item localization and splash/lingering brewing conversions.
+Honey curing, custom particle rendering and a dedicated potion item class are
+not available in 1.12.2.
+
 ### Localization keys
 
 The generator now emits canonical 1.12.2 keys: item-like elements use
@@ -231,12 +251,11 @@ appearing in item tooltips and shield names.
 ### Other mod elements
 
 All other 2026.3 mod elements (dimensions, biomes, living entities, special
-entities, projectiles, GUIs, overlays, global triggers, advancements, loot
-tables, structures, features, potions, commands, functions, key bindings,
-particles, paintings, banner patterns, armor trims, item extensions, etc.) are
-planned for later batches. They are not silently generated: MCreator reports
-that no definition exists for the type in this generator, and the support
-matrix marks them as unavailable.
+entities, projectiles, GUIs, overlays, global triggers, advancements, structures,
+features, commands, functions, key bindings, particles, paintings, banner
+patterns, armor trims, etc.) are planned for later batches. They are not silently
+generated: MCreator reports that no definition exists for the type in this
+generator, and the support matrix marks them as unavailable.
 
 ## Name mappings and MCP compatibility
 
@@ -324,13 +343,25 @@ matrix marks them as unavailable.
 13. **No in-game verification in this batch.** Per the delivery specification,
     the generator stops after a zero-error compile/build and waits for the
     user's real-device test.
+14. **Item extension coverage.** Fuel and dispenser behavior are implemented;
+    composting is not available in 1.12.2 and is hidden. Procedure fuel and
+    dispense values use the preview procedure runtime.
+15. **Loot table coverage.** The generator emits native 1.12.2 JSON but does not
+    support modern loot modifiers, top-level table types or entry
+    silk-touch/fortune/explosion-decay conditions. Those fields are hidden.
+16. **Potion effect coverage.** Honey curing and custom particle rendering are
+    unavailable. Custom icons are rendered through the 1.12.2 potion HUD/
+    inventory hooks.
+17. **Potion item coverage.** Potion items are registered as `PotionType`
+    entries on vanilla potion items, not as a new item class. Splash and
+    lingering variants are added through custom brewing recipes.
 
 ## Verification log
 
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (30 YAML documents, 58 templates, 37 template references) |
+| Static validator | `VALIDATION PASSED` (42 YAML documents, 97 templates, 73 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |
@@ -340,6 +371,7 @@ matrix marks them as unavailable.
 | Basic cube block + block item + Ore Dictionary tags | `BUILD SUCCESSFUL`; the generated `<Mod>Blocks`/`<Mod>Items` classes register a block and its item, and `<Mod>OreDictionary` registers `oreTest`/`ingotTest` entries from `BLOCKS`/`ITEMS` tags. |
 | Stairs/slab/fence/wall bases and per-face textures | All block state/model JSON parses, and the generated block classes compile with RFG (`BUILD SUCCESSFUL`). |
 | Block procedure triggers | Generated right-click/added/tick calls were compiled against a stub procedure class (`BUILD SUCCESSFUL`). The procedure block templates and MCreator-side procedure editor need the user test. |
+| New elements (item extension, loot table, potion effect, potion item) | FreeMarker render + `javac --release 8` `PASSED`; loot table JSON parses with native 1.12.2 pools/entries/functions. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 
 The generated-mod build used the exact workspace base, templates and generated
@@ -352,7 +384,8 @@ MCP `stable` channel is intentionally not used because it contains Mojang
 official names (`setTranslationKey`, `createIcon`) that do not match the 1.12.2
 API used by MCreator.
 
-Remaining acceptance item: launch the Forge 1.12.2 client and verify the test
-item, creative tab and recipe in game. Per the delivery specification this
-real-device test is performed by the user before the next batch starts.
+Remaining acceptance item: launch the Forge 1.12.2 client and verify item
+extensions, loot tables, potion effects and potion items in game. Per the
+delivery specification this real-device test is performed by the user before the
+next batch starts.
 

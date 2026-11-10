@@ -1,0 +1,13 @@
+templates:
+  - template: loottable/loottable.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/loot_tables/@[getName()].json"
+
+global_templates:
+  - template: elementinits/loottables.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameLoottables.java"
+
+# 1.12.2 has no top-level loot table type or modern entry conditions.
+field_exclusions: [type, lootTableToModify,
+                   Pool.Entry.silkTouchMode, Pool.Entry.affectedByFortune,
+                   Pool.Entry.explosionDecay]

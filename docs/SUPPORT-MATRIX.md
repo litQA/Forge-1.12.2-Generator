@@ -31,18 +31,18 @@ feature list. This matrix records how the generator handles each feature group.
 | Projectile | Unavailable | Planned for batch 5. |
 | Armor | Degraded | Armor/tool batch supports four armor pieces and custom materials; custom armor models/layer textures must be supplied by the project. |
 | Tool | Degraded | Armor/tool batch supports the main 1.12.2 tool classes and shields. Shields use `ItemShield` with native blocking, durability, repair items, enchantability, rarity, tooltips, triggers and a generated blocking model; custom blocking models/GUI textures and banner decoration are unavailable. Fishing rods are intentionally unsupported. |
-| Item extension | Unavailable | Planned for batch 3. |
+| Item extension | Degraded | Furnace fuel burn time and dispenser behavior are implemented through `FurnaceFuelBurnTimeEvent` and `IBehaviorDispenseItem`; fixed/procedure fuel values and dispense conditions/result stacks are supported. Composting is unavailable in 1.12.2. |
 | GUI / Overlay | Unavailable | Planned for batch 6. |
 | Key binding | Unavailable | Planned for batch 6. |
 | Particle | Unavailable | Planned for batch 6. |
 | Procedure | Degraded | Preview in batch 3: chat, set/remove block, get current blockstate, get/set boolean and integer blockstate properties, play sound, give item, call procedure and return values. Block triggers: right click, added, destroyed by player, entity walk, scheduled/random tick and neighbour change. Global triggers and the remaining procedure block catalog are unavailable. |
 | Advancement / achievement | Unavailable | Planned for batch 8. |
-| Loot table | Unavailable | Planned for batch 2/8. |
+| Loot table | Degraded | Native 1.12.2 loot table JSON supports pools, rolls, bonus rolls, item/empty entries, weights, count ranges and enchant-with-levels. Top-level table types, entry silk-touch/fortune/explosion-decay conditions and loot modifiers are excluded. |
 | Enchantment | Degraded | Custom `Enchantment` subclasses support max level, weight-derived rarity, incompatibility, supported slots, supported-item tags/items and partial effect components. Modern item tags map to 1.12.2 `EnumEnchantmentType` categories or Ore Dictionary lookups; unsupported tags fall back explicitly. |
 | Attribute | Degraded | Custom `RangedAttribute` values are registered on players, selected entities or all living entities through `EntityConstructing`. 1.12.2 has no global attribute registry; modifier slot mapping remains partial. |
 | Damage type | Unavailable | No native 1.12.2 damage-type registry; planned as a degraded implementation over `DamageSource` subclasses. |
-| Potion effect | Unavailable | Planned for batch 3/5. |
-| Potion item | Unavailable | Planned for batch 3/5. |
+| Potion effect | Degraded | Custom `Potion` subclass with category, color, icon, attribute modifiers, instant/beneficial flags and optional start/tick/expire/hurt/death procedures. Honey curing and custom particle rendering are unavailable. |
+| Potion item | Degraded | Generates a registered `PotionType` with multiple effects, vanilla potion localization and splash/lingering brewing conversions. It uses vanilla potion/splash/lingering/tipped-arrow items and does not create a new item class. |
 | Structure / Feature | Unavailable | 1.12.2 has no data-driven worldgen registries; planned as Java-based generation in batch 8. |
 | Villager trade / profession | Unavailable | Planned for batch 8. |
 | Command / Function | Unavailable | Planned for batch 8. |
@@ -80,10 +80,10 @@ is marked Unavailable until its owning mod element is implemented.
 
 | Version | Representative new features | Status in this batch |
 | --- | --- | --- |
-| 2021.2 | Fluids, potion effects, buttons, extra redstone and fluid parameters, GUI checkbox | Unavailable |
+| 2021.2 | Fluids, potion effects, buttons, extra redstone and fluid parameters, GUI checkbox | Fluids and potion effects/items: Degraded. Other features: Unavailable. |
 | 2021.3 | Fluid tick rate, direction iterators, dungeon structure options | Unavailable |
 | 2022.1 | Villager trades, food merged into items, random and vector procedure blocks, entity models | Food: Direct (item). Other: Unavailable. |
-| 2022.2 | Item extension, features, projectile blocks, command arguments, block state procedures | Unavailable |
+| 2022.2 | Item extension, features, projectile blocks, command arguments, block state procedures | Item extension: Degraded (fuel/dispense). Other features: Unavailable. |
 | 2022.3 | Terrain adaptation (duplicate entry in the canonical list) | Unavailable |
 | 2022.4 | Feature mod element, entity ranged attacks, GUI text localization, item type blocks | Unavailable |
 | 2023.1 | Rendered entity GUIs, loot table procedure blocks, feature placements, armor JSON/OBJ models | Unavailable |
