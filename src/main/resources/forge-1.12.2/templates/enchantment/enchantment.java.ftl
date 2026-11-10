@@ -92,7 +92,7 @@ public class ${name}Enchantment extends Enchantment {
 
 	public ${name}Enchantment() {
 		super(Enchantment.Rarity.${weightToRarity(data.weight)}, ENCHANTMENT_CATEGORY, <@slotsCode data.supportedSlots/>);
-		setName("enchantment.${modid}.${registryname}");
+		setName("${modid}.${registryname}");
 		setRegistryName("${modid}:${registryname}");
 	}
 

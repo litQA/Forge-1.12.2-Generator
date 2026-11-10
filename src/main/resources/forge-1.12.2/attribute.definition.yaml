@@ -3,5 +3,5 @@ global_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameAttributes.java"
 
 localizationkeys:
-  - key: attribute.@modid.@registryname
+  - key: attribute.name.@modid.@registryname
     mapto: name

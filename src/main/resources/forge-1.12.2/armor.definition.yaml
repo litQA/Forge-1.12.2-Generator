@@ -26,16 +26,16 @@ base_types:
   - item
 
 localizationkeys:
-  - key: item.@modid.@registryname_helmet
+  - key: item.@modid.@registryname_helmet.name
     mapto: helmetName
     condition: enableHelmet
-  - key: item.@modid.@registryname_chestplate
+  - key: item.@modid.@registryname_chestplate.name
     mapto: bodyName
     condition: enableBody
-  - key: item.@modid.@registryname_leggings
+  - key: item.@modid.@registryname_leggings.name
     mapto: leggingsName
     condition: enableLeggings
-  - key: item.@modid.@registryname_boots
+  - key: item.@modid.@registryname_boots.name
     mapto: bootsName
     condition: enableBoots
 

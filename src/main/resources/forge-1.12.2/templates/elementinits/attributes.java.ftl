@@ -17,7 +17,7 @@ public class ${JavaModName}Attributes {
 
 	<#list (types.attributes![]) as attribute>
 	public static final IAttribute ${attribute.getModElement().getRegistryNameUpper()} =
-			new RangedAttribute(null, "attribute.${modid}.${attribute.getModElement().getRegistryName()}",
+			new RangedAttribute(null, "${modid}.${attribute.getModElement().getRegistryName()}",
 					${attribute.defaultValue?c}d, ${attribute.minValue?c}d, ${attribute.maxValue?c}d);
 	</#list>
 

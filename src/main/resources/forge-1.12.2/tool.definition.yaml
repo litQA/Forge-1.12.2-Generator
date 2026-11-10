@@ -13,7 +13,7 @@ base_types:
   - item
 
 localizationkeys:
-  - key: item.@modid.@registryname
+  - key: item.@modid.@registryname.name
     mapto: name
 
 field_exclusions: [blockingRenderType, blockingModelName, guiTexture,

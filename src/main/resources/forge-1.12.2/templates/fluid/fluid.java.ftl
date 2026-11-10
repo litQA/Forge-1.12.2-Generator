@@ -9,6 +9,7 @@ public class ${name}Fluid extends Fluid {
 	public ${name}Fluid() {
 		super("${registryname}", new ResourceLocation("${data.textureStill.format("%s:blocks/%s")}"),
 				new ResourceLocation("${data.textureFlowing.format("%s:blocks/%s")}"));
+		setUnlocalizedName("${modid}.${registryname}");
 		setLuminosity(${data.luminosity});
 		setDensity(${data.density});
 		setViscosity(${data.viscosity});

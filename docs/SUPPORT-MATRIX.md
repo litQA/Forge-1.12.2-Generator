@@ -60,6 +60,7 @@ feature list. This matrix records how the generator handles each feature group.
 | Generator fragments | Unavailable | The loader supports fragments, but the 1.12.2 build has no mixin/accesstransformer pipeline. No fragments are declared so no invalid mixin code can be generated. |
 | Empty `types` lists | Direct | All templates read `types.*` and guard with `?has_content`. |
 | Field inclusions / exclusions | Direct | Item, recipe and block definitions use field exclusions so unsupported fields are hidden without hiding grouped editor controls. |
+| Localization keys | Direct | Item/block/tool/armor keys use `.name`; enchantments use `enchantment.<modid>.<registryname>` and fluids use `fluid.<modid>.<registryname>`, matching the 1.12.2 API prefixes. |
 | MCP name mappings | Degraded | Full 1.12.2 lists are shipped for the implemented elements; unimplemented elements have no runtime mapping consumers yet. Unavailable modern values fall back to documented vanilla approximations. |
 | Resource generation (models, language, block states, loot tables, tags) | Degraded | Item models, block models/block states, block item models and language keys are generated. Loot tables are replaced by `getDrops` in batch 2; tag JSON is inert because the Ore Dictionary is the backend. |
 | Tags / Ore Dictionary | Degraded | MCreator's tag editor is preserved. `ITEMS` and `BLOCKS` tags are registered through `OreDictionary.registerOre` with conventional names for common `forge:` paths; nested tags and non-item/block tag types are ignored. |

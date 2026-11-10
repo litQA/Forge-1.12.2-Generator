@@ -1,5 +1,36 @@
 # Changelog
 
+# 2026.3-1.0.2.40-beta
+
+## Changes
+
+- Localization keys are normalized against the actual 1.12.2 lookup paths:
+  tools/shields and armor use `.name`, item and block/plant keys remain
+  `<type>.<modid>.<registryname>.name`, enchantment keys remain
+  `enchantment.<modid>.<registryname>`, and fluid names are namespaced while
+  keeping the Forge `fluid.<name>` lookup.
+- The test workspace language file was updated to the same canonical keys.
+
+## Fixes
+
+Fixed 5 bug(s).
+
+- Added the missing `.name` suffix to tool and shield localization keys.
+- Added the missing `.name` suffix to all four armor piece localization keys.
+- Removed the duplicate `enchantment.` prefix from generated enchantment names.
+- Added the namespaced unlocalized name to generated fluids so the language key
+  matches Forge's `fluid.<name>` lookup.
+- Aligned custom attribute names with the `attribute.name.<name>` tooltip
+  lookup and updated the definition key accordingly.
+
+## Known Limitations
+
+- Enchantment and fluid localization keys intentionally do not end in `.name`;
+  1.12.2 appends the type prefix and uses the resulting key directly.
+- Existing workspaces must regenerate their language file, and resource packs or
+  manual language overrides must migrate the old key names.
+
+
 # 2026.3-1.0.1.38-beta
 
 ## Changes

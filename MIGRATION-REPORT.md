@@ -215,6 +215,19 @@ tags fall back to Ore Dictionary entries. The invalid `TAG:` Java emission and
 the missing `ArmorMaterial` argument separator from the previous batch are
 fixed. Remaining limitations are listed in the support matrix and changelog.
 
+### Localization keys
+
+The generator now emits canonical 1.12.2 keys: item-like elements use
+`item.<modid>.<registryname>.name`, blocks/plants use
+`tile.<modid>.<registryname>.name`, and armor pieces append the piece name before
+`.name`. Enchantments keep `enchantment.<modid>.<registryname>` because
+`Enchantment.getName()` adds the `enchantment.` prefix and translates that exact
+key. Fluids keep `fluid.<modid>.<registryname>` and are given a namespaced
+unlocalized name so Forge's `fluid.` prefix produces the same key. Custom
+attributes use `attribute.name.<modid>.<registryname>` because 1.12.2 item
+tooltips prepend `attribute.name.`. This prevents raw localization keys from
+appearing in item tooltips and shield names.
+
 ### Other mod elements
 
 All other 2026.3 mod elements (dimensions, biomes, living entities, special

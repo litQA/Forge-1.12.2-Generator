@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.1.38-beta` |
+| Plugin version | `2026.3-1.0.2.40-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -127,6 +127,29 @@ entries are not fully mapped yet.
 
 Fishing rods are intentionally not adapted for the current 1.12.2 tool
 implementation.
+
+## Localization keys
+
+Generated keys follow the exact 1.12.2 lookup paths:
+
+| Element | Generated key |
+| --- | --- |
+| Item | `item.<modid>.<registryname>.name` |
+| Block / plant / fluid block | `tile.<modid>.<registryname>.name` |
+| Tool / shield | `item.<modid>.<registryname>.name` |
+| Armor piece | `item.<modid>.<registryname>_<piece>.name` |
+| Fluid | `fluid.<modid>.<registryname>` |
+| Fluid bucket | `item.<modid>.<registryname>_bucket.name` |
+| Enchantment | `enchantment.<modid>.<registryname>` |
+| Creative tab | `itemGroup.<modid>.<registryname>` |
+| Attribute | `attribute.name.<modid>.<registryname>` |
+
+Items, blocks, plants, tools, shields and armor use a `.name` suffix because
+1.12.2 `Item`/`Block` display-name lookups append it. Enchantments and fluids do
+not use `.name`: their APIs add the `enchantment.`/`fluid.` prefix and translate
+the resulting key directly. Attribute names are the exception that keeps
+`attribute.name.` as the complete tooltip lookup prefix. Generated code and
+definition keys must be kept in this form together.
 
 ## Tags and the Ore Dictionary
 
@@ -268,7 +291,7 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.1.38-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.2.40-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
    `VALIDATION PASSED` (37 YAML documents, 89 FTL templates, 65 template
    references).
@@ -283,10 +306,11 @@ plugin-branch-2026.3/
 6. The generated `blocking` item-model override and `<registryname>_0` model
    were validated as JSON and checked for the `minecraft:blocking` predicate and
    generated model path.
+7. The test workspace language file was checked for every canonical item, block,
+   tool, shield, armor, fluid and enchantment key; no expected key is missing.
 
-Real-game client startup, enchantment application, armor rendering and shield
-blocking remain for the user's in-game test, as required by the delivery
-specification.
+In-game item names, enchantment names and armor/shield tooltips remain for the
+user's next test, as required by the delivery specification.
 
 ## Attribution
 
