@@ -272,11 +272,12 @@ light, sky light, respawn/bed/weather behavior and player enter/leave procedures
 are mapped. Portals/igniters are generated with a custom `BlockPortal` subclass
 and rectangular frame scan; custom skyboxes use a six-face client
 `IRenderHandler`; portal and biome ambient/additions sounds use native sound
-events. Non-void custom dimensions use a generated noise generator with
-configurable main filler, fluid, sea level and a simplified aquifer; this is
-dimension-only and does not replace main-world/vanilla-nether generation. Full
-1.18 climate/spline terrain semantics, custom sun/moon rendering and ore-vein
-generation remain unavailable.
+events. Non-void custom dimensions use a generated noise generator with configurable
+main filler, fluid, sea level, a simplified aquifer and native
+`MapGenCaves`/`MapGenRavine` carving; this is dimension-only and does not replace
+main-world/vanilla-nether generation. Full 1.18 climate/spline terrain semantics,
+configurable biome weights, custom sun/moon rendering and ore-vein generation
+remain unavailable.
 
 ### Localization keys
 
@@ -438,6 +439,7 @@ generator, and the support matrix marks them as unavailable.
 | Biome entity spawn entries | `EntityZombie` and `EntityEnderman` spawn entries compile with fully-qualified classes from the `entityclasses` mapping; custom entities use `${package}.entity.<name>`. This avoids MCreator's import-formatter stripping wildcard imports. |
 | Portal/igniter, skybox, biome sounds, custom tree | Templates render and compile; portal JSON models parse; generated block/item registries compile; sound branches and custom tree class compile. |
 | Custom dimension terrain | Noise/filler/fluid/sea-level/aquifer generator renders and compiles with the dimension provider. |
+| Custom dimension caves | `MapGenCaves`/`MapGenRavine` overrides for custom filler render and compile; biome weight uses the fixed test weight 100. |
 | Mixin cave/Nether injection | Worldgen hooks and `World#getBiome` Mixin render and compile against Mixin 0.7.11; Mixin JSON parses. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 

@@ -1,5 +1,35 @@
 # Changelog
 
+# 2026.3-1.0.22.61-beta
+
+## Changes
+
+- Custom non-void dimensions now carve caves and ravines with
+  `MapGenCaves`/`MapGenRavine` after terrain generation. The carvers are adapted
+  to the configured main filler block and run unconditionally, so Caves are no
+  longer dependent on the hidden `defaultFeatures` UI.
+- Increased the default Overworld `BiomeManager.BiomeEntry` weight from 10 to
+  100 to make custom biomes easier to find without `/locatebiome`.
+
+## Weight Evaluation
+
+- 1.12.2 `BiomeManager.BiomeEntry` supports numeric weights, but the MCreator
+  26.3 Biome element has no weight field. Generator definitions only hide/show
+  existing fields, so a per-biome weight slider cannot be added from this
+  generator alone.
+- The generated code uses a fixed weight of 100 as a practical test workaround.
+  A real user-configurable weight requires an upstream Biome element/UI field or
+  a separate workspace configuration.
+- Cave and Nether biome injection is global through the Mixin `World#getBiome`
+  hook and does not depend on the surface biome weight.
+
+## Known Limitations
+
+- `defaultFeatures` remains hidden; caves are generated for all non-void custom
+  dimensions in this batch.
+- Weight is not user-configurable; it is a fixed test-oriented default.
+
+
 # 2026.3-1.0.21.60-beta
 
 ## Fixes

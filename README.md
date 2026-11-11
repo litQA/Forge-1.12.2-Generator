@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.21.60-beta` |
+| Plugin version | `2026.3-1.0.22.61-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -217,9 +217,9 @@ under `assets/<modid>/textures`; biome ambient/additions sounds use a client tic
 handler. Portals use a custom `ITeleporter` that places the entity at the
 destination spawn point, avoiding vanilla portal-search NPEs. Non-void custom
 dimensions use a generated noise terrain generator with configurable main
-filler, fluid, sea level and simplified aquifers. This is dimension-only; no
-main-world or vanilla Nether generation hooks are created. Custom sun/moon
-rendering remains hidden.
+filler, fluid, sea level, simplified aquifers, caves and ravines. This is
+dimension-only; no main-world or vanilla Nether generation hooks are created.
+Custom sun/moon rendering remains hidden.
 
 ## Tags and the Ore Dictionary
 
@@ -361,7 +361,7 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.21.60-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.22.61-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
    `VALIDATION PASSED` (45 YAML documents, 117 FTL templates, 93 template
    references).

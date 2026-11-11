@@ -41,7 +41,7 @@ public class ${name}Biome extends Biome {
 		WARM
 		<#else>
 		DESERT
-		</#if>, new BiomeManager.BiomeEntry(${JavaModName}Biomes.${REGISTRYNAME}, 10));
+		</#if>, new BiomeManager.BiomeEntry(${JavaModName}Biomes.${REGISTRYNAME}, 100));
 	}
 	</#if>
 

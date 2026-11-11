@@ -14,6 +14,8 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
+import net.minecraft.world.gen.MapGenCaves;
+import net.minecraft.world.gen.MapGenRavine;
 
 public class ${name}ChunkGenerator implements IChunkGenerator {
 
@@ -32,6 +34,8 @@ public class ${name}ChunkGenerator implements IChunkGenerator {
 	private final double heightScale;
 	private final double verticalScale;
 	private final boolean aquifers;
+	private final MapGenCaves caveGenerator;
+	private final MapGenRavine ravineGenerator;
 
 	public ${name}ChunkGenerator(World world, long seed) {
 		this.world = world;
@@ -43,6 +47,22 @@ public class ${name}ChunkGenerator implements IChunkGenerator {
 		this.verticalScale = Math.max(4.0D, 12.0D * ${data.verticalNoiseSize?c});
 		this.aquifers = ${data.generateAquifers?c};
 		this.world.setSeaLevel(SEA_LEVEL);
+		this.caveGenerator = new MapGenCaves() {
+			@Override protected boolean canReplaceBlock(IBlockState state, IBlockState filler) {
+				return state.getBlock() == FILLER.getBlock() || super.canReplaceBlock(state, filler);
+			}
+		};
+		this.ravineGenerator = new MapGenRavine() {
+			@Override protected void digBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ, boolean foundTop) {
+				if (data.getBlockState(x, y, z).getBlock() == FILLER.getBlock()) {
+					data.setBlockState(x, y, z, y - 1 < 10
+							? Blocks.FLOWING_LAVA.getDefaultState()
+							: Blocks.AIR.getDefaultState());
+				} else {
+					super.digBlock(data, x, y, z, chunkX, chunkZ, foundTop);
+				}
+			}
+		};
 	}
 
 	@Override public Chunk generateChunk(int chunkX, int chunkZ) {
@@ -100,6 +120,9 @@ public class ${name}ChunkGenerator implements IChunkGenerator {
 				}
 			}
 		}
+
+		this.caveGenerator.generate(this.world, chunkX, chunkZ, primer);
+		this.ravineGenerator.generate(this.world, chunkX, chunkZ, primer);
 
 		Chunk chunk = new Chunk(this.world, primer, chunkX, chunkZ);
 		byte[] biomeArray = chunk.getBiomeArray();
