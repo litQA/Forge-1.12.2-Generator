@@ -3,6 +3,18 @@ plugins {
     id 'com.gtnewhorizons.retrofuturagradle' version '2.0.6'
 }
 
+def modId = 'modid'
+try {
+    def mcmodInfo = new groovy.json.JsonSlurper().parse(file('src/main/resources/mcmod.info'))
+    if (mcmodInfo instanceof List && !mcmodInfo.isEmpty() && mcmodInfo[0].modid) {
+        modId = mcmodInfo[0].modid
+    }
+} catch (Throwable ignored) {
+    // The generated mcmod.info is normally available before Gradle configures.
+}
+def mixinConfigName = "mixins.${modId}.json"
+def mixinRefMapName = "mixins.${modId}.refmap.json"
+
 version = '1.0'
 group = 'com.example.modid'
 base {
@@ -40,7 +52,7 @@ configurations {
 }
 
 dependencies {
-    def mixin = modUtils.enableMixins('org.spongepowered:mixin:0.7.11-SNAPSHOT', 'mixins.modid.refmap.json')
+    def mixin = modUtils.enableMixins('org.spongepowered:mixin:0.7.11-SNAPSHOT', mixinRefMapName)
     implementation(mixin) { transitive = false }
     annotationProcessor 'org.ow2.asm:asm-debug-all:5.2'
     annotationProcessor 'com.google.guava:guava:24.1.1-jre'
@@ -51,7 +63,7 @@ dependencies {
 
 minecraft {
     extraTweakClasses.add('org.spongepowered.asm.launch.MixinTweaker')
-    extraRunJvmArguments.add('-Dmixin.configs=mixins.modid.json')
+    extraRunJvmArguments.add("-Dmixin.configs=${mixinConfigName}")
     extraRunJvmArguments.add('-Dmixin.debug=true')
 }
 
@@ -59,7 +71,7 @@ jar {
     manifest {
         attributes(
             'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-            'MixinConfigs': 'mixins.modid.json',
+            'MixinConfigs': mixinConfigName,
             'ForceLoadAsMod': 'true'
         )
     }

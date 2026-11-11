@@ -80,13 +80,13 @@ base_templates:
     condition: hasVariables()
   - template: modbase/worldgen_hooks.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/mixin/@JavaModNameWorldgenHooks.java"
-    condition: "${(biomes![])?has_content}"
+    condition: "${(types.biomes![])?has_content}"
   - template: modbase/worldbiome_mixin.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/mixin/@JavaModNameWorldBiomeMixin.java"
-    condition: "${(biomes![])?has_content}"
+    condition: "${(types.biomes![])?has_content}"
   - template: modbase/mixins.json.ftl
     writer: json
-    name: "@RESROOT/mixins.modid.json"
+    name: "@RESROOT/mixins.@modid.json"
   - template: elementinits/tabs.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
     condition: "${types.tabs?has_content}"

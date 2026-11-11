@@ -1,5 +1,19 @@
 # Changelog
 
+# 2026.3-1.0.20.59-beta
+
+## Fixes
+
+- Fixed the generated Mixin config filename: it now uses the actual mod id
+  (`mixins.<modid>.json`) instead of the literal `mixins.modid.json`.
+- Fixed missing generated Mixin sources: base templates now query
+  `types.biomes` instead of the unavailable `biomes` variable.
+- Build script now reads the mod id from `src/main/resources/mcmod.info` and
+  derives the config/refmap/manifest names dynamically.
+- Removed the stale `mixins.modid.json` from the test workspace; the next
+  regeneration should write `mixins.test.json` and the two Mixin source files.
+
+
 # 2026.3-1.0.19.58-beta
 
 ## Fixes

@@ -1,7 +1,7 @@
 <#-- @formatter:off -->
 <#assign caveBiome = "">
 <#assign netherBiome = "">
-<#list (biomes![]) as biome>
+<#list (types.biomes![]) as biome>
 	<#if biome.spawnInCaves && !caveBiome?has_content>
 		<#assign caveBiome = biome>
 	</#if>
