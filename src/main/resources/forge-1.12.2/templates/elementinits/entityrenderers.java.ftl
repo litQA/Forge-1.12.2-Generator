@@ -30,15 +30,8 @@ public class ${JavaModName}EntityRenderers {
 		</#list>
 
 		<#list (types.projectiles![]) as projectile>
-		<#if projectile.entityModel?has_content && projectile.entityModel != "Default">
 		RenderingRegistry.registerEntityRenderingHandler(${package}.entity.${projectile.getModElement().getName()}Entity.class,
 				${package}.client.renderer.${projectile.getModElement().getName()}Renderer::new);
-		<#else>
-		RenderingRegistry.registerEntityRenderingHandler(${package}.entity.${projectile.getModElement().getName()}Entity.class,
-				renderManager -> new RenderSnowball(renderManager,
-						<#if projectile.projectileItem.isEmpty()>Items.SNOWBALL<#else>${mappedMCItemToItem(projectile.projectileItem)}</#if>,
-						Minecraft.getMinecraft().getRenderItem()));
-		</#if>
 		</#list>
 
 		<#list (types.specialentities![]) as specialentity>

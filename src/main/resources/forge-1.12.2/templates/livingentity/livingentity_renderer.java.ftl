@@ -90,8 +90,8 @@ import ${package}.entity.${name}Entity;
 @SideOnly(Side.CLIENT)
 public class ${name}Renderer extends <#if humanoid>RenderBiped<${name}Entity><#else>RenderLiving<${name}Entity></#if> {
 
-	private static final ResourceLocation TEXTURE = <#if data.mobModelTexture?? && data.mobModelTexture.getRawTextureName()?has_content>
-			getTexture("${data.mobModelTexture.getRawTextureName()}")<#else>
+	private static final ResourceLocation TEXTURE = <#if (data.mobModelTexture!"")?has_content>
+			getTexture("${data.mobModelTexture}")<#else>
 			new ResourceLocation("${fallbackTexture}")</#if>;
 
 	public ${name}Renderer(RenderManager renderManager) {

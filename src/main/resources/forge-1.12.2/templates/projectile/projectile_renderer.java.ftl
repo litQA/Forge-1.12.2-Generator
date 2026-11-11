@@ -1,20 +1,26 @@
 <#-- @formatter:off -->
+<#include "/mcitems.ftl">
 package ${package}.client.renderer;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import ${package}.entity.${name}Entity;
 
+<#if data.entityModel?has_content && data.entityModel != "Default">
 @SideOnly(Side.CLIENT)
 public class ${name}Renderer extends Render<${name}Entity> {
 
-	private static final ResourceLocation TEXTURE = getTexture("${data.customModelTexture.getRawTextureName()}");
+	private static final ResourceLocation TEXTURE = getTexture("${data.customModelTexture}");
 	private final ModelBase model;
 
 	public ${name}Renderer(RenderManager renderManager) {
@@ -52,4 +58,15 @@ public class ${name}Renderer extends Render<${name}Entity> {
 	}
 
 }
+<#else>
+@SideOnly(Side.CLIENT)
+public class ${name}Renderer extends RenderSnowball<${name}Entity> {
+
+	public ${name}Renderer(RenderManager renderManager) {
+		super(renderManager, <#if data.projectileItem.isEmpty()>Items.SNOWBALL<#else>${mappedMCItemToItem(data.projectileItem)}</#if>,
+				Minecraft.getMinecraft().getRenderItem());
+	}
+
+}
+</#if>
 <#-- @formatter:on -->

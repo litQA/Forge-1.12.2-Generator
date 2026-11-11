@@ -3,4 +3,3 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/entity/@NAMEEntity.java"
   - template: projectile/projectile_renderer.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/@NAMERenderer.java"
-    condition: 'entityModel != "Default"'

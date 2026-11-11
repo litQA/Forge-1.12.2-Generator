@@ -91,10 +91,10 @@ public class ${JavaModName}Entities {
 				<#if entity.mobSpawningType??>
 				<#if entity.mobSpawningType?string == "waterCreature" || entity.mobSpawningType?string == "waterAmbient" || entity.mobSpawningType?string == "undergroundWaterCreature">
 				EntityLiving.SpawnPlacementType.IN_WATER
-				<#elseif entity.mobSpawningType?string == "creature">
+				<#elseif entity.mobSpawningType?string == "creature" || entity.mobSpawningType?string == "monster">
 				EntityLiving.SpawnPlacementType.ON_GROUND
 				<#else>
-				EntityLiving.SpawnPlacementType.NO_RESTRICTIONS
+				EntityLiving.SpawnPlacementType.IN_AIR
 				</#if>
 				<#else>
 				EntityLiving.SpawnPlacementType.ON_GROUND

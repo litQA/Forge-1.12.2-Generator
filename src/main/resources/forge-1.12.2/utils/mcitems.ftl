@@ -43,7 +43,12 @@
 
 <#function mcItemModElement mappedItem>
     <#assign elementName = mcItemRaw(mappedItem)?replace("CUSTOM:", "")>
-    <#return w.getWorkspace().getModElementByName(elementName)>
+    <#if w?? && w.getWorkspace()??>
+        <#assign element = (w.getWorkspace().getModElementByName(elementName))!"">
+    <#else>
+        <#assign element = "">
+    </#if>
+    <#return element>
 </#function>
 
 <#function splitMetadata mapped>
@@ -52,9 +57,16 @@
 
 <#function mappedMCItemToItemStackCode mappedItem amount=1>
     <#if mcItemIsCustom(mappedItem)>
+        <#assign rawCustom = mcItemRaw(mappedItem)>
+        <#if rawCustom?ends_with(".bucket")>
+            <#assign fluid = (w.getWorkspace().getModElementByName(rawCustom?replace("CUSTOM:", "")?replace(".bucket", "")))!"">
+            <#if fluid?has_content>
+            <#return "new ItemStack(" + package + ".init." + JavaModName + "Items." + fluid.getRegistryNameUpper() + "_BUCKET, " + amount + ")">
+            </#if>
+        </#if>
         <#assign element = mcItemModElement(mappedItem)>
-        <#if element??>
-            <#if element.getTypeString() == "block">
+        <#if element?has_content>
+            <#if element.getTypeString() == "block" || element.getTypeString() == "plant">
                 <#if element.getGeneratableElement().hasBlockItem>
             <#return "new ItemStack(" + package + ".init." + JavaModName + "Items." + element.getRegistryNameUpper() + "_ITEM, " + amount + ")">
                 <#else>
@@ -83,7 +95,7 @@
 <#function mappedMCItemToRegistryName mappedItem>
     <#if mcItemIsCustom(mappedItem)>
         <#assign element = mcItemModElement(mappedItem)>
-        <#if element??>
+        <#if element?has_content>
             <#return modid + ":" + element.getRegistryName()>
         <#else>
             <#return "minecraft:air">
@@ -97,7 +109,7 @@
 <#function mappedMCItemToIngameItemName mappedItem>
     <#if mcItemIsCustom(mappedItem)>
         <#assign element = mcItemModElement(mappedItem)>
-        <#if element??>
+        <#if element?has_content>
             <#return "\"item\": \"" + modid + ":" + element.getRegistryName() + "\"">
         <#else>
             <#return "\"item\": \"minecraft:air\"">
@@ -138,7 +150,7 @@
             <#return code?replace("/*@BlockState*/", "")>
         <#elseif code?starts_with("CUSTOM:")>
             <#assign element = w.getWorkspace().getModElementByName(code?replace("CUSTOM:", ""))>
-            <#if element?? && element.getTypeString() == "block">
+            <#if element?has_content && element.getTypeString() == "block">
                 <#return package + ".init." + JavaModName + "Blocks." + element.getRegistryNameUpper() + ".getDefaultState()">
             </#if>
             <#return "net.minecraft.init.Blocks.STONE.getDefaultState()">
@@ -153,7 +165,7 @@
     </#if>
     <#if mcItemIsCustom(mappedItem)>
         <#assign element = mcItemModElement(mappedItem)>
-        <#if element?? && element.getTypeString() == "block">
+        <#if element?has_content && element.getTypeString() == "block">
             <#return package + ".init." + JavaModName + "Blocks." + element.getRegistryNameUpper() + ".getDefaultState()">
         </#if>
         <#return "net.minecraft.init.Blocks.STONE.getDefaultState()">
@@ -182,7 +194,7 @@
             <#return code?replace("/*@BlockState*/", "") + ".getBlock()">
         <#elseif code?starts_with("CUSTOM:")>
             <#assign element = w.getWorkspace().getModElementByName(code?replace("CUSTOM:", ""))>
-            <#if element?? && element.getTypeString() == "block">
+            <#if element?has_content && element.getTypeString() == "block">
                 <#return package + ".init." + JavaModName + "Blocks." + element.getRegistryNameUpper()>
             </#if>
             <#return "net.minecraft.init.Blocks.STONE">
@@ -196,7 +208,7 @@
     </#if>
     <#if mcItemIsCustom(mappedItem)>
         <#assign element = mcItemModElement(mappedItem)>
-        <#if element?? && element.getTypeString() == "block">
+        <#if element?has_content && element.getTypeString() == "block">
             <#return package + ".init." + JavaModName + "Blocks." + element.getRegistryNameUpper()>
         </#if>
         <#return "net.minecraft.init.Blocks.STONE">

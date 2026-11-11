@@ -1,6 +1,6 @@
 # Changelog
 
-# 2026.3-1.0.26.69-beta
+# 2026.3-1.0.26.70-beta
 
 ## New Content
 
@@ -45,11 +45,24 @@
 
 ## Fixes
 
-Fixed 1 bug(s).
+Fixed 6 bug(s).
 - Overlay component positions now resolve `GUIComponent.AnchorPoint.name()`
   instead of the localized `toString()` value. The previous comparison never
   matched, so anchors such as `BOTTOM_LEFT`/`BOTTOM_RIGHT` rendered empty
   coordinates.
+- Living entity renderers now read `mobModelTexture` as the string field used by
+  the 2026.3 element model, instead of calling `TextureHolder` methods.
+- Special entity templates now use the standard `REGISTRYNAME` token for the
+  boat item instead of an undefined `specialentity` variable.
+- Custom MCItem mapping now emits `_ITEM` for plant block items and
+  `_BUCKET` for fluid bucket references; unresolved custom items fall back to
+  `ItemStack.EMPTY` instead of failing template rendering.
+- Projectile renderers are always generated and branch internally between
+  `RenderSnowball` and the Java-model renderer; this removes the invalid
+  `entityModel != "Default"` definition condition.
+- Entity spawn placement uses `IN_AIR` for unrestricted spawning because
+  1.12.2 `EntityLiving.SpawnPlacementType` has no `NO_RESTRICTIONS`; monsters
+  and creatures use `ON_GROUND`.
 
 ## Known Limitations
 

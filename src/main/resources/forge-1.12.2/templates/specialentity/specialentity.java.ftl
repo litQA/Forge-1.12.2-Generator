@@ -37,7 +37,7 @@ public class ${name}Entity extends EntityBoat <#if data.isBoatChestVariant()>imp
 	}
 
 	@Override public Item getItemBoat() {
-		return ${JavaModName}Items.${specialentity.getModElement().getRegistryNameUpper()};
+		return ${JavaModName}Items.${REGISTRYNAME};
 	}
 
 	<#if data.isBoatChestVariant()>
