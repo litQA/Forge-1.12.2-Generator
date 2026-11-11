@@ -142,24 +142,28 @@ public class ${name}Overlay {
 }
 
 <#macro calculatePosition component x_offset=0 y_offset=0>
-	<#assign anchor = (component.anchorPoint!"TOP_LEFT")>
-	<#if anchor?string == "TOP_LEFT">
+	<#if component.anchorPoint??>
+		<#assign anchorName = component.anchorPoint.name()>
+	<#else>
+		<#assign anchorName = "TOP_LEFT">
+	</#if>
+	<#if anchorName == "TOP_LEFT">
 		${component.x + x_offset}, ${component.y + y_offset}
-	<#elseif anchor?string == "TOP_CENTER">
+	<#elseif anchorName == "TOP_CENTER">
 		width / 2 + ${component.x - (213 - x_offset)}, ${component.y + y_offset}
-	<#elseif anchor?string == "TOP_RIGHT">
+	<#elseif anchorName == "TOP_RIGHT">
 		width - ${427 - (component.x + x_offset)}, ${component.y + y_offset}
-	<#elseif anchor?string == "CENTER_LEFT">
+	<#elseif anchorName == "CENTER_LEFT">
 		${component.x + x_offset}, height / 2 + ${component.y - (120 - y_offset)}
-	<#elseif anchor?string == "CENTER">
+	<#elseif anchorName == "CENTER">
 		width / 2 + ${component.x - (213 - x_offset)}, height / 2 + ${component.y - (120 - y_offset)}
-	<#elseif anchor?string == "CENTER_RIGHT">
+	<#elseif anchorName == "CENTER_RIGHT">
 		width - ${427 - (component.x + x_offset)}, height / 2 + ${component.y - (120 - y_offset)}
-	<#elseif anchor?string == "BOTTOM_LEFT">
+	<#elseif anchorName == "BOTTOM_LEFT">
 		${component.x + x_offset}, height - ${240 - (component.y + y_offset)}
-	<#elseif anchor?string == "BOTTOM_CENTER">
+	<#elseif anchorName == "BOTTOM_CENTER">
 		width / 2 + ${component.x - (213 - x_offset)}, height - ${240 - (component.y + y_offset)}
-	<#elseif anchor?string == "BOTTOM_RIGHT">
+	<#elseif anchorName == "BOTTOM_RIGHT">
 		width - ${427 - (component.x + x_offset)}, height - ${240 - (component.y + y_offset)}
 	</#if>
 </#macro>

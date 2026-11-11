@@ -1,6 +1,6 @@
 # Changelog
 
-# 2026.3-1.0.26.68-beta
+# 2026.3-1.0.26.69-beta
 
 ## New Content
 
@@ -42,6 +42,14 @@
 - Added Java model copying through `sources_setup_tasks` and
   `javamodel.java.ftl`.
 - Reworked AI task include paths and added `aiconditions.java.ftl`.
+
+## Fixes
+
+Fixed 1 bug(s).
+- Overlay component positions now resolve `GUIComponent.AnchorPoint.name()`
+  instead of the localized `toString()` value. The previous comparison never
+  matched, so anchors such as `BOTTOM_LEFT`/`BOTTOM_RIGHT` rendered empty
+  coordinates.
 
 ## Known Limitations
 

@@ -420,7 +420,7 @@ generator, and the support matrix marks them as unavailable.
     `javax.annotation.Nullable` because that annotation is not on the generator's
     Java 8 compile classpath.
 
-## Entities and client UI (2026.3-1.0.26.68-beta)
+## Entities and client UI (2026.3-1.0.26.69-beta)
 
 This batch adds living entities, projectiles, special entities, GUIs,
 overlays, key bindings and particles.
