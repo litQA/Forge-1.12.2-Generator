@@ -81,6 +81,12 @@ import ${package}.init.${JavaModName}Particles;
 	<#if hasProcedure(data.scale)>
 	@Override public void renderParticle(BufferBuilder buffer, Entity entity, float partialTicks, float rotationX,
 			float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+		double x = this.posX;
+		double y = this.posY;
+		double z = this.posZ;
+		World world = this.world;
+		double age = this.particleAge;
+		double scale = partialTicks;
 		this.particleScale = this.originalScale * (float) <@procedureOBJToNumberCode data.scale/>;
 		super.renderParticle(buffer, entity, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
 	}
@@ -101,6 +107,8 @@ import ${package}.init.${JavaModName}Particles;
 		double z = this.posZ;
 		World world = this.world;
 		Entity entity = null;
+		double age = this.particleAge;
+		double scale = 1.0D;
 		this.prevParticleAngle = this.particleAngle;
 		this.particleAngle = (float) <@procedureOBJToNumberCode data.rotationProvider/>;
 		</#if>
@@ -117,6 +125,8 @@ import ${package}.init.${JavaModName}Particles;
 		double z = this.posZ;
 		World world = this.world;
 		Entity entity = null;
+		double age = this.particleAge;
+		double scale = 1.0D;
 		if (<@procedureOBJToConditionCode data.additionalExpiryCondition/>)
 			this.setExpired();
 		</#if>
