@@ -1,5 +1,31 @@
 # Changelog
 
+# 2026.3-1.0.15.54-beta
+
+## Changes
+
+- Added a custom `IChunkGenerator` for dimensions:
+  - configurable main filler block
+  - configurable fluid block
+  - configurable sea level
+  - multi-octave noise heightmap with horizontal/vertical noise scales
+  - simplified aquifer pockets using a second 2D noise field
+  - biome top/filler surface generation and biome decoration
+- Custom terrain is only used by custom dimensions; no main-world or vanilla
+  Nether generation hook is generated.
+
+## Known Limitations
+
+- This is a 1.18-style approximation, not a full density/spline/climate engine.
+  Climate is still selected through the dimension's biome provider, and the
+  aquifer uses a simplified noise field rather than the full 1.18 aquifer
+  scheduler.
+- `worldGenType == Void gen` keeps the empty void generator; custom filler/fluid
+  fields apply to the non-void custom generator.
+- `generateOreVeins` remains hidden because no compatible ore-vein engine is
+  generated in this batch.
+
+
 # 2026.3-1.0.14.53-beta
 
 ## Fixes

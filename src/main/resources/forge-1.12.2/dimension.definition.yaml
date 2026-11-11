@@ -6,6 +6,8 @@ templates:
   - template: dimension/chunkgenerator_void.java.ftl
     condition: "worldGenType %= Void gen"
     name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEChunkGeneratorVoid.java"
+  - template: dimension/chunkgenerator_custom.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEChunkGenerator.java"
   - template: dimension/teleporter.java.ftl
     condition: enablePortal
     name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMETeleporter.java"
@@ -43,8 +45,7 @@ global_templates:
 # 1.12.2 uses WorldProvider + DimensionType; modern dimension JSON, custom
 # skyboxes, aquifers, noise settings, raids/piglins and portal services are not
 # available in this batch.
-field_exclusions: [biomesInDimensionCaves, mainFillerBlock, fluidBlock, seaLevel,
-                   generateOreVeins, generateAquifers, horizontalNoiseSize, verticalNoiseSize,
+field_exclusions: [biomesInDimensionCaves, generateOreVeins,
                    infiniburnTag, skyType, enableCustomSunMoonTextures,
                    sunTexture, moonTexture, sunHeightAffectsFog,
                    piglinSafe, hasRaids, minMonsterSpawnLightLimit, maxMonsterSpawnLightLimit,

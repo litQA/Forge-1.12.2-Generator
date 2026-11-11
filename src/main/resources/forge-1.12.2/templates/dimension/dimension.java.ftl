@@ -34,12 +34,8 @@ public class ${name}WorldProvider extends WorldProvider {
 	@Override public IChunkGenerator createChunkGenerator() {
 		<#if data.worldGenType == "Void gen">
 		return new ${name}ChunkGeneratorVoid(this.world);
-		<#elseif data.worldGenType == "Nether like gen">
-		return new ChunkGeneratorHell(this.world, this.world.getWorldInfo().isMapFeaturesEnabled(), this.world.getSeed());
-		<#elseif data.worldGenType == "End like gen">
-		return new ChunkGeneratorEnd(this.world, this.world.getWorldInfo().isMapFeaturesEnabled(), this.world.getSeed(), BlockPos.ORIGIN);
 		<#else>
-		return new ChunkGeneratorOverworld(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled(), "");
+		return new ${name}ChunkGenerator(this.world, this.world.getSeed());
 		</#if>
 	}
 

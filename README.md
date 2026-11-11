@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.14.53-beta` |
+| Plugin version | `2026.3-1.0.15.54-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -213,9 +213,11 @@ scale, respawn/bed/weather behavior and player enter/leave procedures are
 mapped. Custom six-face skyboxes use a client `IRenderHandler` and workspace textures
 under `assets/<modid>/textures`; biome ambient/additions sounds use a client tick
 handler. Portals use a custom `ITeleporter` that places the entity at the
-destination spawn point, avoiding vanilla portal-search NPEs. Modern
-noise/aquifer settings, custom filler/fluid/sea-level terrain and custom
-sun/moon rendering are hidden.
+destination spawn point, avoiding vanilla portal-search NPEs. Non-void custom
+dimensions use a generated noise terrain generator with configurable main
+filler, fluid, sea level and simplified aquifers. This is dimension-only; no
+main-world or vanilla Nether generation hooks are created. Custom sun/moon
+rendering remains hidden.
 
 ## Tags and the Ore Dictionary
 
@@ -357,9 +359,9 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.14.53-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.15.54-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
-   `VALIDATION PASSED` (45 YAML documents, 113 FTL templates, 89 template
+   `VALIDATION PASSED` (45 YAML documents, 114 FTL templates, 90 template
    references).
 3. The full `test_workspaces/test-1/src/main/java` source tree was compiled
    against the 1.12.2 classes with `javac --release 8`: `PASSED`. This includes
@@ -401,7 +403,9 @@ plugin-branch-2026.3/
 17. Portal/igniter, skybox, biome sound, custom-tree and custom-teleporter
     templates were rendered and compiled with `javac --release 8`; portal JSON
     models parsed, and the generated block/item registries compiled.
-18. The built zip was copied to
+18. The custom terrain generator's noise, filler/fluid/sea-level and aquifer
+    path was rendered and compiled with `javac --release 8`.
+19. The built zip was copied to
     `MCreatorEAP2026344621/plugins/generator-forge-1.12.2.zip`; source and
     installed SHA-256 hashes match.
 

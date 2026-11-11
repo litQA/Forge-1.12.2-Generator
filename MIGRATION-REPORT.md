@@ -263,8 +263,11 @@ light, sky light, respawn/bed/weather behavior and player enter/leave procedures
 are mapped. Portals/igniters are generated with a custom `BlockPortal` subclass
 and rectangular frame scan; custom skyboxes use a six-face client
 `IRenderHandler`; portal and biome ambient/additions sounds use native sound
-events. Modern noise/aquifer settings, custom sun/moon rendering and custom
-filler/fluid/sea-level terrain remain hidden.
+events. Non-void custom dimensions use a generated noise generator with
+configurable main filler, fluid, sea level and a simplified aquifer; this is
+dimension-only and does not replace main-world/vanilla-nether generation. Full
+1.18 climate/spline terrain semantics, custom sun/moon rendering and ore-vein
+generation remain unavailable.
 
 ### Localization keys
 
@@ -389,21 +392,23 @@ generator, and the support matrix marks them as unavailable.
 17. **Potion item coverage.** Potion items are registered as `PotionType`
     entries on vanilla potion items, not as a new item class. Splash and
     lingering variants are added through custom brewing recipes.
-18. **Dimension/biome coverage.** Dimensions use vanilla 1.12.2 chunk generators
-    rather than custom filler/fluid terrain. Portals use a simplified rectangular
-    frame scan and do not implement every vanilla `BlockPortal.Size` rule;
-    custom portal conditions/particles and custom sun/moon textures remain
-    hidden. Biome custom trees are a limited trunk/branch/vine/fruit subset, and
-    modern climate/noise/structure features remain hidden. Generated sources
-    avoid `javax.annotation.Nullable` because that annotation is not on the
-    generator's Java 8 compile classpath.
+18. **Dimension/biome coverage.** Non-void custom dimensions use a custom noise
+    generator with filler/fluid/sea-level and simplified aquifer support; this is
+    not the full 1.18 density/spline/climate engine, and it is not a main-world or
+    vanilla-nether generation hook. Portals use a simplified rectangular frame
+    scan and do not implement every vanilla `BlockPortal.Size` rule; custom
+    portal conditions/particles and custom sun/moon textures remain hidden.
+    Biome custom trees are a limited trunk/branch/vine/fruit subset, and modern
+    climate/noise/structure features remain hidden. Generated sources avoid
+    `javax.annotation.Nullable` because that annotation is not on the generator's
+    Java 8 compile classpath.
 
 ## Verification log
 
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (45 YAML documents, 113 templates, 89 template references) |
+| Static validator | `VALIDATION PASSED` (45 YAML documents, 114 templates, 90 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |
@@ -419,6 +424,7 @@ generator, and the support matrix marks them as unavailable.
 | Legacy metadata block references | `Blocks.STONE#3` renders as `Blocks.STONE.getStateFromMeta(3)` and compiles; the same shared helper is used by biome and other block-state templates. |
 | Biome entity spawn entries | `EntityZombie` and `EntityEnderman` spawn entries compile with fully-qualified classes from the `entityclasses` mapping; custom entities use `${package}.entity.<name>`. This avoids MCreator's import-formatter stripping wildcard imports. |
 | Portal/igniter, skybox, biome sounds, custom tree | Templates render and compile; portal JSON models parse; generated block/item registries compile; sound branches and custom tree class compile. |
+| Custom dimension terrain | Noise/filler/fluid/sea-level/aquifer generator renders and compiles with the dimension provider. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 
 The generated-mod build used the exact workspace base, templates and generated
