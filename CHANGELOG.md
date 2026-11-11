@@ -1,5 +1,25 @@
 # Changelog
 
+# 2026.3-1.0.25.64-beta
+
+## Fixes
+
+- Cave-biome injection no longer applies at `y=0`. 1.12.2 biome decoration
+  commonly calls `World#getBiome` with a y=0 position, so the previous
+  `y < 50` rule made surface decoration use the cave biome. That caused:
+  - the cave biome's custom tree to appear in vanilla biomes such as extreme
+    hills
+  - vanilla biomes to lose their normal tree decoration
+  - the custom surface biome to appear absent/incorrect during decoration
+- The cave biome now applies only to `0 < y < 50`; the Nether injection is
+  unchanged.
+
+## Verification
+
+- Worldgen hook/Mixin templates compile.
+- Weighted biome registration and the five-range weight proxy are unchanged.
+
+
 # 2026.3-1.0.24.63-beta
 
 ## Changes

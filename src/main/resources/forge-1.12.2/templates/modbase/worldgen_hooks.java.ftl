@@ -28,7 +28,7 @@ public final class ${JavaModName}WorldgenHooks {
 
 	public static Biome getBiome(World world, BlockPos pos, Biome original) {
 		int dimension = world.provider.getDimension();
-		if (dimension == 0 && pos.getY() < 50 && CAVE_BIOME != null) {
+		if (dimension == 0 && pos.getY() > 0 && pos.getY() < 50 && CAVE_BIOME != null) {
 			return CAVE_BIOME;
 		}
 		if (dimension == -1 && NETHER_BIOME != null) {
