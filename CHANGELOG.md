@@ -1,5 +1,25 @@
 # Changelog
 
+# 2026.3-1.0.21.60-beta
+
+## Fixes
+
+- Moved `WorldgenHooks` from `<package>.mixin` to `<package>.worldgen`.
+  Mixin treats classes in the configured mixin package as mixin classes, so
+  directly calling a helper in that package crashed with
+  `NoClassDefFoundError: ...WorldgenHooks is a mixin class and cannot be
+  referenced directly`. The Mixin class now imports the helper from the normal
+  `worldgen` package.
+- The generated Mixin JSON now contains only the actual Mixin class.
+
+## Migration
+
+- Delete the old generated file
+  `src/main/java/<package>/mixin/<Mod>WorldgenHooks.java` after regenerating.
+  The new file is
+  `src/main/java/<package>/worldgen/<Mod>WorldgenHooks.java`.
+
+
 # 2026.3-1.0.20.59-beta
 
 ## Fixes

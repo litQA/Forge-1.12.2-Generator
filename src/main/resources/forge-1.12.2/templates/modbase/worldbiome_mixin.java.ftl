@@ -1,6 +1,7 @@
 <#-- @formatter:off -->
 package ${package}.mixin;
 
+import ${package}.worldgen.${JavaModName}WorldgenHooks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;

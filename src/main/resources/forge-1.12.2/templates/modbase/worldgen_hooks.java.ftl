@@ -9,7 +9,7 @@
 		<#assign netherBiome = biome>
 	</#if>
 </#list>
-package ${package}.mixin;
+package ${package}.worldgen;
 
 import ${package}.init.${JavaModName}Biomes;
 import net.minecraft.util.math.BlockPos;

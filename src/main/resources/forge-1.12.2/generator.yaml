@@ -79,7 +79,7 @@ base_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModNameVariables.java"
     condition: hasVariables()
   - template: modbase/worldgen_hooks.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/mixin/@JavaModNameWorldgenHooks.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/worldgen/@JavaModNameWorldgenHooks.java"
     condition: "${(types.biomes![])?has_content}"
   - template: modbase/worldbiome_mixin.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/mixin/@JavaModNameWorldBiomeMixin.java"
