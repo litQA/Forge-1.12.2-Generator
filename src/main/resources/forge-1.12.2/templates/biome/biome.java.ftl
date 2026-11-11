@@ -9,6 +9,15 @@
 		<#return (mappedEntity?has_content && mappedEntity != "null")?then(mappedEntity, "net.minecraft.entity.Entity")>
 	</#if>
 </#function>
+<#function climateRangeWeight point>
+	<#assign climateLength = point.max - point.min>
+	<#if climateLength lt 0><#assign climateLength = -climateLength></#if>
+	<#if climateLength gt 4><#assign climateLength = 4></#if>
+	<#assign climateWeight = (climateLength / 4 * 100)?round>
+	<#if climateWeight lt 0><#assign climateWeight = 0></#if>
+	<#if climateWeight gt 100><#assign climateWeight = 100></#if>
+	<#return climateWeight>
+</#function>
 package ${package}.world.biome;
 
 import ${package}.init.${JavaModName}Biomes;
@@ -31,12 +40,11 @@ public class ${name}Biome extends Biome {
 
 	<#if data.spawnBiome>
 	public static void init() {
-		<#assign tempMin = (data.genTemperature.min)!-2.0>
-		<#assign tempMax = (data.genTemperature.max)!2.0>
-		<#assign tempLength = tempMax - tempMin>
-		<#if tempLength lt 0><#assign tempLength = -tempLength></#if>
-		<#if tempLength gt 4><#assign tempLength = 4></#if>
-		<#assign biomeWeight = (tempLength / 4 * 100)?round>
+		<#assign biomeWeight = climateRangeWeight(data.genTemperature)
+				+ climateRangeWeight(data.genHumidity)
+				+ climateRangeWeight(data.genContinentalness)
+				+ climateRangeWeight(data.genErosion)
+				+ climateRangeWeight(data.genWeirdness)>
 		<#if biomeWeight lt 1><#assign biomeWeight = 1></#if>
 		BiomeManager.addSpawnBiome(${JavaModName}Biomes.${REGISTRYNAME});
 		BiomeManager.addBiome(BiomeManager.BiomeType.

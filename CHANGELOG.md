@@ -1,5 +1,27 @@
 # Changelog
 
+# 2026.3-1.0.24.63-beta
+
+## Changes
+
+- Exposed five Biome climate rows for a 1.12.2 weight proxy:
+  `genTemperature`, `genHumidity`, `genContinentalness`, `genErosion`,
+  `genWeirdness`.
+- Each row maps `abs(max-min)/4` to `0..100`; the five values are summed to a
+  final `0..500` weight, with a minimum of 1.
+- `genDepth` remains hidden and is not part of the weight sum.
+- The test biome now has all five ranges set to `[-2,2]`, producing weight 500.
+
+## Evaluation
+
+- This is safe and easy to implement because all five ranges are already stored
+  in the Biome element and `BiomeManager.BiomeEntry` accepts an integer weight.
+- It remains a proxy: the five climate fields do not drive modern climate/noise
+  in 1.12.2; they only produce the Overworld surface biome weight.
+- Custom dimension biome selection and the Mixin cave/Nether injections do not
+  use this weight.
+
+
 # 2026.3-1.0.23.62-beta
 
 ## Changes

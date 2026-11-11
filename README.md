@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.23.62-beta` |
+| Plugin version | `2026.3-1.0.24.63-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -203,10 +203,12 @@ types and optional overworld biome placement. Stronghold and village placement
 are supported. Custom trees use a high-value Java generator subset: trunk,
 branches, vines, fruits and minimum height. `spawnInCaves` and
 `spawnBiomeNether` drive generated Mixin-based global cave/Nether biome lookup
-injection. The `genTemperature` climate row is exposed as a 1.12.2 biome-weight
-proxy: `abs(max-min)/4 * 100`, clamped to `1..100`. Full modern tree features,
-other modern climate/noise fields, custom particles, mood/music sound fields
-and modern structure placement remain hidden.
+injection. Five climate rows (`genTemperature`, `genHumidity`,
+`genContinentalness`, `genErosion`, `genWeirdness`) are exposed as a 1.12.2
+biome-weight proxy: each maps `abs(max-min)/4` to `0..100`, summed to `0..500`
+(minimum 1). Full modern tree features, modern climate/noise semantics, custom
+particles, mood/music sound fields and modern structure placement remain
+hidden.
 
 **Dimension** generates a `WorldProvider`, a `DimensionType` registration, a
 custom biome provider and optional portal/igniter assets. Normal, Nether, End
@@ -362,7 +364,7 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.23.62-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.24.63-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
    `VALIDATION PASSED` (45 YAML documents, 117 FTL templates, 93 template
    references).
