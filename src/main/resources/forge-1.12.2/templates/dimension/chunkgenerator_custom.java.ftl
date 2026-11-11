@@ -13,9 +13,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
-import net.minecraft.world.gen.feature.WorldGenLakes;
 
 public class ${name}ChunkGenerator implements IChunkGenerator {
 
@@ -27,7 +25,8 @@ public class ${name}ChunkGenerator implements IChunkGenerator {
 
 	private final World world;
 	private final Random random;
-	private final NoiseGeneratorOctaves heightNoise;
+	private final NoiseGeneratorPerlin heightNoise;
+	private final NoiseGeneratorPerlin detailNoise;
 	private final NoiseGeneratorPerlin aquiferNoise;
 	private final double heightScale;
 	private final double verticalScale;
@@ -36,7 +35,8 @@ public class ${name}ChunkGenerator implements IChunkGenerator {
 	public ${name}ChunkGenerator(World world, long seed) {
 		this.world = world;
 		this.random = new Random(seed);
-		this.heightNoise = new NoiseGeneratorOctaves(this.random, 4);
+		this.heightNoise = new NoiseGeneratorPerlin(this.random, 4);
+		this.detailNoise = new NoiseGeneratorPerlin(this.random, 2);
 		this.aquiferNoise = new NoiseGeneratorPerlin(this.random, 2);
 		this.heightScale = Math.max(0.005D, 0.02D * ${data.horizontalNoiseSize?c});
 		this.verticalScale = Math.max(4.0D, 12.0D * ${data.verticalNoiseSize?c});
@@ -50,14 +50,14 @@ public class ${name}ChunkGenerator implements IChunkGenerator {
 		Biome[] biomes = this.world.getBiomeProvider().getBiomesForGeneration(
 				null, chunkX * 16, chunkZ * 16, 16, 16);
 
-		double[] heightMap = new double[256];
-		this.heightNoise.generateNoiseOctaves(heightMap, chunkX * 16, chunkZ * 16, 16, 16,
-				this.heightScale, this.heightScale, 1.0D);
-
 		for (int x = 0; x < 16; x++) {
 			for (int z = 0; z < 16; z++) {
 				Biome biome = biomes[x + z * 16];
-				double noise = heightMap[x + z * 16];
+				double worldX = chunkX * 16 + x;
+				double worldZ = chunkZ * 16 + z;
+				double noise = this.heightNoise.getValue(worldX * this.heightScale, worldZ * this.heightScale);
+				noise += this.detailNoise.getValue(worldX * this.heightScale * 3.0D,
+						worldZ * this.heightScale * 3.0D) * 0.25D;
 				int terrainHeight = (int) (SEA_LEVEL + 6 + noise * this.verticalScale);
 				double aquifer = this.aquiferNoise.getValue((chunkX * 16 + x) * 0.05D,
 						(chunkZ * 16 + z) * 0.05D);

@@ -1,5 +1,24 @@
 # Changelog
 
+# 2026.3-1.0.16.55-beta
+
+## Fixes
+
+Fixed 1 bug(s).
+
+- Removed chunk-edge terrain cliffs. The custom generator previously sampled
+  `NoiseGeneratorOctaves` with per-chunk offsets; adjacent chunks received
+  mismatched noise samples and generated independent plateaus. Height and detail
+  are now sampled from stateless `NoiseGeneratorPerlin` fields at absolute world
+  coordinates, so heights and aquifer pockets continue across chunk borders.
+
+## Verification
+
+- Boundary probe: x=15/x=16 heights are 53/54 with a 0.05 noise delta instead
+  of a chunk-size cliff.
+- Custom terrain template compiles with `javac --release 8`.
+
+
 # 2026.3-1.0.15.54-beta
 
 ## Changes
