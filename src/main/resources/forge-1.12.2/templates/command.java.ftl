@@ -19,8 +19,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 <#if data.type == "CLIENTSIDE">
 @net.minecraftforge.fml.relauncher.SideOnly(net.minecraftforge.fml.relauncher.Side.CLIENT)
-</#if>
+<#else>
 @Mod.EventBusSubscriber
+</#if>
 public class ${name}Command extends CommandBase {
 
 	<#if data.type != "CLIENTSIDE">
