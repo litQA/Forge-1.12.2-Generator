@@ -1,5 +1,23 @@
 # Changelog
 
+# 2026.3-1.0.19.58-beta
+
+## Fixes
+
+- Avoid a missing `TestModBiomes` class when a workspace has no biomes: the
+  worldgen hook and Mixin source are generated only when biomes exist, while
+  the Mixin config remains present and contains an empty mixin list.
+- Keep the Mixin config manifest name stable (`mixins.modid.json`) so the build
+  script and generated config always match.
+
+## Known Limitations
+
+- Workspaces created before 1.0.18.57 need the updated `build.gradle` (or a
+  recreated workspace) for Mixin bootstrap/refmap/embedding support.
+- Mixin cave injection remains column-based below y=50; Nether injection is
+  global for dimension -1.
+
+
 # 2026.3-1.0.18.57-beta
 
 ## Changes

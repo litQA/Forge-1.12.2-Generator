@@ -5,7 +5,7 @@
     "compatibilityLevel": "JAVA_8",
     "refmap": "mixins.modid.refmap.json",
     "mixins": [
-        "${JavaModName}WorldBiomeMixin"
+        <#if (biomes![])?has_content>"${JavaModName}WorldBiomeMixin"</#if>
     ],
     "client": [],
     "server": []
