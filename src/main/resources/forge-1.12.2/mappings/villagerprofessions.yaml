@@ -1,4 +1,5 @@
 _default: VillagerRegistry.getById(0).getCareer(0)
+_mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "@JavaModNameVillagerProfessions.@REGISTRYNAME_CAREER"
 ARMORER: VillagerRegistry.getById(3).getCareer(0)
 BUTCHER: VillagerRegistry.getById(4).getCareer(0)

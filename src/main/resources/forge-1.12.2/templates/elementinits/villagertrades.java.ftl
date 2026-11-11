@@ -17,7 +17,17 @@ public class ${JavaModName}Trades {
 	public static void load() {
 		<#list (types.villagertrades![]) as trade>
 		<#if !trade.isWanderingTrader()>
-		<#assign career = generator.map(trade.villagerProfession, "villagerprofessions")>
+		<#assign professionRaw = trade.villagerProfession.getUnmappedValue()!"">
+		<#if professionRaw?starts_with("CUSTOM:")>
+			<#assign professionElement = (w.getWorkspace().getModElementByName(professionRaw?replace("CUSTOM:", "")))!"">
+			<#if professionElement?has_content>
+				<#assign career = package + ".init." + JavaModName + "VillagerProfessions." + professionElement.getRegistryNameUpper() + "_CAREER">
+			<#else>
+				<#assign career = generator.map(trade.villagerProfession, "villagerprofessions")>
+			</#if>
+		<#else>
+			<#assign career = generator.map(trade.villagerProfession, "villagerprofessions")>
+		</#if>
 		<#list (trade.trades![]) as entry>
 		${career}.addTrade(${entry.level?c}, (merchant, recipeList, random) -> {
 			NBTTagCompound nbt = new NBTTagCompound();

@@ -108,6 +108,13 @@
 
 <#function mappedMCItemToIngameItemName mappedItem>
     <#if mcItemIsCustom(mappedItem)>
+        <#assign rawCustom = mcItemRaw(mappedItem)>
+        <#if rawCustom?ends_with(".bucket")>
+            <#assign fluid = (w.getWorkspace().getModElementByName(rawCustom?replace("CUSTOM:", "")?replace(".bucket", "")))!"">
+            <#if fluid?has_content>
+            <#return "\"item\": \"" + modid + ":" + fluid.getRegistryName() + "_bucket\"">
+            </#if>
+        </#if>
         <#assign element = mcItemModElement(mappedItem)>
         <#if element?has_content>
             <#return "\"item\": \"" + modid + ":" + element.getRegistryName() + "\"">

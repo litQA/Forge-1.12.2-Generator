@@ -1,6 +1,6 @@
 # Changelog
 
-# 2026.3-1.0.27.79-beta
+# 2026.3-1.0.28.80-beta
 
 ## New Content
 
@@ -25,6 +25,19 @@
 - Added `jsontriggers` templates and the related MCItem JSON helper.
 - Added worldgen registration through `GameRegistry.registerWorldGenerator`.
 - Added villager profession and game-rule data mappings.
+
+## Fixes
+
+Fixed 4 bug(s).
+- Villager profession skin resource locations now include the `.png`
+  extension required by 1.12.2 `SimpleTexture`.
+- The villager profession mapping now honours the `CUSTOM:` prefix, so
+  custom trade tables attach to the generated custom career instead of the
+  farmer career.
+- Custom profession trades now resolve the generated career symbol directly
+  from the workspace element, avoiding a mapping fallback to the farmer.
+- Added the missing `_mcitem` JSON trigger helper and fluid-bucket icon
+  mapping, restoring advancement criteria generation and custom icons.
 
 ## Known Limitations
 
