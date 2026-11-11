@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.8.47-beta` |
+| Plugin version | `2026.3-1.0.9.48-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -354,7 +354,7 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.8.47-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.9.48-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
    `VALIDATION PASSED` (44 YAML documents, 103 FTL templates, 79 template
    references).
@@ -391,7 +391,9 @@ plugin-branch-2026.3/
 14. Biome and dimension templates were rendered with FreeMarker and compiled
     with `javac --release 8` for Normal, Nether, End, Void and custom-effects
     variants; the combined biome/dimension/mod templates also compile.
-15. The built zip was copied to
+15. A metadata block reference (`Blocks.STONE#3`) was rendered as
+    `Blocks.STONE.getStateFromMeta(3)` and compiled successfully.
+16. The built zip was copied to
     `MCreatorEAP2026344621/plugins/generator-forge-1.12.2.zip`; source and
     installed SHA-256 hashes match.
 

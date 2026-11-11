@@ -146,7 +146,7 @@
             <#if code?contains("blockstate") || code?contains("world.getBlockState") || code?contains("getDefaultState")>
                 <#return code>
             <#else>
-                <#return code + ".getDefaultState()">
+                <#return blockStateFromCode(code)>
             </#if>
         </#if>
         <#return "net.minecraft.init.Blocks.STONE.getDefaultState()">
@@ -158,11 +158,20 @@
         </#if>
         <#return "net.minecraft.init.Blocks.STONE.getDefaultState()">
     <#else>
-        <#assign blockCode = mcItemMapped(mappedItem, 0)?split("#")[0]>
+        <#assign blockCode = (mcItemMapped(mappedItem, 0))!"">
         <#if !blockCode?has_content>
             <#return "net.minecraft.init.Blocks.STONE.getDefaultState()">
         </#if>
-        <#return blockCode + ".getDefaultState()">
+        <#return blockStateFromCode(blockCode)>
+    </#if>
+</#function>
+
+<#function blockStateFromCode blockCode>
+    <#assign codeParts = blockCode?trim?split("#")>
+    <#if codeParts?size gt 1 && codeParts[1]?has_content>
+        <#return codeParts[0] + ".getStateFromMeta(" + codeParts[1] + ")">
+    <#else>
+        <#return codeParts[0] + ".getDefaultState()">
     </#if>
 </#function>
 

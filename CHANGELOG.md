@@ -1,5 +1,23 @@
 # Changelog
 
+# 2026.3-1.0.9.48-beta
+
+## Fixes
+
+Fixed 1 bug(s).
+
+- Block references with metadata, such as `Blocks.STONE#3` (diorite), now emit
+  `Blocks.STONE.getStateFromMeta(3)` instead of invalid
+  `Blocks.STONE#3.getDefaultState()`. This affects biome top/filler blocks and
+  every template using the shared block-state mapping helper.
+
+## Known Limitations
+
+- Metadata is emitted through `Block.getStateFromMeta(metadata)`; block-state
+  properties that cannot be reconstructed from legacy metadata still depend on
+  the 1.12.2 block implementation.
+
+
 # 2026.3-1.0.8.47-beta
 
 ## Changes
