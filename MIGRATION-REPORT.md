@@ -254,9 +254,11 @@ A custom-tree subset generates `WorldGenAbstractTree` classes with configurable
 trunk/branch/vine/fruit blocks and minimum height. Ambient/additions sounds use
 a client tick handler. `spawnInCaves` and `spawnBiomeNether` drive a generated
 Mixin `World#getBiome` injection: the cave biome is returned for Overworld
-positions below y=50, and the Nether biome is returned for dimension -1. Modern
-climate/noise, true per-Y cave biome storage, custom particles, mood/music fields
-and modern structure placement are hidden.
+positions below y=50, and the Nether biome is returned for dimension -1. The
+`genTemperature` range is exposed as a 1.12.2 Overworld weight proxy:
+`abs(max-min)/4 * 100`, clamped to 1..100. It is not modern climate semantics.
+Modern climate/noise, true per-Y cave biome storage, custom particles,
+mood/music fields and modern structure placement are hidden.
 
 Forge 1.12.2 Mixin support uses embedded Mixin `0.7.11-SNAPSHOT`, a
 `MixinTweaker` manifest/launch hook, a generated `mixins.modid.json` and an RFG
@@ -276,8 +278,9 @@ events. Non-void custom dimensions use a generated noise generator with configur
 main filler, fluid, sea level, a simplified aquifer and native
 `MapGenCaves`/`MapGenRavine` carving; this is dimension-only and does not replace
 main-world/vanilla-nether generation. Full 1.18 climate/spline terrain semantics,
-configurable biome weights, custom sun/moon rendering and ore-vein generation
-remain unavailable.
+custom sun/moon rendering and ore-vein generation remain unavailable. The
+`genTemperature` range is used as a finite Overworld biome-weight proxy, not as
+a true climate model.
 
 ### Localization keys
 

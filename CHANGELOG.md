@@ -1,5 +1,27 @@
 # Changelog
 
+# 2026.3-1.0.23.62-beta
+
+## Changes
+
+- Exposed the Biome climate row `genTemperature` in the editor and use its
+  range as a 1.12.2 weight proxy:
+  `weight = clamp(abs(max - min) / 4, 0, 1) * 100`, minimum 1.
+  - `[-2, 2]` -> 100
+  - `[-0.5, 0.5]` -> 25
+- The other modern climate rows remain hidden; 1.12.2 has no use for them.
+
+## Evaluation
+
+- This is feasible and implemented for Overworld `BiomeManager.BiomeEntry`
+  registration.
+- It is a proxy only: the field remains a modern climate interval in the
+  element model; in this 1.12.2 generator it does not affect climate/noise.
+- Custom-dimension biome selection uses the dimension's own biome provider and
+  is not controlled by this weight. Cave/Nether Mixin injection is global and
+  also weight-independent.
+
+
 # 2026.3-1.0.22.61-beta
 
 ## Changes

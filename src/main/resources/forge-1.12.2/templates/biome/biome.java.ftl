@@ -31,6 +31,13 @@ public class ${name}Biome extends Biome {
 
 	<#if data.spawnBiome>
 	public static void init() {
+		<#assign tempMin = (data.genTemperature.min)!-2.0>
+		<#assign tempMax = (data.genTemperature.max)!2.0>
+		<#assign tempLength = tempMax - tempMin>
+		<#if tempLength lt 0><#assign tempLength = -tempLength></#if>
+		<#if tempLength gt 4><#assign tempLength = 4></#if>
+		<#assign biomeWeight = (tempLength / 4 * 100)?round>
+		<#if biomeWeight lt 1><#assign biomeWeight = 1></#if>
 		BiomeManager.addSpawnBiome(${JavaModName}Biomes.${REGISTRYNAME});
 		BiomeManager.addBiome(BiomeManager.BiomeType.
 		<#if data.temperature < -0.25>
@@ -41,7 +48,7 @@ public class ${name}Biome extends Biome {
 		WARM
 		<#else>
 		DESERT
-		</#if>, new BiomeManager.BiomeEntry(${JavaModName}Biomes.${REGISTRYNAME}, 100));
+		</#if>, new BiomeManager.BiomeEntry(${JavaModName}Biomes.${REGISTRYNAME}, ${biomeWeight?c}));
 	}
 	</#if>
 
