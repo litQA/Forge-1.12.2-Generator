@@ -22,6 +22,7 @@ public class ${name}ChunkGenerator implements IChunkGenerator {
 			${(data.fluidBlock?has_content)?then(mappedBlockToBlockStateCode(data.fluidBlock), "net.minecraft.init.Blocks.WATER.getDefaultState()")};
 	private static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
 	private static final int SEA_LEVEL = ${data.seaLevel};
+	private static final int MAX_TERRAIN_Y = 252;
 
 	private final World world;
 	private final Random random;
@@ -58,7 +59,14 @@ public class ${name}ChunkGenerator implements IChunkGenerator {
 				double noise = this.heightNoise.getValue(worldX * this.heightScale, worldZ * this.heightScale);
 				noise += this.detailNoise.getValue(worldX * this.heightScale * 3.0D,
 						worldZ * this.heightScale * 3.0D) * 0.25D;
-				int terrainHeight = (int) (SEA_LEVEL + 6 + noise * this.verticalScale);
+				double shapedNoise = Math.tanh(noise * 0.75D);
+				double maxRise = Math.min(this.verticalScale, 180.0D);
+				int terrainHeight = (int) (SEA_LEVEL + 6 + shapedNoise * maxRise);
+				if (terrainHeight < 4) {
+					terrainHeight = 4;
+				} else if (terrainHeight > MAX_TERRAIN_Y) {
+					terrainHeight = MAX_TERRAIN_Y;
+				}
 				double aquifer = this.aquiferNoise.getValue((chunkX * 16 + x) * 0.05D,
 						(chunkZ * 16 + z) * 0.05D);
 

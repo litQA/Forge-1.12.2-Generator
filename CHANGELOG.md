@@ -1,5 +1,28 @@
 # Changelog
 
+# 2026.3-1.0.17.56-beta
+
+## Fixes
+
+Fixed 2 bug(s).
+
+- Portal teleportation now searches for a safe two-block-high standing position
+  around the destination spawn point and creates a small fallback platform if
+  the target is void. This prevents spawning inside walls.
+- Custom terrain heights are clamped below the 1.12.2 256-block world ceiling,
+  and the noise contribution is tanh-shaped/capped so large vertical-noise
+  settings no longer create broad 256-block cut surfaces.
+
+## Known Limitations
+
+- 1.12.2 has a hard 256-block chunk/world height (`ChunkPrimer`/`Chunk`).
+  Raising the usable terrain ceiling to 320+64 requires a Mixin/coremod that
+  changes chunk section storage and client height handling; it is not possible
+  through the current non-Mixin generator path.
+- The safe-spawn search uses a bounded radius and a stone fallback platform in
+  void dimensions.
+
+
 # 2026.3-1.0.16.55-beta
 
 ## Fixes
