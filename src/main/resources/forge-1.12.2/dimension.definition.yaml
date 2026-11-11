@@ -6,6 +6,9 @@ templates:
   - template: dimension/chunkgenerator_void.java.ftl
     condition: "worldGenType %= Void gen"
     name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEChunkGeneratorVoid.java"
+  - template: dimension/teleporter.java.ftl
+    condition: enablePortal
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMETeleporter.java"
   - template: dimension/blockportal.java.ftl
     condition: enablePortal
     name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEPortalBlock.java"

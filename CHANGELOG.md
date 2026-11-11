@@ -1,5 +1,27 @@
 # Changelog
 
+# 2026.3-1.0.14.53-beta
+
+## Fixes
+
+Fixed 2 bug(s).
+
+- Skybox texture paths now append `.png` and use the workspace texture root
+  (`assets/<modid>/textures/<name>.png`). The previous path omitted `.png` and
+  incorrectly inserted `skybox/`, causing every face to fail loading.
+- Portal teleportation now uses a generated custom `ITeleporter` that places the
+  entity directly at a target/spawn position. It no longer invokes vanilla
+  `Teleporter.placeInExistingPortal`, which threw a `NullPointerException` for
+  custom dimensions.
+
+## Known Limitations
+
+- The custom teleporter uses the destination spawn point rather than generating
+  a return portal at the exact entry point.
+- Skybox textures must already exist under `assets/<modid>/textures`; missing
+  textures now fail with the correct path in the log but do not crash.
+
+
 # 2026.3-1.0.13.52-beta
 
 ## Fixes

@@ -403,7 +403,7 @@ generator, and the support matrix marks them as unavailable.
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (45 YAML documents, 112 templates, 88 template references) |
+| Static validator | `VALIDATION PASSED` (45 YAML documents, 113 templates, 89 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |

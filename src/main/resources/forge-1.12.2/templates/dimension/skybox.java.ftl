@@ -1,7 +1,7 @@
 <#-- @formatter:off -->
 <#function skyboxTexture holder="" fallback="">
 	<#if holder?? && holder?is_hash && !holder.isEmpty()>
-		<#return holder.format("%s:textures/skybox/%s")>
+		<#return holder.format("%s:textures/%s.png")>
 	</#if>
 	<#return fallback>
 </#function>

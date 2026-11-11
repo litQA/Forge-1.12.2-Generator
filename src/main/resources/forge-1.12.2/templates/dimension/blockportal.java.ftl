@@ -53,7 +53,8 @@ public class ${name}PortalBlock extends BlockPortal {
 				: ${JavaModName}Dimensions.${REGISTRYNAME}.getId();
 		entity.timeUntilPortal = entity.getPortalCooldown();
 		if (world.getMinecraftServer() != null && world.getMinecraftServer().getWorld(target) != null) {
-			entity.changeDimension(target, new Teleporter(world.getMinecraftServer().getWorld(target)));
+			entity.changeDimension(target, new ${package}.world.dimension.${name}Teleporter(
+					world.getMinecraftServer().getWorld(target).getSpawnPoint()));
 		}
 	}
 

@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.13.52-beta` |
+| Plugin version | `2026.3-1.0.14.53-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -210,10 +210,12 @@ custom biome provider and optional portal/igniter assets. Normal, Nether, End
 and Void chunk generators are available; Void uses a minimal empty chunk
 generator. Sky light, fog/cloud height, fixed time, ambient light, coordinate
 scale, respawn/bed/weather behavior and player enter/leave procedures are
-mapped. Custom six-face skyboxes use a client `IRenderHandler`; biome
-ambient/additions sounds use a client tick handler. Modern noise/aquifer
-settings, custom filler/fluid/sea-level terrain and custom sun/moon rendering
-are hidden.
+mapped. Custom six-face skyboxes use a client `IRenderHandler` and workspace textures
+under `assets/<modid>/textures`; biome ambient/additions sounds use a client tick
+handler. Portals use a custom `ITeleporter` that places the entity at the
+destination spawn point, avoiding vanilla portal-search NPEs. Modern
+noise/aquifer settings, custom filler/fluid/sea-level terrain and custom
+sun/moon rendering are hidden.
 
 ## Tags and the Ore Dictionary
 
@@ -355,9 +357,9 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.13.52-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.14.53-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
-   `VALIDATION PASSED` (45 YAML documents, 112 FTL templates, 88 template
+   `VALIDATION PASSED` (45 YAML documents, 113 FTL templates, 89 template
    references).
 3. The full `test_workspaces/test-1/src/main/java` source tree was compiled
    against the 1.12.2 classes with `javac --release 8`: `PASSED`. This includes
@@ -396,9 +398,9 @@ plugin-branch-2026.3/
     `Blocks.STONE.getStateFromMeta(3)` and compiled successfully.
 16. Biome spawn entries using `EntityZombie` and `EntityEnderman` were rendered
     with fully-qualified vanilla entity classes and compiled successfully.
-17. Portal/igniter, skybox, biome sound and custom-tree templates were rendered
-    and compiled with `javac --release 8`; portal JSON models parsed, and the
-    generated block/item registries compiled.
+17. Portal/igniter, skybox, biome sound, custom-tree and custom-teleporter
+    templates were rendered and compiled with `javac --release 8`; portal JSON
+    models parsed, and the generated block/item registries compiled.
 18. The built zip was copied to
     `MCreatorEAP2026344621/plugins/generator-forge-1.12.2.zip`; source and
     installed SHA-256 hashes match.
