@@ -1,7 +1,11 @@
 <#-- @formatter:off -->
 <#assign featureType = (featuretype!"")>
+<#assign featureBlock = "">
+<#assign blockMatches = (configurationcode!"")?matches('"Name"\\s*:\\s*"([^"]+)"')>
+<#if blockMatches?has_content>
+<#assign featureBlock = blockMatches?first?groups[1]>
+</#if>
 <#if featureType == "feature_simple_block" || featureType == "feature_random_patch_simple" || featureType == "feature_random_patch" || featureType == "feature_ore" || featureType == "feature_scattered_ore" || featureType == "feature_no_op">
-<#assign featureBlock = (featureblocks?first!"")?string>
 <#else>
 <#stop "Unsupported 1.12.2 feature type: " + featureType>
 </#if>
