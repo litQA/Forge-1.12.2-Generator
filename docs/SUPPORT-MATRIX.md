@@ -51,7 +51,7 @@ advertised as supported:
 | --- | --- | --- |
 | Living entity / special entity / projectile | Unavailable | No entity AI, model layer, synced data, projectile or boat/raft implementation. |
 | GUI / overlay / key binding / particle | Unavailable | No screen, overlay, keybind or custom particle pipeline. |
-| Advancement / structure / feature | Unavailable | 1.12.2 lacks data-driven equivalents; custom biome trees are the only worldgen feature subset. |
+| Advancement / structure / feature | Unavailable | 1.12.2 lacks data-driven equivalents. Custom dimension terrain/caves and custom biome trees are implemented Java worldgen subsets; native structure/feature registries are not generated. |
 | Villager trade/profession / command / function / game rule | Unavailable | No generated Java equivalents in this snapshot. |
 | Damage type / painting / banner pattern / armor trim | Unavailable | No native 1.12.2 registry or API for the modern forms. |
 | Music disc / fuel / tag legacy elements | Unavailable | Fuel is handled by item extension; tags map to Ore Dictionary. |
