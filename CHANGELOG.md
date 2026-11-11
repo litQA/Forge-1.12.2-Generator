@@ -1,5 +1,23 @@
 # Changelog
 
+# 2026.3-1.0.11.50-beta
+
+## Fixes
+
+Fixed 1 bug(s).
+
+- Biome spawn entries now emit fully-qualified vanilla entity classes from a
+  new `entityclasses` mapping instead of relying on wildcard imports. MCreator's
+  import formatter strips the wildcard entity imports, which left both
+  `EntityLiving` and the spawn class unresolved. Fully-qualified references are
+  immune to import cleanup.
+
+## Known Limitations
+
+- Custom entities are emitted as `${package}.entity.<name>`; custom entity
+  packages must follow the generator's standard package layout.
+
+
 # 2026.3-1.0.10.49-beta
 
 ## Fixes

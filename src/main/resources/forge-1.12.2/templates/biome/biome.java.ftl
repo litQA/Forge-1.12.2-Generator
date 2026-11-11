@@ -1,18 +1,18 @@
 <#-- @formatter:off -->
 <#include "/mcitems.ftl">
+<#function entityClassCode entity>
+	<#assign entityName = entity?string>
+	<#if entityName?starts_with("CUSTOM:")>
+		<#return package + ".entity." + entityName?replace("CUSTOM:", "")>
+	<#else>
+		<#assign mappedEntity = generator.map(entityName, "entityclasses")>
+		<#return (mappedEntity?has_content && mappedEntity != "null")?then(mappedEntity, "net.minecraft.entity.Entity")>
+	</#if>
+</#function>
 package ${package}.world.biome;
 
 import ${package}.init.${JavaModName}Biomes;
 import java.util.Random;
-import net.minecraft.entity.*;
-import net.minecraft.entity.boss.*;
-import net.minecraft.entity.effect.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-<#if (types.entities![])?has_content>import ${package}.entity.*;</#if>
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
@@ -83,17 +83,18 @@ public class ${name}Biome extends Biome {
 		<#list data.spawnEntries as spawnEntry>
 		<#assign entity = spawnEntry.entity!"null">
 		<#if entity != "null">
+		<#assign entityCode = entityClassCode(entity)>
 		<#if generator.map(spawnEntry.spawnType, "mobspawntypes") == "EnumCreatureType.MONSTER">
-		this.spawnableMonsterList.add(new SpawnListEntry((Class<? extends EntityLiving>) (Class<?>) ${entity}.class,
+		this.spawnableMonsterList.add(new SpawnListEntry((Class<? extends net.minecraft.entity.EntityLiving>) (Class<?>) ${entityCode}.class,
 				${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
 		<#elseif generator.map(spawnEntry.spawnType, "mobspawntypes") == "EnumCreatureType.CREATURE">
-		this.spawnableCreatureList.add(new SpawnListEntry((Class<? extends EntityLiving>) (Class<?>) ${entity}.class,
+		this.spawnableCreatureList.add(new SpawnListEntry((Class<? extends net.minecraft.entity.EntityLiving>) (Class<?>) ${entityCode}.class,
 				${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
 		<#elseif generator.map(spawnEntry.spawnType, "mobspawntypes") == "EnumCreatureType.AMBIENT">
-		this.spawnableCaveCreatureList.add(new SpawnListEntry((Class<? extends EntityLiving>) (Class<?>) ${entity}.class,
+		this.spawnableCaveCreatureList.add(new SpawnListEntry((Class<? extends net.minecraft.entity.EntityLiving>) (Class<?>) ${entityCode}.class,
 				${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
 		<#else>
-		this.spawnableWaterCreatureList.add(new SpawnListEntry((Class<? extends EntityLiving>) (Class<?>) ${entity}.class,
+		this.spawnableWaterCreatureList.add(new SpawnListEntry((Class<? extends net.minecraft.entity.EntityLiving>) (Class<?>) ${entityCode}.class,
 				${spawnEntry.weight}, ${spawnEntry.minGroup}, ${spawnEntry.maxGroup}));
 		</#if>
 		</#if>

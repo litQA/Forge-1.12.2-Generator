@@ -396,7 +396,7 @@ generator, and the support matrix marks them as unavailable.
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (44 YAML documents, 103 templates, 79 template references) |
+| Static validator | `VALIDATION PASSED` (45 YAML documents, 103 templates, 79 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |
@@ -410,7 +410,7 @@ generator, and the support matrix marks them as unavailable.
 | Block custom loot table + potion attribute cleanup | Test workspace full `javac --release 8` `PASSED`; direct 1.12.2 attribute-map probe removes movement-speed/max-health modifiers by UUID. |
 | Biome + dimension (Normal/Nether/End/Void/custom effects) | FreeMarker render + `javac --release 8` `PASSED`; generated biome, dimension, void chunk generator, biome provider, registries and combined mod class compile together. |
 | Legacy metadata block references | `Blocks.STONE#3` renders as `Blocks.STONE.getStateFromMeta(3)` and compiles; the same shared helper is used by biome and other block-state templates. |
-| Biome entity spawn entries | `EntityZombie` and `EntityEnderman` spawn entries compile with generated vanilla entity imports; custom entities add `${package}.entity.*` when present. |
+| Biome entity spawn entries | `EntityZombie` and `EntityEnderman` spawn entries compile with fully-qualified classes from the `entityclasses` mapping; custom entities use `${package}.entity.<name>`. This avoids MCreator's import-formatter stripping wildcard imports. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 
 The generated-mod build used the exact workspace base, templates and generated

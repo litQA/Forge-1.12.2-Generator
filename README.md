@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.10.49-beta` |
+| Plugin version | `2026.3-1.0.11.50-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -354,9 +354,9 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.10.49-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.11.50-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
-   `VALIDATION PASSED` (44 YAML documents, 103 FTL templates, 79 template
+   `VALIDATION PASSED` (45 YAML documents, 103 FTL templates, 79 template
    references).
 3. The full `test_workspaces/test-1/src/main/java` source tree was compiled
    against the 1.12.2 classes with `javac --release 8`: `PASSED`. This includes
@@ -393,8 +393,8 @@ plugin-branch-2026.3/
     variants; the combined biome/dimension/mod templates also compile.
 15. A metadata block reference (`Blocks.STONE#3`) was rendered as
     `Blocks.STONE.getStateFromMeta(3)` and compiled successfully.
-16. Biome spawn entries using `EntityZombie` and `EntityEnderman` compiled with
-    the generated vanilla entity imports.
+16. Biome spawn entries using `EntityZombie` and `EntityEnderman` were rendered
+    with fully-qualified vanilla entity classes and compiled successfully.
 17. The built zip was copied to
     `MCreatorEAP2026344621/plugins/generator-forge-1.12.2.zip`; source and
     installed SHA-256 hashes match.
