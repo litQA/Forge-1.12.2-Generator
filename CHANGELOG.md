@@ -1,5 +1,24 @@
 # Changelog
 
+# 2026.3-1.0.13.52-beta
+
+## Fixes
+
+Fixed 1 bug(s).
+
+- The custom-tree template no longer uses the invalid numeric condition
+  `treeType %= 1`. MCreator's condition parser tried to cast the integer to a
+  string, skipped the template and left `TestBiomeTreeFeature` missing. The tree
+  class is now always generated; the biome only references it when
+  `treeType == 1`.
+
+## Known Limitations
+
+- Every biome now emits a tree generator class even when vanilla tree types are
+  selected. The unused class is harmless and avoids a fragile numeric template
+  condition.
+
+
 # 2026.3-1.0.12.51-beta
 
 ## Changes

@@ -2,7 +2,6 @@ templates:
   - template: biome/biome.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/biome/@NAMEBiome.java"
   - template: biome/tree.java.ftl
-    condition: "treeType %= 1"
     name: "@SRCROOT/@BASEPACKAGEPATH/world/features/treedecorators/@NAMETreeFeature.java"
 
 global_templates:
