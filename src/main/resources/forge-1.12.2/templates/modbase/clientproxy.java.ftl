@@ -25,6 +25,9 @@ public class ClientProxy${JavaModName} implements IProxy${JavaModName} {
 	}
 
 	@Override public void init(FMLInitializationEvent event) {
+		<#if (types.particles![])?has_content>
+		${package}.init.${JavaModName}Particles.registerFactories();
+		</#if>
 	}
 
 	@Override public void postInit(FMLPostInitializationEvent event) {

@@ -132,6 +132,18 @@ public class ${name}Gui {
 				this.addSlotToContainer(new Slot(player.inventory, si, ${coffx} + 8 + si * 18, ${coffy} + 142));
 			</#if>
 
+			if (!world.isRemote) {
+				<#list textFields as component>
+				${JavaModName}GUIs.State.putServer(player, "${component.getName()}", 0, "");
+				</#list>
+				<#list checkboxes as component>
+				${JavaModName}GUIs.State.putServer(player, "${component.getName()}", 1, false);
+				</#list>
+				<#list sliders as component>
+				${JavaModName}GUIs.State.putServer(player, "${component.getName()}", 2, ${component.value?c});
+				</#list>
+			}
+
 			<#if hasProcedure(data.onOpen)>
 			<@procedureOBJToCode data.onOpen/>
 			</#if>
@@ -490,6 +502,15 @@ public class ${name}Gui {
 
 		@Override protected void keyTyped(char typedChar, int keyCode) throws IOException {
 			if (keyCode == 1) {
+				<#list textFields as component>
+				${JavaModName}GUIs.State.sendToServer("${component.getName()}", 0, this.${component.getName()}.getText());
+				</#list>
+				<#list checkboxes as component>
+				${JavaModName}GUIs.State.sendToServer("${component.getName()}", 1, this.${component.getName()}.isChecked());
+				</#list>
+				<#list sliders as component>
+				${JavaModName}GUIs.State.sendToServer("${component.getName()}", 2, this.${component.getName()}.getValue());
+				</#list>
 				this.mc.player.closeScreen();
 				return;
 			}

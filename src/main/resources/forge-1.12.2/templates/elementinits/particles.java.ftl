@@ -48,6 +48,17 @@ import ${package}.${JavaModName};
 		return particle;
 	}
 
+	public static void registerFactories() {
+		if (Minecraft.getMinecraft().effectRenderer == null)
+			return;
+
+		<#list (types.particles![]) as particle>
+		Minecraft.getMinecraft().effectRenderer.registerParticle(
+				${particle.getModElement().getRegistryNameUpper()}.getParticleID(),
+				new ${package}.client.particle.${particle.getModElement().getName()}Particle.${particle.getModElement().getName()}IParticleFactory());
+		</#list>
+	}
+
 	@SuppressWarnings("unchecked")
 	private static void addToParticleMaps(EnumParticleTypes particle) {
 		for (Field field : EnumParticleTypes.class.getDeclaredFields()) {
@@ -78,10 +89,9 @@ import ${package}.${JavaModName};
 		for (int i = 0; i < ${frameCount}; i++)
 			${particle.getModElement().getRegistryNameUpper()}_TEX[i] = map.registerSprite(new ResourceLocation(${JavaModName}.MODID, "particle/${particle.getModElement().getRegistryName()}_" + (i + 1)));
 		</#if>
-		if (Minecraft.getMinecraft().effectRenderer != null)
-			Minecraft.getMinecraft().effectRenderer.registerParticle(${particle.getModElement().getRegistryNameUpper()}.getParticleID(),
-					new ${package}.client.particle.${particle.getModElement().getName()}Particle.${particle.getModElement().getName()}IParticleFactory());
 		</#list>
+
+		registerFactories();
 	}
 
 }

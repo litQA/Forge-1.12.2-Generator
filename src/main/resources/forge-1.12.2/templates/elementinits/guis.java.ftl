@@ -10,6 +10,7 @@ package ${package}.init;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -55,11 +56,11 @@ public class ${JavaModName}GUIs {
 
 	public static class State {
 
-		private static final Map<UUID, Map<String, Object>> SERVER = new HashMap<>();
+		private static final Map<UUID, Map<String, Object>> SERVER = new ConcurrentHashMap<>();
 		private static final Map<String, Object> CLIENT = new HashMap<>();
 
 		private static Map<String, Object> serverMap(EntityPlayer player) {
-			return SERVER.computeIfAbsent(player.getUniqueID(), key -> new HashMap<>());
+			return SERVER.computeIfAbsent(player.getUniqueID(), key -> new ConcurrentHashMap<>());
 		}
 
 		public static void clearServer(EntityPlayer player) {
@@ -178,8 +179,10 @@ public class ${JavaModName}GUIs {
 	public static class StateHandler implements IMessageHandler<StateMessage, IMessage> {
 		@Override public IMessage onMessage(StateMessage message, MessageContext context) {
 			EntityPlayerMP player = context.getServerHandler().player;
-			player.getServerWorld().addScheduledTask(
-					() -> State.putServer(player, message.key, message.type, message.value()));
+			// Store immediately on the network thread. The GUI close packet is also
+			// enqueued for the server thread, so deferring this update could let
+			// onContainerClosed read the previous/default value.
+			State.putServer(player, message.key, message.type, message.value());
 			return null;
 		}
 	}

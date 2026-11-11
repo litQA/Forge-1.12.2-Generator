@@ -1,6 +1,6 @@
 # Changelog
 
-# 2026.3-1.0.26.72-beta
+# 2026.3-1.0.26.73-beta
 
 ## New Content
 
@@ -45,7 +45,7 @@
 
 ## Fixes
 
-Fixed 10 bug(s).
+Fixed 12 bug(s).
 - Overlay component positions now resolve `GUIComponent.AnchorPoint.name()`
   instead of the localized `toString()` value. The previous comparison never
   matched, so anchors such as `BOTTOM_LEFT`/`BOTTOM_RIGHT` rendered empty
@@ -74,6 +74,14 @@ Fixed 10 bug(s).
   default tab.
 - Armor and special-entity items now override `getSubItems` when multiple
   creative tabs are selected, matching the existing item/tool behavior.
+- GUI widget state is now applied directly on the network thread and seeded
+  with the element's initial slider/checkbox/text values. The close path also
+  sends the final widget values before `closeScreen`, so `onClosed` procedures
+  no longer read zero/default values.
+- Particle factories are now registered both during `TextureStitchEvent.Pre`
+  and from the client initialization event, so a custom particle ID is never
+  decoded without a factory if texture stitching runs before the effect
+  renderer is ready.
 
 ## Known Limitations
 
