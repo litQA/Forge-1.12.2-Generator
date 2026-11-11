@@ -61,20 +61,25 @@ public class ${name}Command extends CommandBase {
 	}
 
 	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		World world = sender.getEntityWorld();
-		double x = sender.getPosition().getX();
-		double y = sender.getPosition().getY();
-		double z = sender.getPosition().getZ();
-		Entity entity = sender.getCommandSenderEntity();
+	public void execute(MinecraftServer server, ICommandSender arguments, String[] args) throws CommandException {
+		World world = arguments.getEntityWorld();
+		double x = arguments.getPosition().getX();
+		double y = arguments.getPosition().getY();
+		double z = arguments.getPosition().getZ();
+		Entity entity = arguments.getCommandSenderEntity();
+		net.minecraft.util.EnumFacing direction = net.minecraft.util.EnumFacing.DOWN;
+		if (entity != null)
+			direction = entity.getHorizontalFacing();
 
 		Map<String, String> cmdparams = new HashMap<>();
 		for (int i = 0; i < args.length; i++)
 			cmdparams.put(Integer.toString(i), args[i]);
 
+		${argscode}
+
 		// The 2026.3 command argument editor emits Brigadier syntax. The 1.12.2
-		// backend registers the command and exposes raw arguments through
-		// cmdparams; argument-specific blocks must be added by a later adapter.
+		// backend exposes the shared x/y/z/world/entity/direction/cmdparams
+		// variables and supports the call-procedure block.
 	}
 
 	@Override

@@ -1,2 +1,1 @@
-<#include "mcitems.ftl">
-${mappedMCItemToRegistryName(block)}
+<#compress><#include "mcitems.ftl">${mappedMCItemToRegistryName(block)}</#compress>

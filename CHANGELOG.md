@@ -1,6 +1,6 @@
 # Changelog
 
-# 2026.3-1.0.28.80-beta
+# 2026.3-1.0.28.82-beta
 
 ## New Content
 
@@ -28,7 +28,7 @@
 
 ## Fixes
 
-Fixed 4 bug(s).
+Fixed 6 bug(s).
 - Villager profession skin resource locations now include the `.png`
   extension required by 1.12.2 `SimpleTexture`.
 - The villager profession mapping now honours the `CUSTOM:` prefix, so
@@ -38,6 +38,10 @@ Fixed 4 bug(s).
   from the workspace element, avoiding a mapping fallback to the farmer.
 - Added the missing `_mcitem` JSON trigger helper and fluid-bucket icon
   mapping, restoring advancement criteria generation and custom icons.
+- Stripped whitespace from the JSON trigger item helpers so item ids no longer
+  contain a trailing newline and fail `ItemPredicate.deserialize`.
+- Added the 1.12.2 `cmdargs/_call_procedure.java.ftl` template and emit
+  `argscode` inside the generated command's `execute` method.
 
 ## Known Limitations
 
