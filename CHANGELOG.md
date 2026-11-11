@@ -1,5 +1,48 @@
 # Changelog
 
+# 2026.3-1.0.27.76-beta
+
+## New Content
+
+- Advancement JSON generation, including parent, frame, background, toast,
+  chat announcement, hidden state, rewards and the 1.12.2 JSON trigger set.
+- Java-based structure generation from NBT templates, with biome restrictions,
+  spacing and optional fixed start-height range.
+- Java-based feature generation for simple block, random patch, ore and
+  scattered ore definitions.
+- Villager professions and trades for the pre-village-update 1.12.2
+  `VillagerRegistry`/`VillagerCareer` system.
+- Command registration with permission and singleplayer/multiplayer/client
+  targeting, plus datapack function files.
+- Game rule registration and game-rule get/set procedure blocks.
+- Music disc items based on 1.12.2 `ItemRecord`, including record sound,
+  description and creative-tab handling.
+
+## Changes
+
+- Added common `item.record.<name>.desc` localization generation for music
+  discs.
+- Added `jsontriggers` templates and the related MCItem JSON helper.
+- Added worldgen registration through `GameRegistry.registerWorldGenerator`.
+- Added villager profession and game-rule data mappings.
+
+## Known Limitations
+
+- 2026.3 command arguments are Brigadier-based; the 1.12.2 backend registers
+  the command and exposes raw arguments only, so the argument editor is hidden.
+- Feature support is limited to simple block, random patch, ore and scattered
+  ore; other feature types stop generation with an explicit error.
+- Structure/feature placement steps, jigsaw pools, terrain adaptation and
+  data-driven generation conditions are not available in 1.12.2.
+- Villager professions cannot use points of interest, work sounds or hats;
+  wandering-trader trades are not generated in 1.12.2.
+- Structure NBT files must be present at
+  `assets/<modid>/structures/<name>.nbt`.
+- Music disc length-in-ticks and comparator analog output have no 1.12.2
+  `ItemRecord` equivalent and are hidden.
+- The music disc plays through a constructed `SoundEvent`; custom sounds must
+  still be present in the generated `sounds.json`.
+
 # 2026.3-1.0.26.73-beta
 
 ## New Content

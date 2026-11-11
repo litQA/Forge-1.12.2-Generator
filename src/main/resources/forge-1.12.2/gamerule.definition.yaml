@@ -1,0 +1,12 @@
+global_templates:
+  - template: elementinits/gamerules.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameGameRules.java"
+    condition: "${(types.gamerules![])?has_content}"
+
+field_exclusions: [category]
+
+localizationkeys:
+  - key: gamerule.@registryname
+    mapto: displayName
+  - key: gamerule.@registryname.description
+    mapto: description

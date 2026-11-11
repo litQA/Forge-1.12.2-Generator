@@ -6,7 +6,7 @@ Plugin id: `generator-forge-1.12.2`
 
 Target: MCreator EAP `2026.3.44621`, Minecraft `1.12.2`, Forge `14.23.5.2847`
 
-Current plugin snapshot: `2026.3-1.0.26.73-beta`
+Current plugin snapshot: `2026.3-1.0.27.76-beta`
 
 Status vocabulary:
 
@@ -15,7 +15,7 @@ Status vocabulary:
 - **Unavailable** - no implementation in the current snapshot; generation
   either stops explicitly or the field is hidden.
 
-This file is current as of `2026.3-1.0.26.73-beta`. `新功能列表.txt` remains the
+This file is current as of `2026.3-1.0.27.76-beta`. `新功能列表.txt` remains the
 canonical 2021.1-2026.3 feature list; this matrix describes the implemented
 subset and its implementation method.
 
@@ -24,7 +24,7 @@ subset and its implementation method.
 | Mod element | Status | Implementation and current coverage |
 | --- | --- | --- |
 | Creative tab | Direct | Generated `CreativeTabs` subclass with name, icon and search bar. `hideTitle` has no 1.12.2 API and is excluded. |
-| Item | Degraded | `Item`/`ItemFood` generation with `item/generated` or `item/handheld` models, textures, names, rarity, creative tabs, stack size, durability, enchantability, use duration/animation, destroy speed, destroy-any-block, melee damage, attack speed, recipe remainder, container behavior, food, tooltips and multi-tab `getSubItems`. Item procedure triggers, GUI/inventory, ranged behavior, JSON/OBJ/Java models, glow conditions, music discs, banner patterns, item attribute-modifier entries, repair items, fire immunity and piglin-currency fields remain unavailable. |
+| Item | Degraded | `Item`/`ItemFood` generation with `item/generated` or `item/handheld` models, textures, names, rarity, creative tabs, stack size, durability, enchantability, use duration/animation, destroy speed, destroy-any-block, melee damage, attack speed, recipe remainder, container behavior, food, tooltips and multi-tab `getSubItems`. Music discs are generated as `ItemRecord` with a record sound and description; length-in-ticks and comparator output are unavailable. Item procedure triggers, GUI/inventory, ranged behavior, JSON/OBJ/Java models, glow conditions, banner patterns, item attribute-modifier entries, repair items, fire immunity and piglin-currency fields remain unavailable. |
 | Recipe | Direct | Shaped/shapeless crafting as 1.12.2 JSON; furnace smelting via `GameRegistry.addSmelting`; brewing via `BrewingRecipeRegistry`. Blasting, smoking, campfire cooking, stonecutting and smithing have no native 1.12.2 equivalent and stop generation explicitly. |
 | Block | Degraded | Native `Block` subclasses for cube, stairs, slab, fence and wall; per-face textures, custom JSON/cross/crop models, cutout/translucent layers, boolean/integer/enum properties, per-state models/blockstates and `getMetaFromState`. Supports block items, multi-tab listing, self/custom drops, XP, tool class/level, placement checks, simple TileEntity via `hasInventory`, and fixed/procedure tooltips. Doors, trapdoors, fence gates, pressure plates, buttons, signs, flower pots, end rods, leaves and multipart blockstates are not generated; inventories, Forge energy, fluid containers, redstone behavior and full TileEntity synchronization remain unavailable. |
 | Plant | Degraded | Normal, sapling, growable and double plants with cross/crop/custom models, independent item texture, tooltips, drops, XP, light, sound, creative tabs, placement restrictions, bonemeal procedures, NBT and forced update ticks. Saplings currently do not grow trees; plant world generation, custom hitboxes, waterlogging and advanced sapling behavior are unavailable. |
@@ -48,6 +48,14 @@ subset and its implementation method.
 | Key binding | Degraded | Generates a `KeyBinding` registered through `ClientRegistry`, keyboard and mouse press/release handling, and a server-bound `SimpleNetworkWrapper` message. Bindings use the 1.12.2 `key.categories.*` categories. |
 | Particle | Degraded | Generates a `Particle` subclass and registers a custom `EnumParticleTypes` entry plus textures through `TextureStitchEvent.Pre`. Supports animation frames, scale, rotation, gravity, collision, full-bright rendering and expiry conditions. 1.12.2 has no particle registry, so enum/map extension uses reflection; `renderType` is hidden. |
 | Procedure | Degraded | Current procedure subset: chat, set/remove block, get current blockstate, get/set boolean/integer properties, play sound, give item, GUI open/close, GUI text/checkbox/slider get/set, GUI slot item/amount/set/remove/clear/damage, call procedure and return. Block triggers: right click, added, destroyed by player, entity walk, scheduled/random tick and neighbor change. GUI slot callbacks are supported through generated messages. Global triggers, entity triggers and many 2026.3 procedure blocks are unavailable. |
+| Advancement | Degraded | Generates 1.12.2 `assets/<modid>/advancements/*.json` with icon, title/description localization, frame, background, toast/chat/hidden flags, parent, rewards and the common 1.12.2 JSON trigger templates. Modern item predicates and data-component conditions have no 1.12.2 form. |
+| Structure | Degraded | Generates a Java `IWorldGenerator` that loads an NBT template from `assets/<modid>/structures/<name>.nbt` and places it with biome restrictions, spacing, separation and optional fixed start height. Jigsaw pools, terrain adaptation, ignored blocks and data-driven placement types are unavailable. |
+| Feature | Degraded | Generates a Java `IWorldGenerator` for simple block, random patch, ore and scattered-ore features with biome restrictions. Other 2026.3 feature types stop generation explicitly; modern placement/configured-feature registries are unavailable. |
+| Villager profession | Degraded | Registers `VillagerRegistry.VillagerProfession` and `VillagerCareer` for the pre-village-update 1.12.2 system, including profession/zombie textures. Point of interest, work sound and hat layer are unavailable. |
+| Villager trade | Degraded | Generates `VillagerCareer#addTrade` lambdas using 1.12.2 `MerchantRecipe` NBT for vanilla or custom professions. Wandering-trader and price-multiplier forms are unavailable. |
+| Command | Degraded | Registers a 1.12.2 `CommandBase` with permission level and standard/singleplayer/multiplayer/client targeting. The 2026.3 Brigadier argument editor is hidden; the generated command exposes raw arguments only. |
+| Function | Direct | Writes `data/<namespace>/functions/<name>.mcfunction` files with the editor's command code. |
+| Game rule | Degraded | Registers a 1.12.2 `GameRules` entry on `WorldEvent.Load` and generates game-rule get/set procedure blocks. The modern category field is hidden. |
 
 ## Unsupported mod elements
 
@@ -56,10 +64,8 @@ advertised as supported:
 
 | Element group | Status | Notes |
 | --- | --- | --- |
-| Advancement / structure / feature | Unavailable | 1.12.2 lacks data-driven equivalents. Custom dimension terrain/caves and custom biome trees are implemented Java worldgen subsets; native structure/feature registries are not generated. |
-| Villager trade/profession / command / function / game rule | Unavailable | No generated Java equivalents in this snapshot. |
 | Damage type / painting / banner pattern / armor trim | Unavailable | No native 1.12.2 registry or API for the modern forms. |
-| Music disc / fuel / tag legacy elements | Unavailable | Fuel is handled by item extension; tags map to Ore Dictionary. |
+| Fuel / tag legacy elements | Partial | Fuel is handled by item extension; tags map to Ore Dictionary. |
 
 ## Cross-cutting features
 
@@ -105,7 +111,7 @@ full modern parity.
 | Custom tree subset | Degraded | `WorldGenAbstractTree` with trunk/branch/vines/fruits/min height; no modern tree feature/decorator chain. |
 | Biome weight proxy | Degraded | Five climate ranges map to `BiomeManager.BiomeEntry` weight 0..500; not a 1.18 climate engine. |
 | 256+ world height | Unavailable | 1.12.2 hard-codes 256-height chunk storage and client handling; current terrain clamps at 252. |
-| Entities, GUIs, structures, advancements, commands | Unavailable | No implementation in this snapshot. |
+| Entities, GUIs, advancements, commands, structures/features | Degraded | Entity, GUI, advancement, command and villager elements are generated with the 1.12.2-specific limitations listed above. Structures and features use Java `IWorldGenerator` adapters; modern data-driven registries and placement chains are unavailable. |
 
 ## Current development gaps
 

@@ -1,0 +1,8 @@
+templates:
+  - template: feature/feature.java.ftl
+    condition: hasConfiguredFeature()
+    name: "@SRCROOT/@BASEPACKAGEPATH/worldgen/@NAMEFeatureGenerator.java"
+
+# 1.12.2 world generation is Java based. Generation conditions and data-driven
+# placement steps are not available in this backend.
+field_exclusions: [generationStep, generateCondition]

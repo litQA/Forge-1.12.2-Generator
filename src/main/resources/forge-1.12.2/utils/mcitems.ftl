@@ -132,6 +132,10 @@
     <#return mcItemMapped(mappedItem, 0)?contains("#")>
 </#function>
 
+<#function mappedMCItemToItemObjectJSON mappedItem>
+    <#return "{" + mappedMCItemToIngameItemName(mappedItem) + "}">
+</#function>
+
 <#function mappedMCItemToIngredient mappedItem>
     <#if mcItemIsTag(mappedItem)>
         <#assign ore = mcItemRaw(mappedItem)?replace("TAG:", "")?replace("mod:", modid + ":")?replace(":", "")?replace("/", "")?lower_case>

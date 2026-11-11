@@ -1,0 +1,9 @@
+templates:
+  - template: structure/structure.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/worldgen/@NAMEStructureGenerator.java"
+
+# 1.12.2 has no data-driven structure registry. The Java generator implements
+# the supported subset; these editor fields have no equivalent in this backend.
+field_exclusions: [projection, ignoredBlocks, terrainAdaptation, generationStep,
+                   surfaceDetectionType, startHeightProviderType, size,
+                   maxDistanceFromCenter, jigsawPools]

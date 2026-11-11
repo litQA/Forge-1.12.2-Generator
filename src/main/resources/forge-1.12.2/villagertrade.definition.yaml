@@ -1,0 +1,7 @@
+global_templates:
+  - template: elementinits/villagertrades.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTrades.java"
+    condition: "${(types.villagertrades![])?has_content}"
+
+# MerchantRecipe in 1.12.2 has no price multiplier.
+field_exclusions: [trades.priceMultiplier]

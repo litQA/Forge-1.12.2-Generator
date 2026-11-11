@@ -126,6 +126,9 @@ base_templates:
   - template: elementinits/oredictionary.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameOreDictionary.java"
     condition: "${w.getWorkspace().getTagElements()?keys?size != 0}"
+  - template: elementinits/worldgen.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameWorldGen.java"
+    condition: "${(types.structures![])?has_content || (types.features![])?has_content}"
 
 language_file:
   format: keyvalue

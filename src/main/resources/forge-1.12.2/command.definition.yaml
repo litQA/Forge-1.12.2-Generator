@@ -1,0 +1,7 @@
+templates:
+  - template: command.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/command/@NAMECommand.java"
+
+# 2026.3 command arguments use Brigadier (1.13+). The 1.12.2 backend registers
+# the base command and exposes raw args; hide the unsupported argument editor.
+field_exclusions: [argsxml]

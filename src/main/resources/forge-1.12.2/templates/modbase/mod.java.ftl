@@ -104,6 +104,12 @@ public class ${JavaModName} {
 		<#if (types.livingentities![])?has_content || (types.projectiles![])?has_content || (types.specialentities![])?has_content>
 		${package}.init.${JavaModName}Entities.init();
 		</#if>
+		<#if (types.villagertrades![])?has_content>
+		${package}.init.${JavaModName}Trades.load();
+		</#if>
+		<#if (types.structures![])?has_content || (types.features![])?has_content>
+		${package}.init.${JavaModName}WorldGen.register();
+		</#if>
 
 		proxy.init(event);
 	}

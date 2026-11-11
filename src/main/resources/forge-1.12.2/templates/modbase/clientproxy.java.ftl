@@ -28,6 +28,11 @@ public class ClientProxy${JavaModName} implements IProxy${JavaModName} {
 		<#if (types.particles![])?has_content>
 		${package}.init.${JavaModName}Particles.registerFactories();
 		</#if>
+		<#list (types.commands![]) as command>
+		<#if command.type == "CLIENTSIDE">
+		${package}.command.${command.getModElement().getName()}Command.registerClientCommand();
+		</#if>
+		</#list>
 	}
 
 	@Override public void postInit(FMLPostInitializationEvent event) {

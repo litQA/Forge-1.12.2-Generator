@@ -25,10 +25,26 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 
-public class ${name}Item extends <#if data.isFood>ItemFood<#else>Item</#if> {
+public class ${name}Item extends <#if data.isMusicDisc>ItemRecord<#elseif data.isFood>ItemFood<#else>Item</#if> {
+
+	<#assign musicLocation = "minecraft:record.cat">
+	<#if data.musicDiscMusic??>
+		<#assign musicRaw = data.musicDiscMusic.getUnmappedValue()!"">
+		<#if musicRaw?starts_with("CUSTOM:")>
+			<#assign musicId = musicRaw?remove_beginning("CUSTOM:")?remove_ending(".ogg")>
+			<#assign musicLocation = modid + ":" + musicId>
+		<#else>
+			<#assign musicId = data.musicDiscMusic.getMappedValue()!musicRaw>
+			<#assign musicId = musicId?remove_ending(".ogg")>
+			<#assign musicLocation = musicId?contains(":")?then(musicId, "minecraft:" + musicId)>
+		</#if>
+	</#if>
 
 	<#if (data.creativeTabs?size > 1)>
 	// Forge 1.12.2 only stores one default tab, but getSubItems is called by
@@ -41,7 +57,9 @@ public class ${name}Item extends <#if data.isFood>ItemFood<#else>Item</#if> {
 	</#if>
 
 	public ${name}Item() {
-		<#if data.isFood>
+		<#if data.isMusicDisc>
+		super("${registryname}", new SoundEvent(new ResourceLocation("${musicLocation}")));
+		<#elseif data.isFood>
 		super(${data.nutritionalValue}, ${data.saturation?c}f, ${data.isMeat?c});
 		<#else>
 		super();
@@ -50,7 +68,9 @@ public class ${name}Item extends <#if data.isFood>ItemFood<#else>Item</#if> {
 		setUnlocalizedName("${modid}.${registryname}");
 		setCreativeTab(${creativeTabValue(data.creativeTabs)});
 
-		<#if data.damageCount != 0>
+		<#if data.isMusicDisc>
+		setMaxStackSize(1);
+		<#elseif data.damageCount != 0>
 		setMaxStackSize(1);
 		setMaxDamage(${data.damageCount});
 		<#elseif data.stackSize != 64>

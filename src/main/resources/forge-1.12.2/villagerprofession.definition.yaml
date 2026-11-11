@@ -1,0 +1,11 @@
+global_templates:
+  - template: elementinits/villagerprofessions.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameVillagerProfessions.java"
+    condition: "${(types.villagerprofessions![])?has_content}"
+
+localizationkeys:
+  - key: entity.Villager.@modid.@registryname
+    mapto: displayName
+
+# 1.12.2 has no point-of-interest, profession work sound or hat layer.
+field_exclusions: [pointOfInterest, actionSound, hat]

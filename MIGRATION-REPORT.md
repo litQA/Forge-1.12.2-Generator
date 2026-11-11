@@ -420,7 +420,7 @@ generator, and the support matrix marks them as unavailable.
     `javax.annotation.Nullable` because that annotation is not on the generator's
     Java 8 compile classpath.
 
-## Entities and client UI (2026.3-1.0.26.73-beta)
+## Entities and client UI (2026.3-1.0.27.76-beta)
 
 This batch adds living entities, projectiles, special entities, GUIs,
 overlays, key bindings and particles.
@@ -462,12 +462,48 @@ overlays, key bindings and particles.
 - Custom particle registration extends the enum's private maps via reflection
   because 1.12.2 has no particle registry.
 
+## Worldgen, data and economy (2026.3-1.0.27.76-beta)
+
+This batch adds advancement JSON, Java structure/feature worldgen, villager
+professions/trades, commands, functions, game rules and music discs.
+
+### Implemented
+
+- **Advancement**: 1.12.2 advancement JSON with display, parent, rewards and
+  the common JSON trigger templates.
+- **Structure**: an `IWorldGenerator` that loads NBT templates from
+  `assets/<modid>/structures` and places them with biome, spacing, separation
+  and optional fixed-height controls.
+- **Feature**: Java generators for simple block, random patch, ore and
+  scattered ore features.
+- **Villager profession/trade**: `VillagerRegistry` professions and
+  `VillagerCareer` trades for the pre-village-update 1.12.2 system.
+- **Command**: `CommandBase` registration with permission and side targeting.
+- **Function**: 1.12.2 `.mcfunction` datapack files.
+- **Game rule**: `GameRules` registration and get/set procedure blocks.
+- **Music disc**: `ItemRecord` subclasses with record sound and description.
+
+### Known limitations
+
+- 2026.3 Brigadier command arguments are hidden; the generated 1.12.2 command
+  exposes raw arguments only.
+- Feature support is limited to simple block, random patch, ore and scattered
+  ore; other feature types stop generation explicitly.
+- Structure and feature data-driven placement chains, jigsaw pools, terrain
+  adaptation and generation conditions have no 1.12.2 equivalent.
+- Villager professions cannot use points of interest, work sounds or hats;
+  wandering-trader trades are not available.
+- Music disc length-in-ticks and comparator analog output are hidden; a custom
+  record sound must still be present in `sounds.json`.
+- Structures must be shipped manually under
+  `assets/<modid>/structures/<name>.nbt`.
+
 ## Verification log
 
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (45 YAML documents, 117 templates, 93 template references) |
+| Static validator | `VALIDATION PASSED` (63 YAML documents, 210 templates, 124 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |
@@ -480,6 +516,7 @@ overlays, key bindings and particles.
 | New elements (item extension, loot table, potion effect, potion item) | FreeMarker render + `javac --release 8` `PASSED`; loot table JSON parses with named pools/entries/functions. |
 | Block custom loot table + potion attribute cleanup | Test workspace full `javac --release 8` `PASSED`; direct 1.12.2 attribute-map probe removes movement-speed/max-health modifiers by UUID. |
 | Biome + dimension (Normal/Nether/End/Void/custom effects) | FreeMarker render + `javac --release 8` `PASSED`; generated biome, dimension, void chunk generator, biome provider, registries and combined mod class compile together. |
+| Advancement, structure/feature, villager, command/function/game rule, music disc | FreeMarker render + `javac --release 8` `PASSED`; advancement JSON parses; generated worldgen, villager, command, game-rule and record classes compile against patched 1.12.2. |
 | Legacy metadata block references | `Blocks.STONE#3` renders as `Blocks.STONE.getStateFromMeta(3)` and compiles; the same shared helper is used by biome and other block-state templates. |
 | Biome entity spawn entries | `EntityZombie` and `EntityEnderman` spawn entries compile with fully-qualified classes from the `entityclasses` mapping; custom entities use `${package}.entity.<name>`. This avoids MCreator's import-formatter stripping wildcard imports. |
 | Portal/igniter, skybox, biome sounds, custom tree | Templates render and compile; portal JSON models parse; generated block/item registries compile; sound branches and custom tree class compile. |

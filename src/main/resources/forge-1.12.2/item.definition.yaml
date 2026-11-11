@@ -35,10 +35,11 @@ field_exclusions: [guiTexture, customProperties, states, animations, immuneToFir
                    onDroppedByPlayer, onFinishUsingItem, everyTickWhileUsing,
                    onItemEntityDestroyed, enableRanged, shootConstantly, rangedItemChargesPower,
                    projectile, projectileDisableAmmoCheck, onRangedItemUsed, rangedUseCondition,
-                   eatResultItem, isMusicDisc, musicDiscMusic, musicDiscDescription,
-                   musicDiscLengthInTicks, musicDiscAnalogOutput, providedBannerPatterns,
-                   attributeModifiers]
+                   eatResultItem, providedBannerPatterns, attributeModifiers,
+                   musicDiscLengthInTicks, musicDiscAnalogOutput]
 
 localizationkeys:
   - key: item.@modid.@registryname.name
     mapto: name
+  - key: item.record.@registryname.desc
+    mapto: musicDiscDescription

@@ -1,0 +1,15 @@
+_default: VillagerRegistry.getById(0).getCareer(0)
+_mcreator_map_template: "@JavaModNameVillagerProfessions.@REGISTRYNAME_CAREER"
+ARMORER: VillagerRegistry.getById(3).getCareer(0)
+BUTCHER: VillagerRegistry.getById(4).getCareer(0)
+CARTOGRAPHER: VillagerRegistry.getById(1).getCareer(1)
+CLERIC: VillagerRegistry.getById(2).getCareer(0)
+FARMER: VillagerRegistry.getById(0).getCareer(0)
+FISHERMAN: VillagerRegistry.getById(0).getCareer(1)
+FLETCHER: VillagerRegistry.getById(0).getCareer(3)
+LEATHERWORKER: VillagerRegistry.getById(4).getCareer(1)
+LIBRARIAN: VillagerRegistry.getById(1).getCareer(0)
+SHEPHERD: VillagerRegistry.getById(0).getCareer(2)
+TOOLSMITH: VillagerRegistry.getById(3).getCareer(2)
+WEAPONSMITH: VillagerRegistry.getById(3).getCareer(1)
+WANDERINGTRADER: null
