@@ -1,0 +1,28 @@
+templates:
+  - template: gui/gui.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/gui/@NAMEGui.java"
+  - template: gui/gui_messages.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/@NAMEGuiMessages.java"
+
+localizationkeys:
+  - fromlist: data.getFixedTextLabels()
+    key: gui.@modid.@registryname.@[getName()]
+    mapto: getRenderText()
+  - fromlist: data.getFixedTooltips()
+    key: gui.@modid.@registryname.@[getName()]
+    mapto: getRenderText()
+  - fromlist: data.getComponentsOfType('TextField')
+    key: gui.@modid.@registryname.@[getName()]
+    mapto: placeholder
+  - fromlist: data.getComponentsOfType('Button')
+    key: gui.@modid.@registryname.@[getName()]
+    mapto: text
+  - fromlist: data.getComponentsOfType('Checkbox')
+    key: gui.@modid.@registryname.@[getName()]
+    mapto: text
+  - fromlist: data.getComponentsOfType('Slider')
+    key: gui.@modid.@registryname.@[getName()]_prefix
+    mapto: prefix
+  - fromlist: data.getComponentsOfType('Slider')
+    key: gui.@modid.@registryname.@[getName()]_suffix
+    mapto: suffix

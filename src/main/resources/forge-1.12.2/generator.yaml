@@ -92,7 +92,22 @@ base_templates:
     condition: "${types.tabs?has_content}"
   - template: elementinits/items.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameItems.java"
-    condition: "${(types.items![])?has_content || (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.tools![])?has_content || (types.armors![])?has_content || (types.dimensions![])?has_content}"
+    condition: "${(types.items![])?has_content || (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.tools![])?has_content || (types.armors![])?has_content || (types.dimensions![])?has_content || (types.specialentities![])?has_content}"
+  - template: elementinits/entities.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameEntities.java"
+    condition: "${(types.livingentities![])?has_content || (types.projectiles![])?has_content || (types.specialentities![])?has_content}"
+  - template: elementinits/entityrenderers.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameEntityRenderers.java"
+    condition: "${(types.livingentities![])?has_content || (types.projectiles![])?has_content || (types.specialentities![])?has_content}"
+  - template: elementinits/guis.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameGUIs.java"
+    condition: "${(types.guis![])?has_content || (types.specialentities![])?has_content}"
+  - template: elementinits/gui_handler.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameGuiHandler.java"
+    condition: "${(types.guis![])?has_content || (types.specialentities![])?has_content}"
+  - template: elementinits/keybind_messages.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameKeyMessages.java"
+    condition: "${(types.keybinds![])?has_content}"
   - template: elementinits/blocks.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBlocks.java"
     condition: "${(types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.dimensions![])?has_content}"
@@ -134,3 +149,10 @@ resources_setup_tasks:
   - task: copy_models
     type: OBJ
     to: "@MODASSETSROOT/models/item"
+
+sources_setup_tasks:
+  - task: copy_models
+    type: JAVA_viatemplate
+    cleanupBeforeCopy: true
+    template: javamodel.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"

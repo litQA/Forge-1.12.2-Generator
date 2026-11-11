@@ -93,4 +93,28 @@
         ItemStack.EMPTY
     </#if>
 </#macro>
+
+<#-- Executes a procedure with explicit dependency expressions. Used by entity, GUI
+     and projectile templates where the standard dependency names are not enough. -->
+<#macro procedureCode object="" customVals={}>
+    <#if hasProcedure(object) && object?is_hash>
+        <@procedureToCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) customVals=customVals/>
+    </#if>
+</#macro>
+
+<#macro procedureOBJToStringCode object="">
+    <#if hasProcedure(object) && object?is_hash && object.getDependencies??>
+        (String) <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace())/>
+    <#else>
+        ""
+    </#if>
+</#macro>
+
+<#macro procedureOBJToInteractionResultCode object="">
+    <#if hasProcedure(object) && object?is_hash && object.getDependencies??>
+        (EnumActionResult) <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace())/>
+    <#else>
+        EnumActionResult.PASS
+    </#if>
+</#macro>
 <#-- @formatter:on -->

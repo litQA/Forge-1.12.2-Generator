@@ -13,6 +13,15 @@ public class ClientProxy${JavaModName} implements IProxy${JavaModName} {
 		<#if (types.biomes![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.client.${JavaModName}BiomeSounds.class);
 		</#if>
+		<#if (types.livingentities![])?has_content || (types.projectiles![])?has_content || (types.specialentities![])?has_content>
+		${package}.init.${JavaModName}EntityRenderers.register();
+		</#if>
+		<#if (types.keybinds![])?has_content>
+		${package}.init.${JavaModName}KeyMappings.registerKeyBindings();
+		</#if>
+		<#if (types.particles![])?has_content>
+		${package}.init.${JavaModName}Particles.load();
+		</#if>
 	}
 
 	@Override public void init(FMLInitializationEvent event) {

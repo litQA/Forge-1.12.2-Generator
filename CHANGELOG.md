@@ -1,5 +1,78 @@
 # Changelog
 
+# 2026.3-1.0.26.67-beta
+
+## New Content
+
+- Living entity generation with built-in and Java models, renderer layers,
+  spawn eggs, biome/dungeon spawning, attributes, equipment, drops, sounds,
+  boss bars, ridable controls, flying/water movement, breeding/taming,
+  entity data, immunities, spawn conditions, ranged attacks and custom
+  projectiles.
+- Projectile generation based on `EntityArrow`, including default or Java
+  renderers, item rendering, damage/knockback/power, gravity/fire/Particle
+  flags, hit/block/player callbacks and flying-tick procedures.
+- Special entity generation for 1.12.2 boats, including a custom item,
+  chest-boat inventory and vanilla chest GUI opening.
+- GUI generation with background rendering, labels, images, sprites, buttons,
+  image buttons, text fields, checkboxes, sliders, tooltips, entity previews
+  and custom/player inventory slots.
+- Overlay generation for the in-game HUD and vanilla screens, including
+  priority, target screen, display conditions, labels, images, sprites and
+  entity previews.
+- Key binding generation with keyboard and mouse bindings, press/release
+  callbacks and a server-bound message channel.
+- Particle generation with custom `EnumParticleTypes` registration, texture
+  atlases, animation frames, scale/rotation/gravity/collision controls,
+  full-bright rendering and expiry conditions.
+- GUI procedure blocks for opening/closing screens, reading/writing text
+  fields, checkboxes, sliders and slot contents, plus slot change/take/transfer
+  callbacks.
+- AI task templates for the core 1.12.2 `EntityAI*` behaviors and custom
+  `EntityAIBase` conditions.
+
+## Changes
+
+- Added entity, projectile and special-entity registries, client renderer
+  registration and a shared `SimpleNetworkWrapper` channel.
+- Added `IGuiHandler` registration, a lightweight GUI state channel and
+  client-safe reflective GUI construction.
+- Added GUI, overlay, key-binding and particle definitions, mappings and
+  localization keys.
+- Added Java model copying through `sources_setup_tasks` and
+  `javamodel.java.ftl`.
+- Reworked AI task include paths and added `aiconditions.java.ftl`.
+
+## Known Limitations
+
+- `guiBoundTo`/embedded entity inventories are hidden; entity GUIs are opened
+  through the generated GUI procedures instead.
+- `boundingBoxScale`, modern vibration/raid fields, animations and trident
+  immunity are hidden or ignored.
+- Custom boat textures are not applied: 1.12.2 boats use the vanilla
+  `RenderBoat` wood textures. Rafts and chest rafts are generated as boats;
+  chest variants expose a 27-slot inventory through `GuiChest`.
+- Entities are column/height independent; 1.12.2 has no per-Y or synced entity
+  data component registry beyond the generated `DataParameter` values.
+- Custom particle registration extends the enum and its private lookup maps
+  through reflection, because 1.12.2 has no particle registry.
+- GUI slot inventories are standalone `InventoryBasic` instances; they are
+  not bound to tile entities or item stacks.
+- Overlay tooltips, buttons and editable widgets are not rendered; overlay
+  content is limited to labels, images, sprites and entity previews.
+- `Cod`/`Salmon` models do not exist in 1.12.2 and fall back to the squid
+  model.
+
+## Verification
+
+- `gradlew validateGenerator` reports `VALIDATION PASSED`.
+- Representative FreeMarker renders for every new element compile with
+  `javac --release 8` against the patched 1.12.2 client and Forge.
+- AI task, GUI procedure and custom-model render probes compile with zero
+  errors.
+- `gradlew clean build` reports `BUILD SUCCESSFUL` and produces
+  `build/dist/generator-forge-1.12.2.zip`.
+
 # 2026.3-1.0.25.64-beta
 
 ## Fixes

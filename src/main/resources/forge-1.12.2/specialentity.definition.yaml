@@ -1,0 +1,18 @@
+templates:
+  - template: specialentity/specialentity.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/entity/@NAMEEntity.java"
+  - template: specialentity/specialentity_item.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: json/special_entity_item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+
+base_types:
+  - entity
+  - item
+
+localizationkeys:
+  - key: entity.@modid.@registryname.name
+    mapto: name
+  - key: item.@modid.@registryname.name
+    mapto: name

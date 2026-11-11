@@ -28,6 +28,18 @@ public class ${JavaModName} {
 
 	@Mod.Instance(MODID) public static ${JavaModName} instance;
 
+	public static final net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper PACKET_HANDLER =
+			net.minecraftforge.fml.common.network.NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
+	private static int networkId = 0;
+
+	public static <REQ extends net.minecraftforge.fml.common.network.simpleimpl.IMessage,
+			REPLY extends net.minecraftforge.fml.common.network.simpleimpl.IMessage>
+			void addNetworkMessage(
+					Class<? extends net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler<REQ, REPLY>> handler,
+					Class<REQ> message, net.minecraftforge.fml.relauncher.Side side) {
+		PACKET_HANDLER.registerMessage(handler, message, networkId++, side);
+	}
+
 	@Mod.EventHandler public void preInit(FMLPreInitializationEvent event) {
 		<#if (types.tabs![])?has_content>
 		${package}.init.${JavaModName}Tabs.load();
@@ -50,8 +62,18 @@ public class ${JavaModName} {
 		<#if (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.dimensions![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Blocks.class);
 		</#if>
-		<#if (types.items![])?has_content || (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.tools![])?has_content || (types.armors![])?has_content || (types.dimensions![])?has_content>
+		<#if (types.items![])?has_content || (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.tools![])?has_content || (types.armors![])?has_content || (types.dimensions![])?has_content || (types.specialentities![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Items.class);
+		</#if>
+		<#if (types.livingentities![])?has_content || (types.projectiles![])?has_content || (types.specialentities![])?has_content>
+		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Entities.class);
+		</#if>
+		<#if (types.guis![])?has_content || (types.specialentities![])?has_content>
+		${package}.init.${JavaModName}GUIs.init();
+		net.minecraftforge.fml.common.network.NetworkRegistry.INSTANCE.registerGuiHandler(instance, new ${package}.init.${JavaModName}GuiHandler());
+		</#if>
+		<#if (types.keybinds![])?has_content>
+		${package}.init.${JavaModName}KeyMessages.register();
 		</#if>
 		<#if w.hasElementsOfType("itemextension")>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Fuels.class);
@@ -78,6 +100,9 @@ public class ${JavaModName} {
 		</#if>
 		<#if (types.recipes![])?has_content>
 		${package}.init.${JavaModName}Recipes.init();
+		</#if>
+		<#if (types.livingentities![])?has_content || (types.projectiles![])?has_content || (types.specialentities![])?has_content>
+		${package}.init.${JavaModName}Entities.init();
 		</#if>
 
 		proxy.init(event);

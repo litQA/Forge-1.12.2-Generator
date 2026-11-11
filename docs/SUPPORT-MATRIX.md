@@ -6,7 +6,7 @@ Plugin id: `generator-forge-1.12.2`
 
 Target: MCreator EAP `2026.3.44621`, Minecraft `1.12.2`, Forge `14.23.5.2847`
 
-Current plugin snapshot: `2026.3-1.0.25.64-beta`
+Current plugin snapshot: `2026.3-1.0.26.67-beta`
 
 Status vocabulary:
 
@@ -15,7 +15,7 @@ Status vocabulary:
 - **Unavailable** - no implementation in the current snapshot; generation
   either stops explicitly or the field is hidden.
 
-This file is current as of `2026.3-1.0.25.64-beta`. `新功能列表.txt` remains the
+This file is current as of `2026.3-1.0.26.67-beta`. `新功能列表.txt` remains the
 canonical 2021.1-2026.3 feature list; this matrix describes the implemented
 subset and its implementation method.
 
@@ -40,7 +40,14 @@ subset and its implementation method.
 | Attribute | Degraded | Generated `RangedAttribute` with default/min/max, injected through `EntityConstructing` for all LivingEntity, players or selected entities. 1.12.2 has no global attribute registry; `sentiment`, full modifier mapping and network synchronization are unavailable. |
 | Potion effect | Degraded | Custom `Potion` subclass with category, color, icon, attribute modifiers, instant/beneficial flags and start/tick/expire/hurt/death procedures. Attribute modifiers are removed by UUID on expiry/cure. Honey curing and custom particle rendering are unavailable. |
 | Potion item | Degraded | Registers `PotionType` entries and uses vanilla potion, splash, lingering and tipped-arrow items; generates splash/lingering brewing conversions. It does not create a new potion item class. |
-| Procedure | Degraded | Current procedure subset: chat, set/remove block, get current blockstate, get/set boolean/integer properties, play sound, give item, call procedure and return. Block triggers: right click, added, destroyed by player, entity walk, scheduled/random tick and neighbor change. Global triggers, entity triggers, many 2026.3 procedure blocks and some block-specific contexts are unavailable. |
+| Living entity | Degraded | Generates `EntityMob`/`EntityCreature`/`EntityAnimal`/`EntityTameable` or a selected vanilla `Entity<AI base>` subclass, plus attributes, equipment, drops, sounds, boss bar, spawn egg, biome/dungeon spawn entries, spawn placement, ridable controls, flying/water movement, breeding/taming, `DataParameter`-backed entity data, immunities and ranged attacks. Renderer supports built-in models, custom Java models and model layers. `guiBoundTo`/embedded inventories, animations, `boundingBoxScale` procedures, vibration/raid fields and trident immunity are hidden. `Cod`/`Salmon` fall back to the squid model because 1.12.2 has no fish model. |
+| Projectile | Degraded | Generates an `EntityArrow` subclass with default item (`RenderSnowball`) or Java model rendering, damage/knockback/power, gravity/fire/particle flags, hit-block/player/entity procedures and flying-tick procedures. `disableDiscarding` keeps arrows in the ground; otherwise they despawn on landing. |
+| Special entity | Degraded | Boat-only 1.12.2 implementation: custom `EntityBoat` subclass plus custom spawn item. Chest variants expose a persisted 27-slot `IInventory` through vanilla `GuiChest`; rafts are generated as boats. `RenderBoat` uses vanilla wood textures, so `entityTexture` is not applied. |
+| GUI | Degraded | Generates a `GuiContainer`/`Container` pair with optional slots, background texture, labels, images, sprites, buttons, image buttons, text fields, checkboxes, sliders, tooltips and entity previews. Supports open/tick/close procedures, button/slider/slot callbacks and a GUI state channel for text/checkbox/slider values. Slot inventories are standalone `InventoryBasic` instances and are not bound to tile entities or items. |
+| Overlay | Degraded | Generates a client `RenderGameOverlayEvent` or `GuiScreenEvent` handler with configurable priority and target screen, display condition, base texture, labels, images, sprites and entity previews. Buttons and editable widgets are not rendered in overlays. |
+| Key binding | Degraded | Generates a `KeyBinding` registered through `ClientRegistry`, keyboard and mouse press/release handling, and a server-bound `SimpleNetworkWrapper` message. Bindings use the 1.12.2 `key.categories.*` categories. |
+| Particle | Degraded | Generates a `Particle` subclass and registers a custom `EnumParticleTypes` entry plus textures through `TextureStitchEvent.Pre`. Supports animation frames, scale, rotation, gravity, collision, full-bright rendering and expiry conditions. 1.12.2 has no particle registry, so enum/map extension uses reflection; `renderType` is hidden. |
+| Procedure | Degraded | Current procedure subset: chat, set/remove block, get current blockstate, get/set boolean/integer properties, play sound, give item, GUI open/close, GUI text/checkbox/slider get/set, GUI slot item/amount/set/remove/clear/damage, call procedure and return. Block triggers: right click, added, destroyed by player, entity walk, scheduled/random tick and neighbor change. GUI slot callbacks are supported through generated messages. Global triggers, entity triggers and many 2026.3 procedure blocks are unavailable. |
 
 ## Unsupported mod elements
 
@@ -49,8 +56,6 @@ advertised as supported:
 
 | Element group | Status | Notes |
 | --- | --- | --- |
-| Living entity / special entity / projectile | Unavailable | No entity AI, model layer, synced data, projectile or boat/raft implementation. |
-| GUI / overlay / key binding / particle | Unavailable | No screen, overlay, keybind or custom particle pipeline. |
 | Advancement / structure / feature | Unavailable | 1.12.2 lacks data-driven equivalents. Custom dimension terrain/caves and custom biome trees are implemented Java worldgen subsets; native structure/feature registries are not generated. |
 | Villager trade/profession / command / function / game rule | Unavailable | No generated Java equivalents in this snapshot. |
 | Damage type / painting / banner pattern / armor trim | Unavailable | No native 1.12.2 registry or API for the modern forms. |
@@ -62,7 +67,10 @@ advertised as supported:
 | --- | --- | --- |
 | Plugin metadata | Direct | `plugin.json` id `generator-forge-1.12.2`, weight 100, supported 2026.3 EAP versions. |
 | `generator.yaml` | Direct | Declares base templates, language file, resource folders, Java model key, Gradle task names and export path. |
-| Base templates | Direct | `modbase/mod.java.ftl`, proxies, `mcmod.info`, pack metadata, Mixin sources/config and element initializers are generated from workspace data. |
+| Base templates | Direct | `modbase/mod.java.ftl`, proxies, `mcmod.info`, pack metadata, Mixin sources/config, entity/item/GUI/keybind/particle initializers and GUI handler are generated from workspace data. |
+| GUI/overlay state channel | Degraded | Text fields, checkboxes and sliders synchronize through a generated `SimpleNetworkWrapper` state message. This is a small custom channel, not the modern menu-state API. |
+| Network channel | Direct | A single `SimpleNetworkWrapper` channel is exposed through `<Mod>.PACKET_HANDLER`; message discriminators are assigned in deterministic pre-init order. |
+| Java models | Degraded | Java models are copied through `sources_setup_tasks`/`javamodel.java.ftl`; only the legacy `ModelRenderer` model key is supported. |
 | Generator fragments | Direct / unused | The generator uses direct base templates; no fragment declarations are needed. Mixin support is provided by the generated Mixin build/resource pipeline, not by generator fragments. |
 | Empty `types` lists | Direct | All base templates use `(types.xxx![])?has_content` guards. |
 | Field exclusions | Direct | Unsupported fields are hidden or explicitly stopped; for dynamically created list entries, MCreator cannot hide subfields and those values are ignored with documented limitations. |
@@ -74,7 +82,7 @@ advertised as supported:
 | Gradle build chain | Direct | Plugin builds with JDK 17; generated workspaces use JDK 25 + Gradle 9.8.0 + RetroFuturaGradle 2.0.6; generated mods compile/run with Java 8 toolchain. |
 | Forge `14.23.5.2864` | Unavailable | Current RFG 2.0.6 target is 2847; a separate toolchain upgrade is required. |
 | Workspace-local caches | Direct for wrapper builds | The documented workflow sets `GRADLE_USER_HOME` to `caches/gradle`; MCreator's Tooling API build is a platform-controlled exception. |
-| Server-side safety | Direct | Common code uses server-safe Forge APIs; skybox/sound client logic is isolated behind `@SideOnly`/client proxy paths. |
+| Server-side safety | Direct | Common code uses server-safe Forge APIs; skybox/sound/renderer/keybind/particle client logic is isolated behind `@SideOnly`/client proxy paths. GUI client screens are created reflectively so a dedicated server does not resolve client GUI classes. |
 | Generator validator | Direct | `gradlew validateGenerator` validates YAML, mappings, FTL syntax/includes and template references. It does not replace `javac` or runtime tests. |
 | Generation diagnostics | Degraded | MCreator reports element/template failures; unsupported choices stop explicitly where a safe fallback does not exist. Mapping fallbacks are documented rather than silently invented. |
 | Java 8 compatibility | Direct | Generated Java targets Java 8 APIs; Java 25 is only the Gradle/MCreator runtime. |

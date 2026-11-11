@@ -75,6 +75,10 @@ public class ${JavaModName}Items {
 	</#if>
 	</#list>
 
+	<#list (types.specialentities![]) as specialentity>
+	public static final Item ${specialentity.getModElement().getRegistryNameUpper()} = register("${specialentity.getModElement().getRegistryName()}", new ${package}.item.${specialentity.getModElement().getName()}Item());
+	</#list>
+
 	// Start of user code block custom items
 	// End of user code block custom items
 

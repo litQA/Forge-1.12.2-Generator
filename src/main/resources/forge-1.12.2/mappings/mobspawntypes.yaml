@@ -3,3 +3,6 @@ monster: EnumCreatureType.MONSTER
 creature: EnumCreatureType.CREATURE
 ambient: EnumCreatureType.AMBIENT
 waterCreature: EnumCreatureType.WATER_CREATURE
+waterAmbient: EnumCreatureType.WATER_CREATURE
+undergroundWaterCreature: EnumCreatureType.WATER_CREATURE
+misc: EnumCreatureType.CREATURE

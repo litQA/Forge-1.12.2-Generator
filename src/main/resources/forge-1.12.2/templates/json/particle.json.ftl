@@ -1,0 +1,5 @@
+{
+    "textures": [
+        "${modid}:particle/${registryname}"
+    ]
+}

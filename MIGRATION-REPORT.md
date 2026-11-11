@@ -420,6 +420,48 @@ generator, and the support matrix marks them as unavailable.
     `javax.annotation.Nullable` because that annotation is not on the generator's
     Java 8 compile classpath.
 
+## Entities and client UI (2026.3-1.0.26.67-beta)
+
+This batch adds living entities, projectiles, special entities, GUIs,
+overlays, key bindings and particles.
+
+### Implemented
+
+- **Living entity**: native 1.12.2 base classes, attributes, equipment,
+  drops, sounds, boss bars, spawn eggs, biome/dungeon spawns, spawn placement,
+  ridable controls, flying/water movement, breeding/taming, entity data,
+  immunities, spawn conditions, ranged attacks and custom projectiles.
+- **Projectile**: `EntityArrow` subclass with item or Java-model rendering,
+  damage/knockback/power, hit callbacks and flying-tick procedures.
+- **Special entity**: boat subclass and custom item; chest variants expose a
+  persisted 27-slot `IInventory` through vanilla `GuiChest`.
+- **GUI**: `GuiContainer`/`Container` pair with optional slots, background,
+  labels, images, sprites, buttons, image buttons, text fields, checkboxes,
+  sliders, tooltips and entity previews, plus open/tick/close procedures and
+  button/slider/slot messages.
+- **Overlay**: in-game and screen-targeted `RenderGameOverlayEvent` /
+  `GuiScreenEvent` rendering with priority and display conditions.
+- **Key binding**: keyboard and mouse bindings with press/release procedures.
+- **Particle**: custom `EnumParticleTypes` entries, texture stitching,
+  animation frames, scale/rotation/gravity/collision/brightness controls.
+- **Procedure blocks**: GUI open/close, text/checkbox/slider state and slot
+  item/amount/set/remove/clear/damage operations.
+- **AI tasks**: 1.12.2 implementations for the standard `EntityAI*` tasks and
+  a shared condition macro.
+
+### Known limitations
+
+- `guiBoundTo` and embedded entity inventories are hidden; use GUI procedures
+  to open a standalone generated GUI.
+- `animations`, `boundingBoxScale` procedures, trident immunity, vibration and
+  raid fields are hidden.
+- Boat textures are the vanilla wood textures; rafts are generated as boats.
+- GUI slot inventories are standalone and drop items when the screen closes.
+- Overlay buttons and editable widgets are not supported.
+- 1.12.2 has no fish model, so `Cod`/`Salmon` fall back to the squid model.
+- Custom particle registration extends the enum's private maps via reflection
+  because 1.12.2 has no particle registry.
+
 ## Verification log
 
 | Step | Result |
@@ -444,6 +486,13 @@ generator, and the support matrix marks them as unavailable.
 | Custom dimension terrain | Noise/filler/fluid/sea-level/aquifer generator renders and compiles with the dimension provider. |
 | Custom dimension caves | `MapGenCaves`/`MapGenRavine` overrides for custom filler render and compile; biome weight uses the fixed test weight 100. |
 | Mixin cave/Nether injection | Worldgen hooks and `World#getBiome` Mixin render and compile against Mixin 0.7.11; Mixin JSON parses. |
+| Living entity + renderer + custom projectile | Representative built-in model, custom Java model, ranged, breeding/taming, boss, flying, ridable, data and layer variants render and compile. |
+| Projectile + renderer | Default item and custom Java model variants render and compile. |
+| Special entity + item | Chest boat and plain boat variants render and compile; chest inventory delegates compile against 1.12.2 `IInventory`. |
+| GUI + overlay | Full-widget GUI, no-slot GUI, in-game overlay and vanilla-screen overlay variants render and compile. |
+| Key binding + particle | Keyboard/mouse bindings, static and animated particles with angular motion render and compile. |
+| AI tasks | All 27 AI task templates render together and compile against 1.12.2 AI classes. |
+| GUI procedures | All generated GUI procedures render and compile against the generated GUI state/handler classes. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 
 The generated-mod build used the exact workspace base, templates and generated
@@ -457,7 +506,7 @@ official names (`setTranslationKey`, `createIcon`) that do not match the 1.12.2
 API used by MCreator.
 
 Remaining acceptance item: launch the Forge 1.12.2 client and verify item
-extensions, loot tables, potion effects, potion items, biomes and dimensions in
-game. Per the delivery specification this real-device test is performed by the
-user before the next batch starts.
-
+extensions, loot tables, potion effects, potion items, biomes, dimensions,
+living entities, projectiles, boats, GUIs, overlays, key bindings and custom
+particles in game. Per the delivery specification this real-device test is
+performed by the user before the next batch starts.
