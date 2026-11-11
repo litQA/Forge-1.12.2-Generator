@@ -1,5 +1,33 @@
 # Changelog
 
+# 2026.3-1.0.12.51-beta
+
+## Changes
+
+- Added native 1.12.2 dimension **portals and igniters**: a custom
+  `BlockPortal` subclass, simplified frame scanning, teleporter entry/return,
+  portal blockstate/models, igniter item/model and block/item registration.
+- Added custom dimension **skybox**: a client `IRenderHandler` with six
+  selectable skybox textures, installed through `WorldProvider#setSkyRenderer`.
+- Added native **sounds**: portal ambient sound playback and periodic biome
+  ambient/additions sounds through a client tick handler.
+- Added a **custom tree** subset for biome elements: configurable trunk/branch
+  blocks, vines, fruits and minimum height, generated as a
+  `WorldGenAbstractTree` and selected by `Biome#getRandomTreeFeature`.
+
+## Known Limitations
+
+- Portal frames use a simple rectangular scan and do not implement the complete
+  vanilla `BlockPortal.Size` rules; custom portal particles, portal-use
+  procedures and custom portal sound conditions remain hidden.
+- Skybox textures are client-side resources and must be supplied in
+  `assets/<modid>/textures/skybox`; custom sun/moon textures remain hidden.
+- Biome ambient/additions sounds are periodic client playback, not full
+  high-version biome sound-event semantics.
+- Custom tree support is a high-value subset, not the full modern tree feature
+  system (no arbitrary root placers, decorator chains or multi-layer constraints).
+
+
 # 2026.3-1.0.11.50-beta
 
 ## Fixes

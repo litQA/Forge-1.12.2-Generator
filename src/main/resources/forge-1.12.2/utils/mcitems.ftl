@@ -190,7 +190,7 @@
             <#if code?contains("blockstate") || code?contains("world.getBlockState")>
                 <#return code + ".getBlock()">
             </#if>
-            <#return code>
+            <#return code?split("#")[0]>
         </#if>
         <#return "net.minecraft.init.Blocks.STONE">
     </#if>

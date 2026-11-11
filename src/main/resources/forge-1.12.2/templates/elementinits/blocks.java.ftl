@@ -28,6 +28,12 @@ public class ${JavaModName}Blocks {
 	public static final Block ${fluid.getModElement().getRegistryNameUpper()} = register("${fluid.getModElement().getRegistryName()}", new ${package}.block.${fluid.getModElement().getName()}Block());
 	</#list>
 
+	<#list (types.dimensions![]) as dimension>
+	<#if dimension.enablePortal>
+	public static final Block ${dimension.getModElement().getRegistryNameUpper()}_PORTAL = register("${dimension.getModElement().getRegistryName()}_portal", new ${package}.block.${dimension.getModElement().getName()}PortalBlock());
+	</#if>
+	</#list>
+
 	// Start of user code block custom blocks
 	// End of user code block custom blocks
 

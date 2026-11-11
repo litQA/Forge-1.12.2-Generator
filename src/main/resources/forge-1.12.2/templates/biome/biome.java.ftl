@@ -12,6 +12,7 @@
 package ${package}.world.biome;
 
 import ${package}.init.${JavaModName}Biomes;
+<#if data.treeType == 1>import ${package}.world.features.treedecorators.${name}TreeFeature;</#if>
 import java.util.Random;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -103,7 +104,9 @@ public class ${name}Biome extends Biome {
 
 	<#if data.treesPerChunk gt 0>
 	@Override public WorldGenAbstractTree getRandomTreeFeature(Random rand) {
-		<#if data.vanillaTreeType == "Big trees">
+		<#if data.treeType == 1>
+		return new ${name}TreeFeature();
+		<#elseif data.vanillaTreeType == "Big trees">
 		return new WorldGenBigTree(false);
 		<#elseif data.vanillaTreeType == "Birch trees">
 		return new WorldGenBirchTree(false, true);

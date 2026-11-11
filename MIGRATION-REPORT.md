@@ -250,17 +250,21 @@ and a dedicated potion item class are not available in 1.12.2.
 Biomes generate registered `Biome` subclasses with climate/rainfall, top and
 filler blocks, colors, spawn entries, vanilla tree types, overworld placement,
 stronghold/village placement and a `RegistryEvent.Register<Biome>` initializer.
-Custom tree generators and modern climate/noise, cave/nether injection, sounds,
-particles and structure placement fields are hidden.
+A custom-tree subset generates `WorldGenAbstractTree` classes with configurable
+trunk/branch/vine/fruit blocks and minimum height. Ambient/additions sounds use
+a client tick handler; modern climate/noise, cave/nether injection, custom
+particles, mood/music fields and modern structure placement are hidden.
 
 Dimensions generate a `WorldProvider`, a `DimensionType` registered through
 Forge's `DimensionManager`, and a custom `BiomeProvider` over the selected
 dimension biomes. Normal, Nether, End and Void chunk generators are supported;
 Void uses a minimal empty `IChunkGenerator`. Fog, clouds, fixed time, ambient
 light, sky light, respawn/bed/weather behavior and player enter/leave procedures
-are mapped. Portals, igniters, custom skyboxes, aquifers/noise settings and
-modern dimension JSON are hidden; dimension entry currently needs another
-mod/command using the registered dimension id.
+are mapped. Portals/igniters are generated with a custom `BlockPortal` subclass
+and rectangular frame scan; custom skyboxes use a six-face client
+`IRenderHandler`; portal and biome ambient/additions sounds use native sound
+events. Modern noise/aquifer settings, custom sun/moon rendering and custom
+filler/fluid/sea-level terrain remain hidden.
 
 ### Localization keys
 
@@ -385,18 +389,21 @@ generator, and the support matrix marks them as unavailable.
 17. **Potion item coverage.** Potion items are registered as `PotionType`
     entries on vanilla potion items, not as a new item class. Splash and
     lingering variants are added through custom brewing recipes.
-18. **Dimension/biome coverage.** Dimensions have no portal/igniter in this
-    batch and use vanilla 1.12.2 chunk generators rather than custom filler/fluid
-    terrain. Biome custom trees and modern climate/noise/structure features are
-    hidden. Generated dimension/biome sources avoid `javax.annotation.Nullable`
-    because that annotation is not on the generator's Java 8 compile classpath.
+18. **Dimension/biome coverage.** Dimensions use vanilla 1.12.2 chunk generators
+    rather than custom filler/fluid terrain. Portals use a simplified rectangular
+    frame scan and do not implement every vanilla `BlockPortal.Size` rule;
+    custom portal conditions/particles and custom sun/moon textures remain
+    hidden. Biome custom trees are a limited trunk/branch/vine/fruit subset, and
+    modern climate/noise/structure features remain hidden. Generated sources
+    avoid `javax.annotation.Nullable` because that annotation is not on the
+    generator's Java 8 compile classpath.
 
 ## Verification log
 
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (45 YAML documents, 103 templates, 79 template references) |
+| Static validator | `VALIDATION PASSED` (45 YAML documents, 112 templates, 88 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |
@@ -411,6 +418,7 @@ generator, and the support matrix marks them as unavailable.
 | Biome + dimension (Normal/Nether/End/Void/custom effects) | FreeMarker render + `javac --release 8` `PASSED`; generated biome, dimension, void chunk generator, biome provider, registries and combined mod class compile together. |
 | Legacy metadata block references | `Blocks.STONE#3` renders as `Blocks.STONE.getStateFromMeta(3)` and compiles; the same shared helper is used by biome and other block-state templates. |
 | Biome entity spawn entries | `EntityZombie` and `EntityEnderman` spawn entries compile with fully-qualified classes from the `entityclasses` mapping; custom entities use `${package}.entity.<name>`. This avoids MCreator's import-formatter stripping wildcard imports. |
+| Portal/igniter, skybox, biome sounds, custom tree | Templates render and compile; portal JSON models parse; generated block/item registries compile; sound branches and custom tree class compile. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 
 The generated-mod build used the exact workspace base, templates and generated

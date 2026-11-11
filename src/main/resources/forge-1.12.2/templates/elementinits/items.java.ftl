@@ -69,6 +69,12 @@ public class ${JavaModName}Items {
 	</#if>
 	</#list>
 
+	<#list (types.dimensions![]) as dimension>
+	<#if dimension.hasIgniter()>
+	public static final Item ${dimension.getModElement().getRegistryNameUpper()} = register("${dimension.getModElement().getRegistryName()}", new ${package}.item.${dimension.getModElement().getName()}Item());
+	</#if>
+	</#list>
+
 	// Start of user code block custom items
 	// End of user code block custom items
 

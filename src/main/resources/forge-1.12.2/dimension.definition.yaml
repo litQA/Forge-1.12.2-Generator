@@ -6,6 +6,31 @@ templates:
   - template: dimension/chunkgenerator_void.java.ftl
     condition: "worldGenType %= Void gen"
     name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEChunkGeneratorVoid.java"
+  - template: dimension/blockportal.java.ftl
+    condition: enablePortal
+    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEPortalBlock.java"
+  - template: dimension/portaltrigger.java.ftl
+    condition: hasIgniter()
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: json/dimension_portal.json.ftl
+    writer: json
+    condition: enablePortal
+    name: "@MODASSETSROOT/blockstates/@registryname_portal.json"
+  - template: json/dimension_portal_ew.json.ftl
+    writer: json
+    condition: enablePortal
+    name: "@MODASSETSROOT/models/block/@registryname_portal_ew.json"
+  - template: json/dimension_portal_ns.json.ftl
+    writer: json
+    condition: enablePortal
+    name: "@MODASSETSROOT/models/block/@registryname_portal_ns.json"
+  - template: json/dimension_portal_item.json.ftl
+    writer: json
+    condition: hasIgniter()
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: dimension/skybox.java.ftl
+    condition: enableCustomSkyboxTextures
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/@NAMESkyRenderer.java"
 
 global_templates:
   - template: elementinits/dimensions.java.ftl
@@ -17,13 +42,14 @@ global_templates:
 # available in this batch.
 field_exclusions: [biomesInDimensionCaves, mainFillerBlock, fluidBlock, seaLevel,
                    generateOreVeins, generateAquifers, horizontalNoiseSize, verticalNoiseSize,
-                   infiniburnTag, skyType, enableCustomSkyboxTextures,
-                   skyboxTextureUp, skyboxTextureDown, skyboxTextureNorth, skyboxTextureSouth,
-                   skyboxTextureWest, skyboxTextureEast, enableCustomSunMoonTextures,
+                   infiniburnTag, skyType, enableCustomSunMoonTextures,
                    sunTexture, moonTexture, sunHeightAffectsFog,
                    piglinSafe, hasRaids, minMonsterSpawnLightLimit, maxMonsterSpawnLightLimit,
                    monsterSpawnBlockLightLimit,
-                   portalFrame, portalParticles, portalLuminance, portalSound,
-                   enableIgniter, igniterName, igniterRarity, specialInformation, creativeTabs,
-                   texture, portalTexture, enablePortal, portalMakeCondition, portalUseCondition,
-                   whenPortaTriggerlUsed, onPortalTickUpdate]
+                   portalParticles, specialInformation,
+                   portalMakeCondition, portalUseCondition, whenPortaTriggerlUsed, onPortalTickUpdate]
+
+localizationkeys:
+  - key: item.@modid.@registryname.name
+    mapto: igniterName
+    condition: hasIgniter()

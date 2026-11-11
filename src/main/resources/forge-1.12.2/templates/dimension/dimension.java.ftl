@@ -24,6 +24,11 @@ public class ${name}WorldProvider extends WorldProvider {
 		this.nether = <#if data.worldGenType == "Nether like gen">true<#else>false</#if>;
 		this.hasSkyLight = ${data.hasSkyLight?c};
 		this.doesWaterVaporize = ${data.doesWaterVaporize?c};
+		<#if data.enableCustomSkyboxTextures>
+		if (this.world.isRemote) {
+			this.setSkyRenderer(new ${package}.client.${name}SkyRenderer());
+		}
+		</#if>
 	}
 
 	@Override public IChunkGenerator createChunkGenerator() {

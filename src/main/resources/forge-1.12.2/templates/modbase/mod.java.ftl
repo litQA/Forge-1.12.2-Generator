@@ -47,10 +47,10 @@ public class ${JavaModName} {
 		<#if (types.attributes![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Attributes.class);
 		</#if>
-		<#if (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content>
+		<#if (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.dimensions![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Blocks.class);
 		</#if>
-		<#if (types.items![])?has_content || (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.tools![])?has_content || (types.armors![])?has_content>
+		<#if (types.items![])?has_content || (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.tools![])?has_content || (types.armors![])?has_content || (types.dimensions![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Items.class);
 		</#if>
 		<#if w.hasElementsOfType("itemextension")>
