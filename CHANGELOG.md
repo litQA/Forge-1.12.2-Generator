@@ -10,7 +10,7 @@
   entity data, immunities, spawn conditions, ranged attacks and custom
   projectiles.
 - Projectile generation based on `EntityArrow`, including default or Java
-  renderers, item rendering, damage/knockback/power, gravity/fire/Particle
+  renderers, item rendering, damage/knockback/power, gravity/fire/particle
   flags, hit/block/player callbacks and flying-tick procedures.
 - Special entity generation for 1.12.2 boats, including a custom item,
   chest-boat inventory and vanilla chest GUI opening.
