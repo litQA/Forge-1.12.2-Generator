@@ -1,6 +1,6 @@
 # Changelog
 
-# 2026.3-1.0.28.83-beta
+# 2026.3-1.0.28.84-beta
 
 ## New Content
 
@@ -28,7 +28,7 @@
 
 ## Fixes
 
-Fixed 6 bug(s).
+Fixed 7 bug(s).
 - Villager profession skin resource locations now include the `.png`
   extension required by 1.12.2 `SimpleTexture`.
 - The villager profession mapping now honours the `CUSTOM:` prefix, so
@@ -42,6 +42,8 @@ Fixed 6 bug(s).
   contain a trailing newline and fail `ItemPredicate.deserialize`.
 - Added the 1.12.2 `cmdargs/_call_procedure.java.ftl` template and emit
   `argscode` inside the generated command's `execute` method.
+- Command registration now uses the mod's `FMLServerStartingEvent` handler
+  instead of an invalid `@SubscribeEvent` on the FML lifecycle event.
 
 ## Known Limitations
 

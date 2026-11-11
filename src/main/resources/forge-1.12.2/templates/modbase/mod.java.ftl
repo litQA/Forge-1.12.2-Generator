@@ -125,6 +125,11 @@ public class ${JavaModName} {
 	}
 
 	@Mod.EventHandler public void serverLoad(FMLServerStartingEvent event) {
+		<#list (types.commands![]) as command>
+		<#if command.type != "CLIENTSIDE">
+		${package}.command.${command.getModElement().getName()}Command.registerCommand(event);
+		</#if>
+		</#list>
 		proxy.serverLoad(event);
 	}
 

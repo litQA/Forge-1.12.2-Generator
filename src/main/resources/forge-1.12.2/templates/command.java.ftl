@@ -19,13 +19,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 <#if data.type == "CLIENTSIDE">
 @net.minecraftforge.fml.relauncher.SideOnly(net.minecraftforge.fml.relauncher.Side.CLIENT)
-<#else>
-@Mod.EventBusSubscriber
 </#if>
 public class ${name}Command extends CommandBase {
 
 	<#if data.type != "CLIENTSIDE">
-	@SubscribeEvent
 	public static void registerCommand(FMLServerStartingEvent event) {
 		<#if data.type == "MULTIPLAYER_ONLY">
 		if (event.getServer().isDedicatedServer())
