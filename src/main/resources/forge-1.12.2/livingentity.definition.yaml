@@ -12,6 +12,8 @@ unmodifiable_ai_bases: [Bat, MagmaCube, Slime]
 localizationkeys:
   - key: entity.@modid.@registryname.name
     mapto: mobName
+  - key: entity.@registryname.name
+    mapto: mobName
 
 field_exclusions: [guiBoundTo, inventorySize, inventoryStackSize, animations,
                    boundingBoxScale, attackKnockback, immuneToTrident, raidSpawnsCount, raidCelebrationSound,

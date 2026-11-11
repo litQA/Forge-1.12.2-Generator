@@ -10,11 +10,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class ${name}Item extends Item {
+
+	<#if (data.creativeTabs?size > 1)>
+	private static final CreativeTabs[] CREATIVE_TABS = new CreativeTabs[] {
+		<#list data.creativeTabs as creativeTab>
+		${creativeTabValue([creativeTab])}<#if creativeTab?has_next>,</#if>
+		</#list>
+	};
+	</#if>
 
 	public ${name}Item() {
 		this.setMaxStackSize(1);
@@ -23,6 +32,17 @@ public class ${name}Item extends Item {
 		this.setCreativeTab(${creativeTabValue(data.creativeTabs)});
 		</#if>
 	}
+
+	<#if (data.creativeTabs?size > 1)>
+	@Override public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		for (CreativeTabs supportedTab : CREATIVE_TABS) {
+			if (supportedTab == tab) {
+				items.add(new ItemStack(this));
+				return;
+			}
+		}
+	}
+	</#if>
 
 	@Override public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);

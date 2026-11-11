@@ -14,5 +14,7 @@ base_types:
 localizationkeys:
   - key: entity.@modid.@registryname.name
     mapto: name
+  - key: entity.@registryname.name
+    mapto: name
   - key: item.@modid.@registryname.name
     mapto: name

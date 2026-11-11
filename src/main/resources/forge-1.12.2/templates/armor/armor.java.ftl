@@ -39,6 +39,14 @@ public class ${name}Item {
 			<#else>null,
 			</#if> ${data.toughness?c}f);
 
+	<#if (data.creativeTabs?size > 1)>
+	private static final CreativeTabs[] CREATIVE_TABS = new CreativeTabs[] {
+		<#list data.creativeTabs as creativeTab>
+		${creativeTabValue([creativeTab])}<#if creativeTab?has_next>,</#if>
+		</#list>
+	};
+	</#if>
+
 	<#macro armorPiece className enable slot textureName="" info="" tick="" index=0>
 	<#if enable>
 	public static class ${className} extends ItemArmor {
@@ -48,6 +56,17 @@ public class ${name}Item {
 			setMaxStackSize(1);
 			<#if data.creativeTabs?has_content>setCreativeTab(${creativeTabValue([data.creativeTabs[0]])});</#if>
 		}
+
+		<#if (data.creativeTabs?size > 1)>
+		@Override public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+			for (CreativeTabs supportedTab : CREATIVE_TABS) {
+				if (supportedTab == tab) {
+					items.add(new ItemStack(this));
+					return;
+				}
+			}
+		}
+		</#if>
 
 		@Override public EnumRarity getRarity(ItemStack stack) {
 			return EnumRarity.${data.rarity};

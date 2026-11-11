@@ -1,6 +1,6 @@
 # Changelog
 
-# 2026.3-1.0.26.71-beta
+# 2026.3-1.0.26.72-beta
 
 ## New Content
 
@@ -45,7 +45,7 @@
 
 ## Fixes
 
-Fixed 7 bug(s).
+Fixed 10 bug(s).
 - Overlay component positions now resolve `GUIComponent.AnchorPoint.name()`
   instead of the localized `toString()` value. The previous comparison never
   matched, so anchors such as `BOTTOM_LEFT`/`BOTTOM_RIGHT` rendered empty
@@ -66,6 +66,14 @@ Fixed 7 bug(s).
 - Living entity sources now import the complete set of 1.12.2 `EntityAI*`
   classes and `Vec3d` used by the generated AI task snippets. This fixes the
   missing `EntityAILookIdle`/similar symbols in generated entity classes.
+- Spawn eggs now have the additional `entity.<registryname>.name` localization
+  key used by 1.12.2 `ItemMonsterPlacer`; entity data/NBT names remain the
+  registry name.
+- Custom creative tabs now append the spawn eggs of living entities that
+  selected that tab, because the vanilla spawn-egg item cannot change its
+  default tab.
+- Armor and special-entity items now override `getSubItems` when multiple
+  creative tabs are selected, matching the existing item/tool behavior.
 
 ## Known Limitations
 
