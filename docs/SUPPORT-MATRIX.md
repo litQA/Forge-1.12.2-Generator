@@ -6,7 +6,7 @@ Plugin id: `generator-forge-1.12.2`
 
 Target: MCreator EAP `2026.3.44621`, Minecraft `1.12.2`, Forge `14.23.5.2847`
 
-Current plugin snapshot: `2026.3-1.0.28.84-beta`
+Current plugin snapshot: `2026.3-1.0.29.85-beta`
 
 Status vocabulary:
 
@@ -15,7 +15,7 @@ Status vocabulary:
 - **Unavailable** - no implementation in the current snapshot; generation
   either stops explicitly or the field is hidden.
 
-This file is current as of `2026.3-1.0.28.84-beta`. `新功能列表.txt` remains the
+This file is current as of `2026.3-1.0.29.85-beta`. `新功能列表.txt` remains the
 canonical 2021.1-2026.3 feature list; this matrix describes the implemented
 subset and its implementation method.
 

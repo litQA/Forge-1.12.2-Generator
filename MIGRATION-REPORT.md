@@ -462,7 +462,7 @@ overlays, key bindings and particles.
 - Custom particle registration extends the enum's private maps via reflection
   because 1.12.2 has no particle registry.
 
-## Worldgen, data and economy (2026.3-1.0.28.84-beta)
+## Worldgen, data and economy (2026.3-1.0.29.85-beta)
 
 This batch adds advancement JSON, Java structure/feature worldgen, villager
 professions/trades, commands, functions, game rules and music discs.
