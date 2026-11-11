@@ -12,15 +12,18 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | Plugin version | `2026.3-1.0.25.64-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
-| Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
+| Java for generated Gradle / MCreator | 25 (bundled MCreator JDK) |
+| Java for plugin source build | 17 (JDK 17 + Gradle 9.8) |
 | Java toolchain for the mod | 8 |
 | License | CC BY-NC 4.0 (see `LICENSE`) |
 
-This is the third development batch. It delivers the generator foundation, the
-creative tab, item and recipe mod elements, blocks (basic cubes, stairs, slabs,
-fences and walls, with per-face textures and transparent render layers), the
-Ore Dictionary-backed tag editor, and a minimal procedure system with block
-interaction triggers. The complete support overview is in
+Current snapshot: `2026.3-1.0.25.64-beta`. It includes the generator
+foundation, creative tabs, items, recipes, blocks, plants, fluids, tools,
+armor, enchantments, attributes, item extensions, native loot tables, potion
+effects/items, procedures, dimensions, biomes, custom trees, portals/igniters,
+skyboxes, sounds, custom dimension terrain with caves/aquifers, five-range
+biome weight mapping, and self-contained Mixin 0.7.11 worldgen injection. The
+complete, implementation-oriented support overview is in
 [docs/SUPPORT-MATRIX.md](docs/SUPPORT-MATRIX.md); known limitations and the
 migration rationale are in [MIGRATION-REPORT.md](MIGRATION-REPORT.md).
 
@@ -46,7 +49,7 @@ Gradle 9.8.
 
 ## Block support
 
-The third batch supports these block bases:
+The generator supports these block bases:
 
 - **Basic cube**: per-face textures (top/bottom/front/back/left/right), cube,
   cross, crop and custom JSON models, custom boolean/integer/enum properties,
@@ -94,8 +97,8 @@ block added, block destroyed by a player, entity walks on the block, scheduled
 tick, random tick and neighbour block change. Trigger context values are passed
 through a dependency map (`world`, `x`, `y`, `z`, `entity`, `blockstate`,
 `direction`, `itemstack`). Global triggers are intentionally not implemented.
-Right-click procedures on slabs are not generated in this batch because the slab
-uses its own activation handler for double-slab merging.
+Right-click procedures on slabs are not generated because the slab uses its own
+activation handler for double-slab merging.
 
 ## Plants and fluids
 
@@ -103,7 +106,7 @@ Plants support normal, sapling, growable and double-plant modes with cross,
 crop and custom JSON models, independent item textures, tooltips, drops,
 placement restrictions, bonemeal procedures, light and flammability. Saplings
 currently use normal plant placement and do not grow trees yet; world
-generation is not implemented in this batch.
+generation is not implemented.
 
 Fluids support still/flowing textures, `Fluid` registration,
 `BlockFluidClassic`, bucket generation, bucket models and client fluid state
@@ -211,18 +214,18 @@ particles, mood/music sound fields and modern structure placement remain
 hidden.
 
 **Dimension** generates a `WorldProvider`, a `DimensionType` registration, a
-custom biome provider and optional portal/igniter assets. Normal, Nether, End
-and Void chunk generators are available; Void uses a minimal empty chunk
-generator. Sky light, fog/cloud height, fixed time, ambient light, coordinate
-scale, respawn/bed/weather behavior and player enter/leave procedures are
-mapped. Custom six-face skyboxes use a client `IRenderHandler` and workspace textures
-under `assets/<modid>/textures`; biome ambient/additions sounds use a client tick
-handler. Portals use a custom `ITeleporter` that places the entity at the
-destination spawn point, avoiding vanilla portal-search NPEs. Non-void custom
-dimensions use a generated noise terrain generator with configurable main
-filler, fluid, sea level, simplified aquifers, caves and ravines. This is
-dimension-only; no main-world or vanilla Nether generation hooks are created.
-Custom sun/moon rendering remains hidden.
+custom biome provider and optional portal/igniter assets. All non-Void custom
+dimensions use the generated custom noise terrain generator; Void uses a minimal
+empty chunk generator. Sky light, fog/cloud height, fixed time, ambient light,
+coordinate scale, respawn/bed/weather behavior and player enter/leave procedures
+are mapped. Custom six-face skyboxes use a client `IRenderHandler` and workspace
+textures under `assets/<modid>/textures`; biome ambient/additions sounds use a
+client tick handler. Portals use a custom `ITeleporter` that finds a safe
+standing position and creates a fallback platform in void dimensions. The
+terrain generator supports configurable main filler, fluid, sea level,
+simplified aquifers, `MapGenCaves` and `MapGenRavine`. This is dimension-only;
+no main-world or vanilla Nether generation hooks are created. Custom sun/moon
+rendering remains hidden.
 
 ## Tags and the Ore Dictionary
 
@@ -360,7 +363,7 @@ plugin-branch-2026.3/
       workspace.gitignore
 ```
 
-## Verification performed in this batch
+## Verification performed for the current snapshot
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
@@ -417,9 +420,11 @@ plugin-branch-2026.3/
     `MCreatorEAP2026344621/plugins/generator-forge-1.12.2.zip`; source and
     installed SHA-256 hashes match.
 
-In-game item names, enchantment names, armor/shield tooltips, fuel/dispense
-behavior, loot table loading, potion effects and dimension/biome behavior remain
-for the user's next test, as required by the delivery specification.
+The latest user tests confirmed custom dimension portals, skyboxes, terrain,
+cave/Nether Mixin basics, custom biome/weight behavior and chunk seam fixes.
+The `1.0.25.64` cave `y=0` exclusion is the current pending regression test:
+verify vanilla tree restoration and custom surface-biome generation in a new
+world/new chunks.
 
 ## Attribution
 
