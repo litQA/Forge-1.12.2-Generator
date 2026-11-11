@@ -1,5 +1,23 @@
 # Changelog
 
+# 2026.3-1.0.10.49-beta
+
+## Fixes
+
+Fixed 1 bug(s).
+
+- Biome spawn entries now import the 1.12.2 entity packages. Simple MCreator
+  entity names such as `EntityZombie` and `EntityEnderman` no longer fail with
+  `cannot find symbol`; custom entities import `${package}.entity.*` when the
+  workspace contains entity elements.
+
+## Known Limitations
+
+- Spawn entries use wildcard imports for vanilla entity packages. This is
+  intentional so all vanilla biome spawn classes resolve without a large
+  per-entity package mapping.
+
+
 # 2026.3-1.0.9.48-beta
 
 ## Fixes
