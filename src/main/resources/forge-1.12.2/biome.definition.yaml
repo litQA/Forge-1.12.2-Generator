@@ -18,14 +18,14 @@ localizationkeys:
   - key: biome.@modid.@registryname
     mapto: name
 
-# 1.12.2 has no data-driven biome climate/noise, cave/nether biome injection,
-# ambient biome sounds, biome particles or modern structure placement. Custom
-# tree generators are also deferred; vanilla tree types and spawn lists are
-# generated in this batch.
+# 1.12.2 has no data-driven biome climate/noise, true per-Y cave biome storage,
+# biome particles or modern structure placement. spawnInCaves and
+# spawnBiomeNether are consumed by a generated World#getBiome Mixin; custom
+# trees are a trunk/branch/vine/fruit subset. Ambient/additions sounds use a
+# client tick handler.
 field_exclusions: [underwaterBlock, fogColor, waterFogColor, dryFoliageColor,
                    music, moodSound, moodSoundDelay,
                    spawnParticles, particleToSpawn, particlesProbability,
-                   spawnInCaves, spawnBiomeNether,
                    genTemperature, genHumidity, genContinentalness, genErosion, genWeirdness, genDepth,
                    defaultFeatures,
                    spawnMineshaft, spawnMineshaftMesa, spawnPillagerOutpost,

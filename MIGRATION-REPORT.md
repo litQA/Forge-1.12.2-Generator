@@ -252,8 +252,17 @@ filler blocks, colors, spawn entries, vanilla tree types, overworld placement,
 stronghold/village placement and a `RegistryEvent.Register<Biome>` initializer.
 A custom-tree subset generates `WorldGenAbstractTree` classes with configurable
 trunk/branch/vine/fruit blocks and minimum height. Ambient/additions sounds use
-a client tick handler; modern climate/noise, cave/nether injection, custom
-particles, mood/music fields and modern structure placement are hidden.
+a client tick handler. `spawnInCaves` and `spawnBiomeNether` drive a generated
+Mixin `World#getBiome` injection: the cave biome is returned for Overworld
+positions below y=50, and the Nether biome is returned for dimension -1. Modern
+climate/noise, true per-Y cave biome storage, custom particles, mood/music fields
+and modern structure placement are hidden.
+
+Forge 1.12.2 Mixin support uses embedded Mixin `0.7.11-SNAPSHOT`, a
+`MixinTweaker` manifest/launch hook, a generated `mixins.modid.json` and an RFG
+refmap. The generated build script enables Mixin through `modUtils.enableMixins`.
+World-height extension remains out of scope: 1.12.2 chunk height is hard-coded
+at 256 and would require broad `Chunk`, lighting, rendering and IO changes.
 
 Dimensions generate a `WorldProvider`, a `DimensionType` registered through
 Forge's `DimensionManager`, and a custom `BiomeProvider` over the selected
@@ -399,7 +408,11 @@ generator, and the support matrix marks them as unavailable.
     scan and do not implement every vanilla `BlockPortal.Size` rule; custom
     portal conditions/particles and custom sun/moon textures remain hidden.
     Biome custom trees are a limited trunk/branch/vine/fruit subset, and modern
-    climate/noise/structure features remain hidden. Generated sources avoid
+    climate/noise/structure features remain hidden. Mixin cave injection is
+    column-based (`y < 50`) rather than true per-Y biome storage; Nether
+    injection replaces dimension -1 globally. World-height extension is not
+    implemented because 1.12.2 hard-codes 256-height chunk storage and client
+    handling across many classes. Generated sources avoid
     `javax.annotation.Nullable` because that annotation is not on the generator's
     Java 8 compile classpath.
 
@@ -408,7 +421,7 @@ generator, and the support matrix marks them as unavailable.
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (45 YAML documents, 114 templates, 90 template references) |
+| Static validator | `VALIDATION PASSED` (45 YAML documents, 117 templates, 93 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |
@@ -425,6 +438,7 @@ generator, and the support matrix marks them as unavailable.
 | Biome entity spawn entries | `EntityZombie` and `EntityEnderman` spawn entries compile with fully-qualified classes from the `entityclasses` mapping; custom entities use `${package}.entity.<name>`. This avoids MCreator's import-formatter stripping wildcard imports. |
 | Portal/igniter, skybox, biome sounds, custom tree | Templates render and compile; portal JSON models parse; generated block/item registries compile; sound branches and custom tree class compile. |
 | Custom dimension terrain | Noise/filler/fluid/sea-level/aquifer generator renders and compiles with the dimension provider. |
+| Mixin cave/Nether injection | Worldgen hooks and `World#getBiome` Mixin render and compile against Mixin 0.7.11; Mixin JSON parses. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 
 The generated-mod build used the exact workspace base, templates and generated

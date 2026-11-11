@@ -28,9 +28,47 @@ minecraft {
 
 repositories {
     mavenCentral()
+    maven {
+        name = 'SpongePowered'
+        url = uri('https://repo.spongepowered.org/maven')
+    }
+}
+
+configurations {
+    embed
+    implementation.extendsFrom(embed)
 }
 
 dependencies {
+    def mixin = modUtils.enableMixins('org.spongepowered:mixin:0.7.11-SNAPSHOT', 'mixins.modid.refmap.json')
+    implementation(mixin) { transitive = false }
+    annotationProcessor 'org.ow2.asm:asm-debug-all:5.2'
+    annotationProcessor 'com.google.guava:guava:24.1.1-jre'
+    annotationProcessor 'com.google.code.gson:gson:2.8.6'
+    annotationProcessor(mixin) { transitive = false }
+    embed('org.spongepowered:mixin:0.7.11-SNAPSHOT') { transitive = false }
+}
+
+minecraft {
+    extraTweakClasses.add('org.spongepowered.asm.launch.MixinTweaker')
+    extraRunJvmArguments.add('-Dmixin.configs=mixins.modid.json')
+    extraRunJvmArguments.add('-Dmixin.debug=true')
+}
+
+jar {
+    manifest {
+        attributes(
+            'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+            'MixinConfigs': 'mixins.modid.json',
+            'ForceLoadAsMod': 'true'
+        )
+    }
+    from(provider { configurations.embed.collect { it.isDirectory() ? it : zipTree(it) } }) {
+        exclude 'META-INF/MANIFEST.MF'
+        exclude 'META-INF/*.SF'
+        exclude 'META-INF/*.RSA'
+        exclude 'META-INF/*.DSA'
+    }
 }
 
 // mcreator.gradle is written by MCreator before Gradle is invoked.

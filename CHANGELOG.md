@@ -1,5 +1,45 @@
 # Changelog
 
+# 2026.3-1.0.18.57-beta
+
+## Changes
+
+- Added Forge 1.12.2 Mixin infrastructure:
+  - bundled Mixin `0.7.11-SNAPSHOT`
+  - `MixinTweaker` launch bootstrap
+  - `MixinConfigs`/`ForceLoadAsMod` jar manifest
+  - RFG refmap generation
+  - generated `mixins.modid.json`
+- Added global biome injection:
+  - cave biome injected below `y=50` in the Overworld via a `World#getBiome`
+    Mixin
+  - Nether biome injected globally in dimension `-1`
+  - selection comes from the Biome element's `spawnInCaves` and
+    `spawnBiomeNether` fields, now visible in the editor
+- Added generated `worldgen_hooks` helper and Mixin class.
+
+## Height Extension Evaluation
+
+- A true 320+64 world generation range is **not implemented**. Forge 1.12.2
+  hard-codes chunk height/section storage and client height handling at 256.
+  Extending it requires broad Mixin changes across `Chunk`, `ChunkPrimer`,
+  world height queries, lighting, rendering, saving and third-party mod
+  compatibility. The current custom terrain remains clamped at 252 and uses
+  tanh compression to avoid 256 cut faces.
+- Height extension is deferred until it can be treated as a separate,
+  compatibility-focused feature rather than a small patch.
+
+## Known Limitations
+
+- Cave injection is column-based through `World#getBiome`; it is not a separate
+  per-Y biome storage layer.
+- The configured cave biome applies to all Overworld positions below y=50,
+  including non-cave underground areas.
+- Nether injection replaces the biome lookup for dimension -1 globally.
+- Mixin 0.7.11 is embedded in the output jar; this increases jar size and may
+  conflict with packs that force another Mixin version.
+
+
 # 2026.3-1.0.17.56-beta
 
 ## Fixes

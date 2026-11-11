@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.17.56-beta` |
+| Plugin version | `2026.3-1.0.18.57-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -201,9 +201,11 @@ potion and tipped-arrow items; it does not create a new item class.
 filler blocks, water/grass/foliage/sky colors, spawn entries, vanilla tree
 types and optional overworld biome placement. Stronghold and village placement
 are supported. Custom trees use a high-value Java generator subset: trunk,
-branches, vines, fruits and minimum height. Full modern tree features,
-climate/noise fields, cave/nether biome injection, custom particles, mood/music
-sound fields and modern structure placement remain hidden.
+branches, vines, fruits and minimum height. `spawnInCaves` and
+`spawnBiomeNether` drive generated Mixin-based global cave/Nether biome lookup
+injection. Full modern tree features, modern climate/noise fields, custom
+particles, mood/music sound fields and modern structure placement remain
+hidden.
 
 **Dimension** generates a `WorldProvider`, a `DimensionType` registration, a
 custom biome provider and optional portal/igniter assets. Normal, Nether, End
@@ -359,9 +361,9 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.17.56-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.18.57-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
-   `VALIDATION PASSED` (45 YAML documents, 114 FTL templates, 90 template
+   `VALIDATION PASSED` (45 YAML documents, 117 FTL templates, 93 template
    references).
 3. The full `test_workspaces/test-1/src/main/java` source tree was compiled
    against the 1.12.2 classes with `javac --release 8`: `PASSED`. This includes
@@ -405,7 +407,10 @@ plugin-branch-2026.3/
     models parsed, and the generated block/item registries compiled.
 18. The custom terrain generator's noise, filler/fluid/sea-level and aquifer
     path was rendered and compiled with `javac --release 8`.
-19. The built zip was copied to
+19. Worldgen hooks and the `World#getBiome` Mixin class were rendered and
+    compiled with `javac --release 8` against Mixin 0.7.11 and the patched
+    Minecraft classes; the generated Mixin JSON parsed successfully.
+20. The built zip was copied to
     `MCreatorEAP2026344621/plugins/generator-forge-1.12.2.zip`; source and
     installed SHA-256 hashes match.
 
