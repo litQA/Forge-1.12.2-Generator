@@ -1,6 +1,6 @@
 # Changelog
 
-# 2026.3-1.0.26.70-beta
+# 2026.3-1.0.26.71-beta
 
 ## New Content
 
@@ -45,7 +45,7 @@
 
 ## Fixes
 
-Fixed 6 bug(s).
+Fixed 7 bug(s).
 - Overlay component positions now resolve `GUIComponent.AnchorPoint.name()`
   instead of the localized `toString()` value. The previous comparison never
   matched, so anchors such as `BOTTOM_LEFT`/`BOTTOM_RIGHT` rendered empty
@@ -63,6 +63,9 @@ Fixed 6 bug(s).
 - Entity spawn placement uses `IN_AIR` for unrestricted spawning because
   1.12.2 `EntityLiving.SpawnPlacementType` has no `NO_RESTRICTIONS`; monsters
   and creatures use `ON_GROUND`.
+- Living entity sources now import the complete set of 1.12.2 `EntityAI*`
+  classes and `Vec3d` used by the generated AI task snippets. This fixes the
+  missing `EntityAILookIdle`/similar symbols in generated entity classes.
 
 ## Known Limitations
 
