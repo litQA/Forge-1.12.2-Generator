@@ -1,6 +1,6 @@
 # Changelog
 
-# 2026.3-1.0.30.90-beta
+# 2026.3-1.0.30.91-beta
 
 ## New Content
 
@@ -36,7 +36,7 @@
 
 ## Fixes
 
-Fixed 10 bug(s).
+Fixed 12 bug(s).
 - Villager profession skin resource locations now include the `.png`
   extension required by 1.12.2 `SimpleTexture`.
 - The villager profession mapping now honours the `CUSTOM:` prefix, so
@@ -60,6 +60,11 @@ Fixed 10 bug(s).
   painting item.
 - Banner pattern items now use a visible vanilla paper item model and include
   a shaped paper recipe so they are obtainable in survival.
+- Banner/shield pattern textures are mirrored into the `minecraft` namespace
+  and resized to 64x64 during `processResources`, matching 1.12.2
+  `BannerTextures` lookups.
+- Custom painting entities now register a fallback renderer for the base
+  `EntityPainting` type in addition to the custom painting entity class.
 
 ## Known Limitations
 

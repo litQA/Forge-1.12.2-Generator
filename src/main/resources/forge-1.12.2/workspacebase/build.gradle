@@ -83,6 +83,38 @@ jar {
     }
 }
 
+// 1.12.2 loads banner/shield pattern overlays from the minecraft namespace,
+// regardless of the pattern definition's owning mod. Mirror the generated
+// textures into that namespace in the processed resource output.
+processResources {
+    doLast {
+        ['banner', 'shield'].each { kind ->
+            def source = file("src/main/resources/assets/${modId}/textures/entity/${kind}")
+            def target = file("${buildDir}/resources/main/assets/minecraft/textures/entity/${kind}")
+            if (source.exists()) {
+                source.listFiles()?.findAll { it.name.endsWith('.png') }?.each { sourceFile ->
+                    def image = javax.imageio.ImageIO.read(sourceFile)
+                    if (image == null)
+                        return
+                    target.mkdirs()
+                    def targetFile = new File(target, sourceFile.name)
+                    if (image.width == 64 && image.height == 64) {
+                        targetFile.bytes = sourceFile.bytes
+                    } else {
+                        def scaled = new java.awt.image.BufferedImage(64, 64, java.awt.image.BufferedImage.TYPE_INT_ARGB)
+                        def graphics = scaled.createGraphics()
+                        graphics.setRenderingHint(java.awt.RenderingHints.KEY_INTERPOLATION,
+                                java.awt.RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR)
+                        graphics.drawImage(image, 0, 0, 64, 64, null)
+                        graphics.dispose()
+                        javax.imageio.ImageIO.write(scaled, 'png', targetFile)
+                    }
+                }
+            }
+        }
+    }
+}
+
 // mcreator.gradle is written by MCreator before Gradle is invoked.
 if (file('mcreator.gradle').exists()) {
     apply from: 'mcreator.gradle'

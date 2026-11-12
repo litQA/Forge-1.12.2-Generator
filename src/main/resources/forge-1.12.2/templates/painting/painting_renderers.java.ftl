@@ -25,6 +25,7 @@ public class ${JavaModName}PaintingRenderers {
 	}
 
 	public static void register() {
+		RenderingRegistry.registerEntityRenderingHandler(EntityPainting.class, PaintingRenderer::new);
 		<#list (types.paintings![]) as painting>
 		RenderingRegistry.registerEntityRenderingHandler(${package}.entity.${painting.getModElement().getName()}PaintingEntity.class, PaintingRenderer::new);
 		</#list>
