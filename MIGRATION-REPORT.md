@@ -462,7 +462,7 @@ overlays, key bindings and particles.
 - Custom particle registration extends the enum's private maps via reflection
   because 1.12.2 has no particle registry.
 
-## Worldgen, data and economy (2026.3-1.0.30.91-beta)
+## Worldgen, data and economy (2026.3-1.0.30.92-beta)
 
 This batch adds advancement JSON, Java structure/feature worldgen, villager
 professions/trades, commands, functions, game rules and music discs.
@@ -498,14 +498,15 @@ professions/trades, commands, functions, game rules and music discs.
 - Structures must be shipped manually under
   `assets/<modid>/structures/<name>.nbt`.
 
-## Banner patterns, paintings and tag hardening (2026.3-1.0.30.91-beta)
+## Banner patterns, paintings and tag hardening (2026.3-1.0.30.92-beta)
 
 ### Implemented
 
 - Banner patterns extend the `BannerPattern` enum and generate a pattern item,
   banner/shield textures and vanilla `RecipesBanners` matching.
-- Paintings extend `EntityPainting.EnumArt`, generate a custom entity, a
-  placeable painting item and a client `RenderPainting` subclass.
+- Custom paintings are deliberately unsupported: the 1.12.2 client renderer
+  could not reliably display generated painting entities, so the definition
+  and its item/entity/renderer templates were removed.
 - Tag conversion now covers custom blocks/plants/fluids and custom
   item/tool/armor/dimension/special-entity items. Unsupported tag types and
   nested tags generate explicit comments.
@@ -525,7 +526,7 @@ professions/trades, commands, functions, game rules and music discs.
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (65 YAML documents, 221 templates, 133 template references) |
+| Static validator | `VALIDATION PASSED` (65 YAML documents, 685 templates, 130 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |

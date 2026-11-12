@@ -1,0 +1,1 @@
+if(!${input$entity}.world.isRemote) ${input$entity}.setDead();

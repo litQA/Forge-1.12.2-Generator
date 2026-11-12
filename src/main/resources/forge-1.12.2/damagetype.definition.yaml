@@ -1,0 +1,11 @@
+templates:
+  - template: damagetype/damage_type.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/damage/@NAME.java"
+
+localizationkeys:
+  - key: death.attack.@modid.@registryname
+    mapto: normalDeathMessage
+  - key: death.attack.@modid.@registryname.item
+    mapto: itemDeathMessage
+  - key: death.attack.@modid.@registryname.player
+    mapto: playerDeathMessage

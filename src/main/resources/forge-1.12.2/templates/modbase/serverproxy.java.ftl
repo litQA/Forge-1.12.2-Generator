@@ -12,6 +12,11 @@ public class ServerProxy${JavaModName} implements IProxy${JavaModName} {
 	}
 
 	@Override public void init(FMLInitializationEvent event) {
+		<#list w.getGElementsOfType('procedure') as procedure>
+		<#if procedure.procedurexml?contains('mod_serverload')>
+		${package}.procedures.${procedure.getModElement().getName()}Procedure.init(event);
+		</#if>
+		</#list>
 	}
 
 	@Override public void postInit(FMLPostInitializationEvent event) {

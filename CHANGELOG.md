@@ -1,6 +1,6 @@
 # Changelog
 
-# 2026.3-1.0.30.91-beta
+# 2026.3-1.0.30.92-beta
 
 ## New Content
 
@@ -20,10 +20,21 @@
 - Banner pattern generation through a 1.12.2 `BannerPattern` enum extension,
   generated pattern item, banner/shield textures and vanilla
   `RecipesBanners` integration.
-- Painting generation through a 1.12.2 `EntityPainting.EnumArt` extension,
-  custom painting item and client renderer with a custom texture.
+- 61 native Forge 1.12.2 procedure triggers, including block, entity, player,
+  world and mod-lifecycle triggers.
+- A 1.12.2 `DamageSource` adapter for the Damage Type element and damage-source
+  procedure blocks.
+- The Forge 1.12.2 baseline procedure template set (442 templates) for broad
+  procedure-block coverage.
 
 ## Changes
+
+- Added global trigger/procedure registration and lifecycle dispatch.
+- Added `docs/TRIGGER-CLASSIFICATION.md` with the complete 2026.3 trigger
+  classification.
+- Custom painting generation was removed; custom paintings are marked
+  unavailable because the 1.12.2 client renderer could not reliably display
+  generated painting entities.
 
 - Added common `item.record.<name>.desc` localization generation for music
   discs.
@@ -84,8 +95,15 @@ Fixed 12 bug(s).
   still be present in the generated `sounds.json`.
 - 1.12.2 banner patterns require a pattern item; `requireItem` is therefore
   always treated as true and the generated item is used for recipe matching.
-- 1.12.2 painting width and height must be positive multiples of 16 pixels;
-  unsupported sizes stop generation.
+- Custom painting generation was removed; the element is marked unavailable
+  because the 1.12.2 client renderer could not reliably display generated
+  painting entities.
+- 2026.3 trigger support is split into 61 native triggers and four deferred
+  Mixin/adapter triggers; see `docs/TRIGGER-CLASSIFICATION.md`.
+- Damage-type exhaustion cannot be applied because 1.12.2 `DamageSource`
+  exposes no hunger-damage setter.
+- The procedure baseline is the Forge 1.12.2 reference set; modern-only blocks
+  not represented there still require follow-up work.
 
 # 2026.3-1.0.26.73-beta
 

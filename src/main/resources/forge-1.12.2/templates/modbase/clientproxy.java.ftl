@@ -16,9 +16,6 @@ public class ClientProxy${JavaModName} implements IProxy${JavaModName} {
 		<#if (types.livingentities![])?has_content || (types.projectiles![])?has_content || (types.specialentities![])?has_content>
 		${package}.init.${JavaModName}EntityRenderers.register();
 		</#if>
-		<#if (types.paintings![])?has_content>
-		${package}.client.${JavaModName}PaintingRenderers.register();
-		</#if>
 		<#if (types.keybinds![])?has_content>
 		${package}.init.${JavaModName}KeyMappings.registerKeyBindings();
 		</#if>
@@ -34,6 +31,11 @@ public class ClientProxy${JavaModName} implements IProxy${JavaModName} {
 		<#list (types.commands![]) as command>
 		<#if command.type == "CLIENTSIDE">
 		${package}.command.${command.getModElement().getName()}Command.registerClientCommand();
+		</#if>
+		</#list>
+		<#list w.getGElementsOfType('procedure') as procedure>
+		<#if procedure.procedurexml?contains('mod_clientload')>
+		${package}.procedures.${procedure.getModElement().getName()}Procedure.init(event);
 		</#if>
 		</#list>
 	}

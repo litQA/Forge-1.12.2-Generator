@@ -1,0 +1,1 @@
+((double) ${input$damagesource}.getHungerDamage())

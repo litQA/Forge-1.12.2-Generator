@@ -1,0 +1,1 @@
+if (${input$entity} instanceof EntityPlayer) ((EntityPlayer) ${input$entity}).addExperienceLevel(-(${opt.toInt(input$xpamount)}));

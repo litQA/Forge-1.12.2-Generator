@@ -1,0 +1,1 @@
+(${input$entity} instanceof EntityLivingBase && ((EntityLivingBase) ${input$entity}).isPotionActive(${generator.map(field$potion, "effects")}))

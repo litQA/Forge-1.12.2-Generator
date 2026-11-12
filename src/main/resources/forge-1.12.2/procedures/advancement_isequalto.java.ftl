@@ -1,0 +1,2 @@
+(world.getMinecraftServer() != null && world.getMinecraftServer().getAdvancementManager()
+    .getAdvancement(new ResourceLocation("${generator.map(field$achievement, "achievements")}")).equals(advancement))

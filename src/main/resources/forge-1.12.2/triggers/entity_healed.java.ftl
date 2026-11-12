@@ -1,0 +1,16 @@
+<#include "procedures.java.ftl">
+@Mod.EventBusSubscriber public class ${name}Procedure {
+	@SubscribeEvent public static void onEntityHealed(LivingHealEvent event) {
+		<#assign dependenciesCode>
+			<@procedureDependenciesCode dependencies, {
+			"x": "event.getEntityLiving().posX",
+			"y": "event.getEntityLiving().posY",
+			"z": "event.getEntityLiving().posZ",
+			"amount": "event.getAmount()",
+			"world": "event.getEntityLiving().world",
+			"entity": "event.getEntityLiving()",
+			"event": "event"
+			}/>
+		</#assign>
+		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
+	}

@@ -6,7 +6,7 @@ Plugin id: `generator-forge-1.12.2`
 
 Target: MCreator EAP `2026.3.44621`, Minecraft `1.12.2`, Forge `14.23.5.2847`
 
-Current plugin snapshot: `2026.3-1.0.30.91-beta`
+Current plugin snapshot: `2026.3-1.0.30.92-beta`
 
 Status vocabulary:
 
@@ -15,7 +15,7 @@ Status vocabulary:
 - **Unavailable** - no implementation in the current snapshot; generation
   either stops explicitly or the field is hidden.
 
-This file is current as of `2026.3-1.0.30.91-beta`. `新功能列表.txt` remains the
+This file is current as of `2026.3-1.0.30.92-beta`. `新功能列表.txt` remains the
 canonical 2021.1-2026.3 feature list; this matrix describes the implemented
 subset and its implementation method.
 
@@ -47,7 +47,8 @@ subset and its implementation method.
 | Overlay | Degraded | Generates a client `RenderGameOverlayEvent` or `GuiScreenEvent` handler with configurable priority and target screen, display condition, base texture, labels, images, sprites and entity previews. Buttons and editable widgets are not rendered in overlays. |
 | Key binding | Degraded | Generates a `KeyBinding` registered through `ClientRegistry`, keyboard and mouse press/release handling, and a server-bound `SimpleNetworkWrapper` message. Bindings use the 1.12.2 `key.categories.*` categories. |
 | Particle | Degraded | Generates a `Particle` subclass and registers a custom `EnumParticleTypes` entry plus textures through `TextureStitchEvent.Pre`. Supports animation frames, scale, rotation, gravity, collision, full-bright rendering and expiry conditions. 1.12.2 has no particle registry, so enum/map extension uses reflection; `renderType` is hidden. |
-| Procedure | Degraded | Current procedure subset: chat, set/remove block, get current blockstate, get/set boolean/integer properties, play sound, give item, GUI open/close, GUI text/checkbox/slider get/set, GUI slot item/amount/set/remove/clear/damage, call procedure and return. Block triggers: right click, added, destroyed by player, entity walk, scheduled/random tick and neighbor change. GUI slot callbacks are supported through generated messages. Global triggers, entity triggers and many 2026.3 procedure blocks are unavailable. |
+| Procedure | Degraded | Generates global triggered procedures plus the 1.12.2 baseline procedure block set (442 templates). Native triggers cover block, entity, player, world and mod lifecycle events. Four 2026.3 triggers (`entity_switch_hand`, `entity_uses_totem`, `player_xp_change`, `player_xp_level_change`) require Mixin or state-tracking adapters and are not exposed yet. See `docs/TRIGGER-CLASSIFICATION.md`. |
+| Damage type | Degraded | Generates a per-element 1.12.2 `DamageSource` with death message keys and native fire/magic/explosion/difficulty adapters. `exhaustion` cannot be applied because the 1.12.2 `DamageSource.hungerDamage` field has no setter; item/player death-message variants remain limited. |
 | Advancement | Degraded | Generates 1.12.2 `assets/<modid>/advancements/*.json` with icon, title/description localization, frame, background, toast/chat/hidden flags, parent, rewards and the common 1.12.2 JSON trigger templates. Modern item predicates and data-component conditions have no 1.12.2 form. |
 | Structure | Degraded | Generates a Java `IWorldGenerator` that loads an NBT template from `assets/<modid>/structures/<name>.nbt` and places it with biome restrictions, spacing, separation and optional fixed start height. Jigsaw pools, terrain adaptation, ignored blocks and data-driven placement types are unavailable. |
 | Feature | Degraded | Generates a Java `IWorldGenerator` for simple block, random patch, ore and scattered-ore features with biome restrictions. Other 2026.3 feature types stop generation explicitly; modern placement/configured-feature registries are unavailable. |
@@ -57,7 +58,7 @@ subset and its implementation method.
 | Function | Direct | Writes `data/<namespace>/functions/<name>.mcfunction` files with the editor's command code. |
 | Game rule | Degraded | Registers a 1.12.2 `GameRules` entry on `WorldEvent.Load` and generates game-rule get/set procedure blocks. The modern category field is hidden. |
 | Banner pattern | Degraded | Extends the 1.12.2 `BannerPattern` enum, generates banner/shield textures and a pattern item, and relies on vanilla `RecipesBanners` matching. `requireItem` is effectively always true because 1.12.2 has no loom/pattern registry. |
-| Painting | Degraded | Extends `EntityPainting.EnumArt`, generates a placeable painting item and a client `RenderPainting` subclass that binds the generated painting texture. Width/height must be positive multiples of 16 pixels. |
+| Painting | Unavailable | Custom painting rendering could not be made reliable on 1.12.2; the painting element is disabled and no painting item/entity/renderer is generated. |
 
 ## Unsupported mod elements
 
