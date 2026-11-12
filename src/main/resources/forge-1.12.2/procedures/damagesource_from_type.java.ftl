@@ -1,1 +1,1 @@
-${generator.map(field$damagetype, "damagesources")}
+(net.minecraft.util.DamageSource.${generator.map(field$damagetype, "damagesources")})
