@@ -24,8 +24,8 @@ effects/items, procedures, dimensions, biomes, custom trees, portals/igniters,
 skyboxes, sounds, custom dimension terrain with caves/aquifers, five-range
 biome weight mapping, self-contained Mixin 0.7.11 worldgen injection,
 advancements, Java structure/feature worldgen, villager professions/trades,
-commands, functions, game rules and music discs. The complete,
-implementation-oriented support overview is in
+commands, functions, game rules, music discs, banner patterns and paintings.
+The complete, implementation-oriented support overview is in
 [docs/SUPPORT-MATRIX.md](docs/SUPPORT-MATRIX.md); known limitations and the
 migration rationale are in [MIGRATION-REPORT.md](MIGRATION-REPORT.md).
 
@@ -371,7 +371,7 @@ plugin-branch-2026.3/
    `BUILD SUCCESSFUL`, producing
    `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.30.87-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
-   `VALIDATION PASSED` (63 YAML documents, 212 FTL templates, 124 template
+   `VALIDATION PASSED` (65 YAML documents, 220 FTL templates, 132 template
    references).
 3. The full `test_workspaces/test-1/src/main/java` source tree was compiled
    against the 1.12.2 classes with `javac --release 8`: `PASSED`. This includes
@@ -454,3 +454,4 @@ requires real-client testing before further development.
   RetroFuturaGradle code is bundled in this plugin archive.
 - All new files in this repository are licensed under CC BY-NC 4.0 unless a
   file states otherwise.
+

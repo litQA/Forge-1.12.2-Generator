@@ -525,7 +525,7 @@ professions/trades, commands, functions, game rules and music discs.
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (63 YAML documents, 212 templates, 124 template references) |
+| Static validator | `VALIDATION PASSED` (65 YAML documents, 220 templates, 132 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |
@@ -569,3 +569,4 @@ extensions, loot tables, potion effects, potion items, biomes, dimensions,
 living entities, projectiles, boats, GUIs, overlays, key bindings and custom
 particles in game. Per the delivery specification this real-device test is
 performed by the user before the next batch starts.
+
