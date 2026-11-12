@@ -1,6 +1,6 @@
 # Changelog
 
-# 2026.3-1.0.30.88-beta
+# 2026.3-1.0.30.89-beta
 
 ## New Content
 
@@ -36,7 +36,7 @@
 
 ## Fixes
 
-Fixed 7 bug(s).
+Fixed 8 bug(s).
 - Villager profession skin resource locations now include the `.png`
   extension required by 1.12.2 `SimpleTexture`.
 - The villager profession mapping now honours the `CUSTOM:` prefix, so
@@ -52,6 +52,9 @@ Fixed 7 bug(s).
   `argscode` inside the generated command's `execute` method.
 - Command registration now uses the mod's `FMLServerStartingEvent` handler
   instead of an invalid `@SubscribeEvent` on the FML lifecycle event.
+- Painting renderer generation was moved to a global template; the previous
+  per-element template referenced `types` and aborted generation of the
+  painting item and entity.
 
 ## Known Limitations
 
