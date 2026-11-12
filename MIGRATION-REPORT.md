@@ -462,7 +462,7 @@ overlays, key bindings and particles.
 - Custom particle registration extends the enum's private maps via reflection
   because 1.12.2 has no particle registry.
 
-## Worldgen, data and economy (2026.3-1.0.30.89-beta)
+## Worldgen, data and economy (2026.3-1.0.30.90-beta)
 
 This batch adds advancement JSON, Java structure/feature worldgen, villager
 professions/trades, commands, functions, game rules and music discs.
@@ -498,7 +498,7 @@ professions/trades, commands, functions, game rules and music discs.
 - Structures must be shipped manually under
   `assets/<modid>/structures/<name>.nbt`.
 
-## Banner patterns, paintings and tag hardening (2026.3-1.0.30.89-beta)
+## Banner patterns, paintings and tag hardening (2026.3-1.0.30.90-beta)
 
 ### Implemented
 
@@ -525,7 +525,7 @@ professions/trades, commands, functions, game rules and music discs.
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (65 YAML documents, 220 templates, 132 template references) |
+| Static validator | `VALIDATION PASSED` (65 YAML documents, 221 templates, 133 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |

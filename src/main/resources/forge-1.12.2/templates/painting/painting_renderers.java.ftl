@@ -26,12 +26,12 @@ public class ${JavaModName}PaintingRenderers {
 
 	public static void register() {
 		<#list (types.paintings![]) as painting>
-		RenderingRegistry.registerEntityRenderingHandler(${package}.entity.${painting.getModElement().getName()}PaintingEntity.class, Renderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(${package}.entity.${painting.getModElement().getName()}PaintingEntity.class, PaintingRenderer::new);
 		</#list>
 	}
 
-	private static class Renderer extends RenderPainting {
-		Renderer(RenderManager manager) {
+	private static class PaintingRenderer extends RenderPainting {
+		PaintingRenderer(RenderManager manager) {
 			super(manager);
 		}
 

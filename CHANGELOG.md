@@ -1,6 +1,6 @@
 # Changelog
 
-# 2026.3-1.0.30.89-beta
+# 2026.3-1.0.30.90-beta
 
 ## New Content
 
@@ -36,7 +36,7 @@
 
 ## Fixes
 
-Fixed 8 bug(s).
+Fixed 10 bug(s).
 - Villager profession skin resource locations now include the `.png`
   extension required by 1.12.2 `SimpleTexture`.
 - The villager profession mapping now honours the `CUSTOM:` prefix, so
@@ -55,6 +55,11 @@ Fixed 8 bug(s).
 - Painting renderer generation was moved to a global template; the previous
   per-element template referenced `types` and aborted generation of the
   painting item and entity.
+- Custom painting entities now initialize their `EnumArt` in the client-side
+  default constructor and drop the custom painting item instead of the vanilla
+  painting item.
+- Banner pattern items now use a visible vanilla paper item model and include
+  a shaped paper recipe so they are obtainable in survival.
 
 ## Known Limitations
 

@@ -4,6 +4,9 @@ templates:
   - template: json/banner_pattern_item.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname_pattern.json"
+  - template: bannerpattern/pattern_recipe.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/recipes/@registryname_pattern.json"
 
 global_templates:
   - template: elementinits/bannerpatterns.java.ftl
