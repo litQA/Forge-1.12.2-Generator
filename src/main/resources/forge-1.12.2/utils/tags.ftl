@@ -94,7 +94,7 @@
         net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", new net.minecraft.item.ItemStack(${package}.init.${JavaModName}Items.${element.getRegistryNameUpper()}_BUCKET));
                 </#if>
             <#elseif element.getTypeString() == "dimension">
-                <#if element.getGeneratableElement().hasIgniter>
+                <#if element.getGeneratableElement().hasIgniter()>
         net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", new net.minecraft.item.ItemStack(${package}.init.${JavaModName}Items.${element.getRegistryNameUpper()}));
                 </#if>
             <#elseif element.getTypeString() == "armor">

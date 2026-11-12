@@ -462,7 +462,7 @@ overlays, key bindings and particles.
 - Custom particle registration extends the enum's private maps via reflection
   because 1.12.2 has no particle registry.
 
-## Worldgen, data and economy (2026.3-1.0.30.87-beta)
+## Worldgen, data and economy (2026.3-1.0.30.88-beta)
 
 This batch adds advancement JSON, Java structure/feature worldgen, villager
 professions/trades, commands, functions, game rules and music discs.
@@ -498,7 +498,7 @@ professions/trades, commands, functions, game rules and music discs.
 - Structures must be shipped manually under
   `assets/<modid>/structures/<name>.nbt`.
 
-## Banner patterns, paintings and tag hardening (2026.3-1.0.30.87-beta)
+## Banner patterns, paintings and tag hardening (2026.3-1.0.30.88-beta)
 
 ### Implemented
 
@@ -569,4 +569,3 @@ extensions, loot tables, potion effects, potion items, biomes, dimensions,
 living entities, projectiles, boats, GUIs, overlays, key bindings and custom
 particles in game. Per the delivery specification this real-device test is
 performed by the user before the next batch starts.
-

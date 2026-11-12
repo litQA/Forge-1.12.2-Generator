@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.30.87-beta` |
+| Plugin version | `2026.3-1.0.30.88-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for generated Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -17,7 +17,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | Java toolchain for the mod | 8 |
 | License | CC BY-NC 4.0 (see `LICENSE`) |
 
-Current snapshot: `2026.3-1.0.30.87-beta`. It includes the generator
+Current snapshot: `2026.3-1.0.30.88-beta`. It includes the generator
 foundation, creative tabs, items, recipes, blocks, plants, fluids, tools,
 armor, enchantments, attributes, item extensions, native loot tables, potion
 effects/items, procedures, dimensions, biomes, custom trees, portals/igniters,
@@ -369,7 +369,7 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.30.87-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.30.88-beta`.
 2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
    `VALIDATION PASSED` (65 YAML documents, 220 FTL templates, 132 template
    references).
@@ -430,7 +430,7 @@ plugin-branch-2026.3/
     command/function, game-rule and music-disc templates were rendered with
     representative data and compiled with `javac --release 8`: `PASSED`.
 24. The plugin build reported `VALIDATION PASSED` and `BUILD SUCCESSFUL` for
-    `2026.3-1.0.30.87-beta`.
+    `2026.3-1.0.30.88-beta`.
 
 The latest user tests confirmed custom dimension portals, skyboxes, terrain,
 cave/Nether Mixin basics, custom biome/weight behavior and chunk seam fixes.
@@ -438,7 +438,7 @@ The `1.0.25.64` cave `y=0` exclusion remains a pending regression test:
 verify vanilla tree restoration and custom surface-biome generation in a new
 world/new chunks. The entity, GUI, overlay, key-binding and particle batch in
 `1.0.26.73` has passed user testing; the advancement/structure/feature,
-villager, command/function/game-rule and music-disc batch in `1.0.30.87`
+villager, command/function/game-rule and music-disc batch in `1.0.30.88`
 requires real-client testing before further development.
 
 ## Attribution
@@ -454,4 +454,3 @@ requires real-client testing before further development.
   RetroFuturaGradle code is bundled in this plugin archive.
 - All new files in this repository are licensed under CC BY-NC 4.0 unless a
   file states otherwise.
-
