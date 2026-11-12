@@ -1,0 +1,15 @@
+templates:
+  - template: bannerpattern/pattern_item.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
+  - template: json/banner_pattern_item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname_pattern.json"
+
+global_templates:
+  - template: elementinits/bannerpatterns.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBannerPatterns.java"
+    condition: "${(types.bannerpatterns![])?has_content}"
+
+localizationkeys:
+  - key: item.@modid.@registryname_pattern.name
+    mapto: name

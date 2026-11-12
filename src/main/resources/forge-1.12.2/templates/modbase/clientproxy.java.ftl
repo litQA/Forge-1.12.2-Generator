@@ -16,6 +16,9 @@ public class ClientProxy${JavaModName} implements IProxy${JavaModName} {
 		<#if (types.livingentities![])?has_content || (types.projectiles![])?has_content || (types.specialentities![])?has_content>
 		${package}.init.${JavaModName}EntityRenderers.register();
 		</#if>
+		<#if (types.paintings![])?has_content>
+		${package}.client.${JavaModName}PaintingRenderers.register();
+		</#if>
 		<#if (types.keybinds![])?has_content>
 		${package}.init.${JavaModName}KeyMappings.registerKeyBindings();
 		</#if>

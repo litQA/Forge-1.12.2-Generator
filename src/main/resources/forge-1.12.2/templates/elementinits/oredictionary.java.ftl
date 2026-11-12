@@ -21,6 +21,8 @@ public class ${JavaModName}OreDictionary {
 		<@registerItemTagEntry entry=entry oreName=oreName/>
 		</#if>
 	</#list>
+	<#else>
+		// 1.12.2 Ore Dictionary has no equivalent for ${tagType} tag: ${tag.resourcePath()}
 	</#if>
 </#list>
 	}

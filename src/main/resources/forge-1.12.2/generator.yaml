@@ -92,7 +92,7 @@ base_templates:
     condition: "${types.tabs?has_content}"
   - template: elementinits/items.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameItems.java"
-    condition: "${(types.items![])?has_content || (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.tools![])?has_content || (types.armors![])?has_content || (types.dimensions![])?has_content || (types.specialentities![])?has_content}"
+    condition: "${(types.items![])?has_content || (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.tools![])?has_content || (types.armors![])?has_content || (types.dimensions![])?has_content || (types.specialentities![])?has_content || (types.bannerpatterns![])?has_content || (types.paintings![])?has_content}"
   - template: elementinits/entities.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameEntities.java"
     condition: "${(types.livingentities![])?has_content || (types.projectiles![])?has_content || (types.specialentities![])?has_content}"

@@ -1,6 +1,6 @@
 # Changelog
 
-# 2026.3-1.0.29.85-beta
+# 2026.3-1.0.30.87-beta
 
 ## New Content
 
@@ -17,6 +17,11 @@
 - Game rule registration and game-rule get/set procedure blocks.
 - Music disc items based on 1.12.2 `ItemRecord`, including record sound,
   description and creative-tab handling.
+- Banner pattern generation through a 1.12.2 `BannerPattern` enum extension,
+  generated pattern item, banner/shield textures and vanilla
+  `RecipesBanners` integration.
+- Painting generation through a 1.12.2 `EntityPainting.EnumArt` extension,
+  custom painting item and client renderer with a custom texture.
 
 ## Changes
 
@@ -25,6 +30,9 @@
 - Added `jsontriggers` templates and the related MCItem JSON helper.
 - Added worldgen registration through `GameRegistry.registerWorldGenerator`.
 - Added villager profession and game-rule data mappings.
+- Expanded Ore Dictionary tag conversion to custom plants, fluids, tools,
+  armor, dimensions and special-entity items; unsupported tag types and
+  nested tags now emit explicit generated comments.
 
 ## Fixes
 
@@ -61,6 +69,10 @@ Fixed 7 bug(s).
   `ItemRecord` equivalent and are hidden.
 - The music disc plays through a constructed `SoundEvent`; custom sounds must
   still be present in the generated `sounds.json`.
+- 1.12.2 banner patterns require a pattern item; `requireItem` is therefore
+  always treated as true and the generated item is used for recipe matching.
+- 1.12.2 painting width and height must be positive multiples of 16 pixels;
+  unsupported sizes stop generation.
 
 # 2026.3-1.0.26.73-beta
 

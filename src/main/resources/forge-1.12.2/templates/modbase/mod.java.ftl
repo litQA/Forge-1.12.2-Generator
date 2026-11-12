@@ -62,8 +62,14 @@ public class ${JavaModName} {
 		<#if (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.dimensions![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Blocks.class);
 		</#if>
-		<#if (types.items![])?has_content || (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.tools![])?has_content || (types.armors![])?has_content || (types.dimensions![])?has_content || (types.specialentities![])?has_content>
+		<#if (types.items![])?has_content || (types.blocks![])?has_content || (types.plants![])?has_content || (types.fluids![])?has_content || (types.tools![])?has_content || (types.armors![])?has_content || (types.dimensions![])?has_content || (types.specialentities![])?has_content || (types.bannerpatterns![])?has_content || (types.paintings![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Items.class);
+		</#if>
+		<#if (types.bannerpatterns![])?has_content>
+		${package}.init.${JavaModName}BannerPatterns.init();
+		</#if>
+		<#if (types.paintings![])?has_content>
+		${package}.init.${JavaModName}Paintings.init();
 		</#if>
 		<#if (types.livingentities![])?has_content || (types.projectiles![])?has_content || (types.specialentities![])?has_content>
 		MinecraftForge.EVENT_BUS.register(${package}.init.${JavaModName}Entities.class);

@@ -6,7 +6,7 @@ Plugin id: `generator-forge-1.12.2`
 
 Target: MCreator EAP `2026.3.44621`, Minecraft `1.12.2`, Forge `14.23.5.2847`
 
-Current plugin snapshot: `2026.3-1.0.29.85-beta`
+Current plugin snapshot: `2026.3-1.0.30.87-beta`
 
 Status vocabulary:
 
@@ -15,7 +15,7 @@ Status vocabulary:
 - **Unavailable** - no implementation in the current snapshot; generation
   either stops explicitly or the field is hidden.
 
-This file is current as of `2026.3-1.0.29.85-beta`. `新功能列表.txt` remains the
+This file is current as of `2026.3-1.0.30.87-beta`. `新功能列表.txt` remains the
 canonical 2021.1-2026.3 feature list; this matrix describes the implemented
 subset and its implementation method.
 
@@ -56,6 +56,8 @@ subset and its implementation method.
 | Command | Degraded | Registers a 1.12.2 `CommandBase` with permission level and standard/singleplayer/multiplayer/client targeting. The 2026.3 Brigadier argument editor is hidden; the generated command exposes raw arguments only. |
 | Function | Direct | Writes `data/<namespace>/functions/<name>.mcfunction` files with the editor's command code. |
 | Game rule | Degraded | Registers a 1.12.2 `GameRules` entry on `WorldEvent.Load` and generates game-rule get/set procedure blocks. The modern category field is hidden. |
+| Banner pattern | Degraded | Extends the 1.12.2 `BannerPattern` enum, generates banner/shield textures and a pattern item, and relies on vanilla `RecipesBanners` matching. `requireItem` is effectively always true because 1.12.2 has no loom/pattern registry. |
+| Painting | Degraded | Extends `EntityPainting.EnumArt`, generates a placeable painting item and a client `RenderPainting` subclass that binds the generated painting texture. Width/height must be positive multiples of 16 pixels. |
 
 ## Unsupported mod elements
 
@@ -64,7 +66,7 @@ advertised as supported:
 
 | Element group | Status | Notes |
 | --- | --- | --- |
-| Damage type / painting / banner pattern / armor trim | Unavailable | No native 1.12.2 registry or API for the modern forms. |
+| Damage type / armor trim | Unavailable | 1.12.2 has no modern damage-type registry or armor-trim registry; armor trim has no equivalent smithing/asset model. |
 | Fuel / tag legacy elements | Partial | Fuel is handled by item extension; tags map to Ore Dictionary. |
 
 ## Cross-cutting features
@@ -83,7 +85,7 @@ advertised as supported:
 | Localization keys | Direct | Item/block/tool/armor keys use `.name`; enchantments use `enchantment.<modid>.<name>` and fluids `fluid.<modid>.<name>` to match 1.12.2 translation prefixes. |
 | MCP name mappings | Degraded | Implemented element mappings are shipped; unsupported modern values use documented vanilla/Ore Dictionary fallbacks. |
 | Resource generation | Degraded | Generates item/block models, blockstates, metadata, language files, native loot-table JSON and Mixin resources. Tag JSON is inert because Ore Dictionary is the 1.12.2 backend. |
-| Tags / Ore Dictionary | Degraded | Item/block tags register through `OreDictionary`; nested and non-item/block tag types are ignored. |
+| Tags / Ore Dictionary | Degraded | Item/block tags register through `OreDictionary`. Custom block/plant/fluid blocks and custom item/tool/armor/dimension/special-entity items are covered. Nested `TAG:` entries and non-item/block tag types are emitted as explicit generated comments rather than registered. |
 | Mixin pipeline | Degraded | Embedded Mixin `0.7.11-SNAPSHOT`, RFG refmap, `MixinTweaker`/`MixinConfigs`/`ForceLoadAsMod`, dynamic `mixins.<modid>.json`, `World#getBiome` injection. See `HANDOFF.md` section 3.14 for the build contract. |
 | Gradle build chain | Direct | Plugin builds with JDK 17; generated workspaces use JDK 25 + Gradle 9.8.0 + RetroFuturaGradle 2.0.6; generated mods compile/run with Java 8 toolchain. |
 | Forge `14.23.5.2864` | Unavailable | Current RFG 2.0.6 target is 2847; a separate toolchain upgrade is required. |

@@ -55,20 +55,26 @@
     <#assign value = entry.name()>
     <#if value?starts_with("CUSTOM:")>
         <#assign element = w.getWorkspace().getModElementByName(value?replace("CUSTOM:", ""))>
-        <#if element?? && element.getTypeString() == "block">
+        <#if element?? && (element.getTypeString() == "block" || element.getTypeString() == "plant" || element.getTypeString() == "fluid")>
         net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", ${package}.init.${JavaModName}Blocks.${element.getRegistryNameUpper()});
+        <#else>
+        // Unsupported custom block tag entry: ${value}
         </#if>
     <#elseif value?starts_with("EXTERNAL:")>
         <#assign lookup = registryNameFor(value)>
         if (net.minecraft.block.Block.getBlockFromName("${lookup}") != null) {
             net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", net.minecraft.block.Block.getBlockFromName("${lookup}"));
         }
+    <#elseif value?starts_with("TAG:")>
+        // Nested tags are not supported by the 1.12.2 Ore Dictionary: ${value}
     <#elseif value?contains(":")>
         if (net.minecraft.block.Block.getBlockFromName("${value}") != null) {
             net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", net.minecraft.block.Block.getBlockFromName("${value}"));
         }
     <#elseif value?has_content && !value?starts_with("TAG:") && !value?starts_with("#")>
         net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", ${value?split("#")[0]});
+    <#else>
+        // Unsupported block tag entry: ${value}
     </#if>
 </#macro>
 
@@ -77,24 +83,53 @@
     <#if value?starts_with("CUSTOM:")>
         <#assign element = w.getWorkspace().getModElementByName(value?replace("CUSTOM:", ""))>
         <#if element??>
-            <#if element.getTypeString() == "block">
+            <#if element.getTypeString() == "block" || element.getTypeString() == "plant">
                 <#if element.getGeneratableElement().hasBlockItem>
         net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", new net.minecraft.item.ItemStack(${package}.init.${JavaModName}Items.${element.getRegistryNameUpper()}_ITEM));
                 </#if>
-            <#elseif element.getTypeString() == "item">
+            <#elseif element.getTypeString() == "item" || element.getTypeString() == "tool" || element.getTypeString() == "specialentity">
         net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", new net.minecraft.item.ItemStack(${package}.init.${JavaModName}Items.${element.getRegistryNameUpper()}));
+            <#elseif element.getTypeString() == "fluid">
+                <#if element.getGeneratableElement().generateBucket>
+        net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", new net.minecraft.item.ItemStack(${package}.init.${JavaModName}Items.${element.getRegistryNameUpper()}_BUCKET));
+                </#if>
+            <#elseif element.getTypeString() == "dimension">
+                <#if element.getGeneratableElement().hasIgniter>
+        net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", new net.minecraft.item.ItemStack(${package}.init.${JavaModName}Items.${element.getRegistryNameUpper()}));
+                </#if>
+            <#elseif element.getTypeString() == "armor">
+                <#if element.getGeneratableElement().enableHelmet>
+        net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", new net.minecraft.item.ItemStack(${package}.init.${JavaModName}Items.${element.getRegistryNameUpper()}_HELMET));
+                </#if>
+                <#if element.getGeneratableElement().enableBody>
+        net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", new net.minecraft.item.ItemStack(${package}.init.${JavaModName}Items.${element.getRegistryNameUpper()}_CHESTPLATE));
+                </#if>
+                <#if element.getGeneratableElement().enableLeggings>
+        net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", new net.minecraft.item.ItemStack(${package}.init.${JavaModName}Items.${element.getRegistryNameUpper()}_LEGGINGS));
+                </#if>
+                <#if element.getGeneratableElement().enableBoots>
+        net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", new net.minecraft.item.ItemStack(${package}.init.${JavaModName}Items.${element.getRegistryNameUpper()}_BOOTS));
+                </#if>
+            <#else>
+        // Unsupported custom item tag entry: ${value}
             </#if>
+        <#else>
+        // Missing custom item tag entry: ${value}
         </#if>
     <#elseif value?starts_with("EXTERNAL:")>
         <#assign lookup = registryNameFor(value)>
         if (net.minecraft.item.Item.getByNameOrId("${lookup}") != null) {
             net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", net.minecraft.item.Item.getByNameOrId("${lookup}"));
         }
+    <#elseif value?starts_with("TAG:")>
+        // Nested tags are not supported by the 1.12.2 Ore Dictionary: ${value}
     <#elseif value?contains(":")>
         if (net.minecraft.item.Item.getByNameOrId("${value}") != null) {
             net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", net.minecraft.item.Item.getByNameOrId("${value}"));
         }
     <#elseif value?has_content && !value?starts_with("TAG:") && !value?starts_with("#")>
         net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", ${mappedMCItemToItemStackCode(w.itemBlock(value), 1)});
+    <#else>
+        // Unsupported item tag entry: ${value}
     </#if>
 </#macro>

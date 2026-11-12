@@ -79,6 +79,14 @@ public class ${JavaModName}Items {
 	public static final Item ${specialentity.getModElement().getRegistryNameUpper()} = register("${specialentity.getModElement().getRegistryName()}", new ${package}.item.${specialentity.getModElement().getName()}Item());
 	</#list>
 
+	<#list (types.bannerpatterns![]) as pattern>
+	public static final Item ${pattern.getModElement().getRegistryNameUpper()}_PATTERN = register("${pattern.getModElement().getRegistryName()}_pattern", new ${package}.item.${pattern.getModElement().getName()}Item());
+	</#list>
+
+	<#list (types.paintings![]) as painting>
+	public static final Item ${painting.getModElement().getRegistryNameUpper()} = register("${painting.getModElement().getRegistryName()}", new ${package}.item.${painting.getModElement().getName()}Item());
+	</#list>
+
 	// Start of user code block custom items
 	// End of user code block custom items
 
