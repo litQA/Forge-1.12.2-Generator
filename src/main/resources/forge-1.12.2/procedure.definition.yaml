@@ -5,4 +5,4 @@ templates:
 global_templates:
   - template: elementinits/procedures.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameProcedures.java"
-    condition: "${(procedures![])?has_content}"
+    condition: "${(types.procedures![])?has_content}"
