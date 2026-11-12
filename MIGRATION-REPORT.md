@@ -498,6 +498,28 @@ professions/trades, commands, functions, game rules and music discs.
 - Structures must be shipped manually under
   `assets/<modid>/structures/<name>.nbt`.
 
+## Banner patterns, paintings and tag hardening (2026.3-1.0.30.87-beta)
+
+### Implemented
+
+- Banner patterns extend the `BannerPattern` enum and generate a pattern item,
+  banner/shield textures and vanilla `RecipesBanners` matching.
+- Paintings extend `EntityPainting.EnumArt`, generate a custom entity, a
+  placeable painting item and a client `RenderPainting` subclass.
+- Tag conversion now covers custom blocks/plants/fluids and custom
+  item/tool/armor/dimension/special-entity items. Unsupported tag types and
+  nested tags generate explicit comments.
+
+### Known limitations
+
+- 1.12.2 banner patterns require a pattern item, so `requireItem` is effectively
+  always enabled.
+- Painting dimensions must be positive multiples of 16 pixels.
+- The 1.12.2 Ore Dictionary has no equivalent for function, structure, entity,
+  biome or enchantment tags; those remain comments in generated code.
+- Damage type remains planned for the procedure batch; armor trim is not
+  available in 1.12.2.
+
 ## Verification log
 
 | Step | Result |
