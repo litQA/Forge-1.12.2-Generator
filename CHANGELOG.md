@@ -1,6 +1,6 @@
 # Changelog
 
-# 2026.3-1.0.30.92-beta
+# 2026.3-1.0.30.93-beta
 
 ## New Content
 
@@ -1210,3 +1210,4 @@ Fixed 3 bug(s).
 - Initial MCreator 2026.3 Forge 1.12.2 generator foundation.
 - RetroFuturaGradle 2.0.6 / Gradle 9.8.0 / Java 8 toolchain workspace base.
 - Plugin metadata, MCP mappings and documentation.
+
