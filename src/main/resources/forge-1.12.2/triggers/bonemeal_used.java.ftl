@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onBonemeal(BonemealEvent event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onBonemeal(net.minecraftforge.event.entity.player.BonemealEvent event) {
 		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 			"x": "event.getPos().getX()",
@@ -15,3 +15,5 @@
 		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
+
+

@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onEntityJoin(EntityJoinWorldEvent event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onEntityJoin(net.minecraftforge.event.entity.EntityJoinWorldEvent event) {
 		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 			"x": "event.getEntity().posX",
@@ -13,3 +13,5 @@
 		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
+
+

@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onCropGrowPre(BlockEvent.CropGrowEvent.Pre event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onCropGrowPre(net.minecraftforge.event.world.BlockEvent.CropGrowEvent.Pre event) {
 		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 			"x": "event.getPos().getX()",
@@ -13,3 +13,5 @@
 		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
+
+

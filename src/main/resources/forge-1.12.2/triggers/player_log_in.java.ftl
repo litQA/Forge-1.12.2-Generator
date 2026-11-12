@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onPlayerLoggedIn(net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onPlayerLoggedIn(net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent event) {
 		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 			"x": "event.player.posX",
@@ -13,3 +13,6 @@
 		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
+
+
+

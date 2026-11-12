@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onEntityAttacked(LivingHurtEvent event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onEntityAttacked(net.minecraftforge.event.entity.living.LivingHurtEvent event) {
 		if (event != null && event.getEntityLiving() != null) {
 			<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
@@ -18,3 +18,5 @@
 			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 		}
 	}
+
+

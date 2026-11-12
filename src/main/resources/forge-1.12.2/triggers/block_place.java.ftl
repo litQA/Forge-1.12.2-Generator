@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onBlockPlace(net.minecraftforge.event.world.BlockEvent.EntityPlaceEvent event) {
 		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 			"x": "event.getPos().getX()",
@@ -18,3 +18,5 @@
 		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
+
+

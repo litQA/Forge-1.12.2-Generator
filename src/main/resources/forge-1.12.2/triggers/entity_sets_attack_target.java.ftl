@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onEntitySetsAttackTarget(LivingSetAttackTargetEvent event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onEntitySetsAttackTarget(net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent event) {
 		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 			"x": "event.getTarget().posX",
@@ -14,3 +14,5 @@
 		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
+
+

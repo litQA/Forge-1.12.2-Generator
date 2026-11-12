@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onLivingDropXp(LivingExperienceDropEvent event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onLivingDropXp(net.minecraftforge.event.entity.living.LivingExperienceDropEvent event) {
 		if (event != null && event.getEntityLiving() != null) {
 			<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
@@ -18,3 +18,5 @@
 			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 		}
 	}
+
+

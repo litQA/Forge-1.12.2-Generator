@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onVillageSiege(VillageSiegeEvent event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onVillageSiege(net.minecraftforge.event.village.VillageSiegeEvent event) {
 		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 			"x": "event.getAttemptedSpawnPos().x",
@@ -13,3 +13,5 @@
 		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
+
+

@@ -1,7 +1,7 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onWorldTick(TickEvent.WorldTickEvent event) {
-		if (event.phase == TickEvent.Phase.END) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onWorldTick(net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent event) {
+		if (event.phase == net.minecraftforge.fml.common.gameevent.TickEvent.Phase.END) {
 			<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 				"world": "event.world",
@@ -11,3 +11,5 @@
 			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 		}
 	}
+
+

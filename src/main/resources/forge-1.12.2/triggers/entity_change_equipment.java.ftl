@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void whenEntityChangeEquipment(LivingEquipmentChangeEvent event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void whenEntityChangeEquipment(net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent event) {
 		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getEntityLiving().posX",
@@ -16,3 +16,5 @@
 		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
+
+

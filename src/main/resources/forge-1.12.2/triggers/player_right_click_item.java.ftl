@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onRightClickItem(net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem event) {
 		if (event.getHand() != event.getEntityPlayer().getActiveHand())
 			return;
 		<#assign dependenciesCode>
@@ -15,3 +15,5 @@
 		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
+
+

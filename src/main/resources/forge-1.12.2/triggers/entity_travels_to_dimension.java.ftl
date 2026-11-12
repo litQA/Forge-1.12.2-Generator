@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onEntityTravelToDimension(EntityTravelToDimensionEvent event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onEntityTravelToDimension(net.minecraftforge.event.entity.EntityTravelToDimensionEvent event) {
 		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 			"x": "event.getEntity().posX",
@@ -14,3 +14,5 @@
 		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
+
+

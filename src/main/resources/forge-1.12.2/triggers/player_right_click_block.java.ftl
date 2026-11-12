@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onRightClickBlock(net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock event) {
 		<#-- fix #5491, event is fired for both hands always, so we can filter by either -->
 		if (event.getHand() != EnumHand.MAIN_HAND) return;
 		<#assign dependenciesCode>
@@ -17,3 +17,5 @@
 		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
+
+

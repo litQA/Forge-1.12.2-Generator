@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onCommand(CommandEvent event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onCommand(CommandEvent event) {
 		Entity entity = event.getSender().getCommandSenderEntity();
 		if (entity != null) {
 			<#assign dependenciesCode>
@@ -18,3 +18,5 @@
 			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 		}
 	}
+
+

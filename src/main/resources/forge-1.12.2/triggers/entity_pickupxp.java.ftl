@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onPickupXP(PlayerPickupXpEvent event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onPickupXP(net.minecraftforge.event.entity.player.PlayerPickupXpEvent event) {
 		if (event != null && event.getEntityPlayer() != null) {
 			<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
@@ -15,3 +15,5 @@
 			execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 		}
 	}
+
+

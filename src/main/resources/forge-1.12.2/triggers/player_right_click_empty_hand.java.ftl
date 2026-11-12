@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
-@Mod.EventBusSubscriber(Side.CLIENT) public class ${name}Procedure {
-	@SubscribeEvent public static void onRightClick(PlayerInteractEvent.RightClickEmpty event) {
+@Mod.EventBusSubscriber(net.minecraftforge.fml.relauncher.Side.CLIENT) public class ${name}Procedure {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onRightClick(net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickEmpty event) {
 		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getPos().getX()",
@@ -16,15 +16,15 @@
 		execute(${dependenciesCode});
 	}
 
-	public static class ${name}Message implements IMessage {
-		@Override public void toBytes(ByteBuf buffer) {}
+	public static class ${name}Message implements net.minecraftforge.fml.common.network.simpleimpl.IMessage {
+		@Override public void toBytes(io.netty.buffer.ByteBuf buffer) {}
 
-		@Override public void fromBytes(ByteBuf buffer) {}
+		@Override public void fromBytes(io.netty.buffer.ByteBuf buffer) {}
     }
 
-	public static class ${name}MessageHandler implements IMessageHandler<${name}Message, IMessage> {
-		@Override public IMessage onMessage(${name}Message message, MessageContext context) {
-	    	EntityPlayerMP player = context.getServerHandler().player;
+	public static class ${name}MessageHandler implements net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler<${name}Message, net.minecraftforge.fml.common.network.simpleimpl.IMessage> {
+		@Override public net.minecraftforge.fml.common.network.simpleimpl.IMessage onMessage(${name}Message message, net.minecraftforge.fml.common.network.simpleimpl.MessageContext context) {
+	    	net.minecraft.entity.player.EntityPlayerMP player = context.getServerHandler().player;
 	    	player.getServerWorld().addScheduledTask(() -> {
 				if (!player.world.isBlockLoaded(player.getPosition()))
 					return;
@@ -45,5 +45,7 @@
 	}
 
 	public static void registerMessage() {
-		${JavaModName}.addNetworkMessage(${name}MessageHandler.class, ${name}Message.class, Side.SERVER);
+		${JavaModName}.addNetworkMessage(${name}MessageHandler.class, ${name}Message.class, net.minecraftforge.fml.relauncher.Side.SERVER);
 	}
+
+
