@@ -1,5 +1,19 @@
 # Changelog
 
+# 2026.3-1.0.32.99-beta
+
+## Fixes
+
+- Fixed switching an existing workspace to `forge-1.12.2`. MCreator renders
+  `workspacebase` files ending in `.gradle`, `.properties` and `.txt` as inline
+  FreeMarker templates; Groovy `${...}` interpolations in the Forge build
+  script made that render fail and left the previous Fabric Loom `build.gradle`
+  in place. The script now uses Groovy string concatenation, so setup can
+  replace stale workspace-base files.
+- Bumped the generator `subversion` from `1.0` to `1.1`. Existing workspaces
+  now rerun workspace-base setup and refresh their Gradle files after updating
+  the plugin.
+
 # 2026.3-1.0.31.98-beta
 
 ## Fixes

@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.31.98-beta` |
+| Plugin version | `2026.3-1.0.32.99-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for generated Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -17,7 +17,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | Java toolchain for the mod | 8 |
 | License | CC BY-NC 4.0 (see `LICENSE`) |
 
-Current snapshot: `2026.3-1.0.31.98-beta`. It includes the generator
+Current snapshot: `2026.3-1.0.32.99-beta`. It includes the generator
 foundation, creative tabs, items, recipes, blocks, plants, fluids, tools,
 armor, enchantments, attributes, item extensions, native loot tables, potion
 effects/items, procedures, dimensions, biomes, custom trees, portals/igniters,
@@ -26,8 +26,8 @@ biome weight mapping, self-contained Mixin 0.7.11 worldgen injection,
 advancements, Java structure/feature worldgen, villager professions/trades,
 commands, functions, game rules, music discs, banner patterns, damage types,
 native procedure triggers, global workspace variables with persistent
-WorldSavedData/player-capability scopes, and the 1.12.2 procedure block
-baseline.
+WorldSavedData/player-capability scopes, portable workspace conversion, and the
+1.12.2 procedure block baseline.
 The complete, implementation-oriented support overview is in
 [docs/SUPPORT-MATRIX.md](docs/SUPPORT-MATRIX.md); trigger levels are in
 [docs/TRIGGER-CLASSIFICATION.md](docs/TRIGGER-CLASSIFICATION.md); known
@@ -392,7 +392,7 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.31.98-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.32.99-beta`.
 2. Generator validator on processed resources (YAML, mappings, FreeMarker
    syntax, template references): `VALIDATION PASSED` (78 YAML documents, 685
    FTL templates, 130 template references).
@@ -453,7 +453,7 @@ plugin-branch-2026.3/
     command/function, game-rule and music-disc templates were rendered with
     representative data and compiled with `javac --release 8`: `PASSED`.
 24. The plugin build reported `VALIDATION PASSED` and `BUILD SUCCESSFUL` for
-    `2026.3-1.0.31.98-beta`.
+    `2026.3-1.0.32.99-beta`.
 25. The variable render probe generated the variables class and proxies for all
     configured types/scopes; the generated Java compiled with `compileJava`
     without javac errors.
@@ -462,6 +462,11 @@ plugin-branch-2026.3/
 27. A headless plugin load packaged the custom variable labels; the previous
     missing-label warnings for `map`, `world` and `registryname` are gone and the
     plugin reports `failed=0`.
+28. A headless `WorkspaceGeneratorSetup.setupWorkspaceBase` run replaced a
+    deliberately stale Fabric `build.gradle` with the Forge
+    RetroFuturaGradle base. The copied script contains no unescaped Groovy
+    interpolation, and generator `subversion` `1.1` forces the same setup for
+    workspaces created with the previous `1.0` base.
 
 The latest user tests confirmed custom dimension portals, skyboxes, terrain,
 cave/Nether Mixin basics, custom biome/weight behavior and chunk seam fixes.
@@ -471,7 +476,8 @@ world/new chunks. The entity, GUI, overlay, key-binding and particle batch in
 `1.0.26.73` has passed user testing; the advancement/structure/feature,
 villager, command/function/game-rule, music-disc, trigger and variable changes
 in `1.0.30.96`/`1.0.31.98` require real-client testing before further
-development.
+development. The workspace-conversion fix in `1.0.32.99` also needs a real
+Fabric-to-Forge conversion test in MCreator.
 
 ## Attribution
 

@@ -547,6 +547,33 @@ professions/trades, commands, functions, game rules and music discs.
 - The first build on a new machine must download the Gradle distribution from
   `services.gradle.org`; the wrapper timeout is 60 seconds with three retries.
 
+## Workspace conversion refresh (2026.3-1.0.32.99-beta)
+
+### Root cause
+
+MCreator's `WorkspaceGeneratorSetup.setupWorkspaceBase` renders every
+workspace-base file ending in `.gradle`, `.properties` or `.txt` as an inline
+FreeMarker template. The Forge `workspacebase/build.gradle` also used Groovy
+string interpolation (`${modId}`, `${mixinConfigName}`, `${buildDir}`), so
+FreeMarker failed on those variables. MCreator logs and swallows that exception,
+leaving the previous Fabric Loom `build.gradle` untouched after a generator
+switch.
+
+### Fix
+
+- Replaced the Groovy interpolations with string concatenation. The file is now
+  valid FreeMarker input and retains the same Gradle behavior.
+- Raised generator `subversion` from `1.0` to `1.1`. `getFullGeneratorVersion()`
+  includes this value, so existing workspaces fail the setup-marker comparison
+  and rerun `setupWorkspaceBase` once after the plugin update.
+
+### Verification
+
+A headless probe created a Forge 1.12.2 workspace, wrote a stale Fabric Loom
+`build.gradle`, and invoked MCreator's real
+`WorkspaceGeneratorSetup.setupWorkspaceBase`. The file was replaced with the
+RetroFuturaGradle build script and no raw `${...}` interpolation remained.
+
 ## Verification log
 
 | Step | Result |
@@ -555,6 +582,7 @@ professions/trades, commands, functions, game rules and music discs.
 | Static validator | `VALIDATION PASSED` (78 YAML documents, 685 templates, 130 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
+| Workspace base refresh over stale Fabric `build.gradle` | `setupWorkspaceBase` replaced the file with the Forge RFG base; `subversion` `1.1` marks older workspaces for setup |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |
 | RetroFuturaGradle 2.0.6 / Gradle 9.8.0 / Java 8 toolchain | `BUILD SUCCESSFUL`; `build/libs/modid-1.0.jar` (reobfuscated) and `modid-1.0-dev.jar` produced. Only deprecation notes for `setUnlocalizedName` (expected on 1.12.2). |
 | Multi-tab item (`CUSTOM:ModTab` + `FOOD`) | `BUILD SUCCESSFUL`; generated item contains the `getSubItems` override and both tab entries. In-game membership is part of the user's real-device test. |

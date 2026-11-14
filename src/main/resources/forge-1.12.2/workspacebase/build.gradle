@@ -12,8 +12,8 @@ try {
 } catch (Throwable ignored) {
     // The generated mcmod.info is normally available before Gradle configures.
 }
-def mixinConfigName = "mixins.${modId}.json"
-def mixinRefMapName = "mixins.${modId}.refmap.json"
+def mixinConfigName = 'mixins.' + modId + '.json'
+def mixinRefMapName = 'mixins.' + modId + '.refmap.json'
 
 version = '1.0'
 group = 'com.example.modid'
@@ -63,7 +63,7 @@ dependencies {
 
 minecraft {
     extraTweakClasses.add('org.spongepowered.asm.launch.MixinTweaker')
-    extraRunJvmArguments.add("-Dmixin.configs=${mixinConfigName}")
+    extraRunJvmArguments.add('-Dmixin.configs=' + mixinConfigName)
     extraRunJvmArguments.add('-Dmixin.debug=true')
 }
 
@@ -89,8 +89,8 @@ jar {
 processResources {
     doLast {
         ['banner', 'shield'].each { kind ->
-            def source = file("src/main/resources/assets/${modId}/textures/entity/${kind}")
-            def target = file("${buildDir}/resources/main/assets/minecraft/textures/entity/${kind}")
+            def source = file('src/main/resources/assets/' + modId + '/textures/entity/' + kind)
+            def target = file(buildDir.toString() + '/resources/main/assets/minecraft/textures/entity/' + kind)
             if (source.exists()) {
                 source.listFiles()?.findAll { it.name.endsWith('.png') }?.each { sourceFile ->
                     def image = javax.imageio.ImageIO.read(sourceFile)
