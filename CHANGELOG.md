@@ -1,5 +1,41 @@
 # Changelog
 
+# 2026.3-1.0.31.98-beta
+
+## Fixes
+
+- Added English labels for the custom `map`, `registryname` and `world`
+  variable types so procedure blocks and dependency/return slots no longer
+  fall back to raw translation keys.
+
+# 2026.3-1.0.31.97-beta
+
+## New Content
+
+- Restored global workspace variables with local, session, world, map and
+  player scopes. The requested variable types are available: `number`,
+  `logic`, `string`, `map`, `world`, `entity`, `itemstack`, `direction`,
+  `blockstate` and `registryname`.
+- `registryname` is a string-backed variable type; `world` and `map` are
+  available in local and global-session scopes only because they cannot be
+  serialized safely. `entity` is session-scoped in the 1.12.2 reference
+  implementation.
+
+## Changes
+
+- Generated workspaces now use the official Gradle distribution URL instead of
+  a host-specific `file:` path. The wrapper timeout and retry settings were
+  increased for slower networks.
+- Variable synchronization messages are registered once for each required side
+  while sharing one packet id.
+
+## Fixes
+
+- Fixed the generated variables class package path so it matches its
+  `network` package declaration.
+- Added the missing variable initialization call to `preInit` and the explicit
+  1.12.2 imports required by the generated variables class.
+
 # 2026.3-1.0.30.96-beta
 
 ## New Content

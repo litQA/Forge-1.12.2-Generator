@@ -76,7 +76,7 @@ base_templates:
     name: "@MODASSETSROOT/sounds.json"
     condition: hasSounds()
   - template: modbase/variableslist.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModNameVariables.java"
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
     condition: hasVariables()
   - template: modbase/worldgen_hooks.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/worldgen/@JavaModNameWorldgenHooks.java"

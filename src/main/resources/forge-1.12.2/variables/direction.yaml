@@ -1,0 +1,50 @@
+defaultvalue: EnumFacing.NORTH
+scopes:
+  local:
+    init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${var.getType().getDefaultValue(generator.getWorkspace())};
+    get: ${name}
+    set: ${name} = ${opt.removeParentheses(value)};
+  global_session:
+    init: public static EnumFacing ${var.getName()} = ${generator.map(var.getValue(), "directions")};
+    get: ${JavaModName}Variables.${name}
+    set: ${JavaModName}Variables.${name} = ${opt.removeParentheses(value)};
+  global_world:
+    init: public EnumFacing ${var.getName()} = ${generator.map(var.getValue(), "directions")};
+    read: ${var.getName()} = EnumFacing.getFront(nbt.getInteger("${var.getName()}"));
+    write: nbt.setInteger("${var.getName()}", ${var.getName()}.getIndex());
+    get: ${JavaModName}Variables.WorldVariables.get(world).${name}
+    set: |
+      ${JavaModName}Variables.WorldVariables.get(world).${name} = ${opt.removeParentheses(value)};
+      <@tail>${JavaModName}Variables.WorldVariables.get(world).markSyncDirty();</@tail>
+  global_map:
+    init: public EnumFacing ${var.getName()} = ${generator.map(var.getValue(), "directions")};
+    read: ${var.getName()} = EnumFacing.getFront(nbt.getInteger("${var.getName()}"));
+    write: nbt.setInteger("${var.getName()}", ${var.getName()}.getIndex());
+    get: ${JavaModName}Variables.MapVariables.get(world).${name}
+    set: |
+      ${JavaModName}Variables.MapVariables.get(world).${name} = ${opt.removeParentheses(value)};
+      <@tail>${JavaModName}Variables.MapVariables.get(world).markSyncDirty();</@tail>
+  player_lifetime:
+    init: public EnumFacing ${var.getName()} = ${generator.map(var.getValue(), "directions")};
+    read: ${var.getName()} = EnumFacing.getFront(nbt.getInteger("${var.getName()}"));
+    write: nbt.setInteger("${var.getName()}", ${var.getName()}.getIndex());
+    get: "(${entity}.hasCapability(${JavaModName}Variables.PLAYER_VARIABLES, null) ? ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES, null).${name} : new ${JavaModName}Variables.PlayerVariables().${name})"
+    set: |
+      <@head>{${JavaModName}Variables.PlayerVariables _playerVars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES, null);
+        if (_playerVars != null) {</@head>
+            _playerVars.${name} = ${opt.removeParentheses(value)};
+            <@tail>_playerVars.markSyncDirty();
+        }
+      }</@tail>
+  player_persistent:
+    init: public EnumFacing ${var.getName()} = ${generator.map(var.getValue(), "directions")};
+    read: ${var.getName()} = EnumFacing.getFront(nbt.getInteger("${var.getName()}"));
+    write: nbt.setInteger("${var.getName()}", ${var.getName()}.getIndex());
+    get: "(${entity}.hasCapability(${JavaModName}Variables.PLAYER_VARIABLES, null) ? ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES, null).${name} : new ${JavaModName}Variables.PlayerVariables().${name})"
+    set: |
+      <@head>{${JavaModName}Variables.PlayerVariables _playerVars = ${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES, null);
+        if (_playerVars != null) {</@head>
+            _playerVars.${name} = ${opt.removeParentheses(value)};
+            <@tail>_playerVars.markSyncDirty();
+        }
+      }</@tail>

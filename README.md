@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.30.96-beta` |
+| Plugin version | `2026.3-1.0.31.98-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for generated Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -17,7 +17,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | Java toolchain for the mod | 8 |
 | License | CC BY-NC 4.0 (see `LICENSE`) |
 
-Current snapshot: `2026.3-1.0.30.96-beta`. It includes the generator
+Current snapshot: `2026.3-1.0.31.98-beta`. It includes the generator
 foundation, creative tabs, items, recipes, blocks, plants, fluids, tools,
 armor, enchantments, attributes, item extensions, native loot tables, potion
 effects/items, procedures, dimensions, biomes, custom trees, portals/igniters,
@@ -25,7 +25,9 @@ skyboxes, sounds, custom dimension terrain with caves/aquifers, five-range
 biome weight mapping, self-contained Mixin 0.7.11 worldgen injection,
 advancements, Java structure/feature worldgen, villager professions/trades,
 commands, functions, game rules, music discs, banner patterns, damage types,
-native procedure triggers and the 1.12.2 procedure block baseline.
+native procedure triggers, global workspace variables with persistent
+WorldSavedData/player-capability scopes, and the 1.12.2 procedure block
+baseline.
 The complete, implementation-oriented support overview is in
 [docs/SUPPORT-MATRIX.md](docs/SUPPORT-MATRIX.md); trigger levels are in
 [docs/TRIGGER-CLASSIFICATION.md](docs/TRIGGER-CLASSIFICATION.md); known
@@ -96,6 +98,21 @@ A minimal procedure element is available. Supported procedure blocks are:
 Standard Blockly flow, math, logic, text and local-variable blocks are provided
 by MCreator itself. Procedures with return values use
 `executeProcedure(Map<String, Object>)`.
+
+## Workspace variables
+
+Global variables are generated into a
+`<basepackage>.network.<JavaModName>Variables` class. Session variables are
+static fields, world and map variables use `WorldSavedData`, and player
+variables use a Forge capability with login/respawn/dimension synchronization.
+Variable synchronization packets share a packet id and register on both sides.
+
+The requested types `number`, `logic`, `string`, `map`, `world`, `entity`,
+`itemstack`, `direction`, `blockstate` and `registryname` are available.
+`registryname` is string-backed. `world` and `map` are limited to local and
+global-session scopes because they are not safely serializable; `entity` is
+session-scoped in the 1.12.2 reference implementation. World/map/player scopes
+are unavailable for those types for the same reason.
 
 The following block interaction triggers can call a procedure: right click,
 block added, block destroyed by a player, entity walks on the block, scheduled
@@ -266,20 +283,23 @@ files:
 
 1. **MCreator EAP 2026.3.44621** (the build number is part of the supported
    version list of the plugin).
-2. **JDK 25** to build the plugin itself and to run Gradle 9.8. This is the JDK
-   bundled with MCreator 2026.3.
+2. **JDK 25 toolchain** to compile the plugin. Gradle 9.8 itself can run on
+   JDK 21+, so Gradle must be able to find a JDK 25 through toolchain
+   auto-detection or `org.gradle.java.installations.paths`. If the JDK 25
+   launcher misreports a sandboxed project directory as not writable, launch
+   Gradle with JDK 21 while keeping the JDK 25 toolchain.
 3. **A Java 8 toolchain** for compiling and running the generated 1.12.2 mod.
    Gradle detects a locally installed JDK 8 automatically. If none is found, the
    Foojay toolchain resolver configured in the generated `settings.gradle`
    provisions one into the Gradle user home.
-4. Local Gradle distribution for the plugin build:
-   `Reference resources/gradle-9.8.0-bin.zip`. The generated workspace uses the
-   same local Gradle 9.8.0 distribution.
+4. Gradle 9.8.0 from the official `services.gradle.org` distribution. The
+   wrapper downloads it on first use and caches it in the workspace-local
+   Gradle user home. Generated workspaces use the same official URL.
 
 ## Build the plugin
 
-The wrapper uses the local Gradle 9.8.0 distribution and keeps its caches inside
-the project:
+The wrapper downloads Gradle 9.8.0 from the official distribution URL on first
+use and keeps its caches inside the project:
 
 ```bat
 gradlew.bat build
@@ -334,8 +354,8 @@ the new workspace base before retrying.
 - `gradlew` / `gradlew.bat` of this project and of the generated workspace set
   `GRADLE_USER_HOME` to `<project>/caches/gradle` when the variable is not
   already defined.
-- `gradle-wrapper.properties` points to the local Gradle 9.8.0 distribution, so
-  Gradle itself is not downloaded.
+- `gradle-wrapper.properties` points to the official Gradle 9.8.0 distribution;
+  the first build downloads it into the workspace-local Gradle user home.
 - RetroFuturaGradle stores MCP, Forge userdev, vanilla jars, assets and the
   decompiled cache inside the Gradle user home, which is the workspace-local
   `caches/gradle` folder when the wrapper is used.
@@ -372,10 +392,10 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.30.96-beta`.
-2. Generator validator (YAML, mappings, FreeMarker syntax, template references):
-   `VALIDATION PASSED` (65 YAML documents, 685 FTL templates, 130 template
-   references).
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.31.98-beta`.
+2. Generator validator on processed resources (YAML, mappings, FreeMarker
+   syntax, template references): `VALIDATION PASSED` (78 YAML documents, 685
+   FTL templates, 130 template references).
 3. The full `test_workspaces/test-1/src/main/java` source tree was compiled
    against the 1.12.2 classes with `javac --release 8`: `PASSED`. This includes
    the custom block loot-table drop path and potion attribute cleanup path.
@@ -433,7 +453,15 @@ plugin-branch-2026.3/
     command/function, game-rule and music-disc templates were rendered with
     representative data and compiled with `javac --release 8`: `PASSED`.
 24. The plugin build reported `VALIDATION PASSED` and `BUILD SUCCESSFUL` for
-    `2026.3-1.0.30.96-beta`.
+    `2026.3-1.0.31.98-beta`.
+25. The variable render probe generated the variables class and proxies for all
+    configured types/scopes; the generated Java compiled with `compileJava`
+    without javac errors.
+26. The generated workspace wrapper resolved Gradle 9.8.0 from the official
+    URL both in its normal path and in a path containing spaces.
+27. A headless plugin load packaged the custom variable labels; the previous
+    missing-label warnings for `map`, `world` and `registryname` are gone and the
+    plugin reports `failed=0`.
 
 The latest user tests confirmed custom dimension portals, skyboxes, terrain,
 cave/Nether Mixin basics, custom biome/weight behavior and chunk seam fixes.
@@ -441,8 +469,9 @@ The `1.0.25.64` cave `y=0` exclusion remains a pending regression test:
 verify vanilla tree restoration and custom surface-biome generation in a new
 world/new chunks. The entity, GUI, overlay, key-binding and particle batch in
 `1.0.26.73` has passed user testing; the advancement/structure/feature,
-villager, command/function/game-rule and music-disc batch in `1.0.30.96`
-requires real-client testing before further development.
+villager, command/function/game-rule, music-disc, trigger and variable changes
+in `1.0.30.96`/`1.0.31.98` require real-client testing before further
+development.
 
 ## Attribution
 

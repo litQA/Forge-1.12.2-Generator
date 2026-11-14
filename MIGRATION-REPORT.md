@@ -317,13 +317,14 @@ generator, and the support matrix marks them as unavailable.
   documented here and in the support matrix. Code generation never receives an
   unresolved `__unmapped__` placeholder.
 - The `types.yaml` mapping is extended with the 2026.3 variable types
-  (`logic`, `blockstate`, `actionresulttype`, `cmdcontext`, `damagesource`,
-  `vector`, `advancement`) using their 1.12.2 MCP types.
+  (`number`, `logic`, `string`, `entity`, `itemstack`, `direction`,
+  `blockstate`, `world`, `map`, `registryname`, `damagesource`, `vector`,
+  `advancement`) using their 1.12.2 MCP types.
 
 ## Build chain and runtime
 
-- Plugin build: Gradle 9.8.0, Java 25 toolchain, local distribution URL, caches
-  inside the project (`gradlew` sets `GRADLE_USER_HOME`).
+- Plugin build: Gradle 9.8.0, Java 25 toolchain, official Gradle distribution
+  URL, caches inside the project (`gradlew` sets `GRADLE_USER_HOME`).
 - Generated mod: RetroFuturaGradle 2.0.6, Gradle 9.8.0, Java 8 toolchain, MCP
   snapshot `20171003`, Forge `1.12.2-14.23.5.2847`.
 - Gradle 9.8 runs on MCreator's Java 25 runtime, so MCreator's Java 25 Gradle
@@ -355,12 +356,15 @@ generator, and the support matrix marks them as unavailable.
 4. **Unsupported recipe types.** Blasting, Smoking, Campfire cooking, Stone
    cutting and Smithing do not exist in Forge 1.12.2 and fail code generation
    explicitly. Crafting, furnace smelting and brewing are implemented.
-5. **Workspace variables.** Global workspace variables have no WorldSavedData
-   implementation in this batch. If variables exist, `variableslist.java.ftl`
-   stops generation with an explicit error instead of emitting broken code.
-6. **Procedure coverage.** Only the preview blocks listed above have 1.12.2
-   templates. Global triggers are not implemented, and other procedure blocks
-   fail generation explicitly. Right-click procedures on slabs are skipped.
+5. **Workspace variables.** Session, world, map and player scopes are
+   implemented with `WorldSavedData` and a Forge player capability.
+   `world`, `map` and `entity` are session-scoped only because they are not
+   safely serializable; `registryname` is string-backed. Global variable
+   values require the generated `network` class to be present.
+6. **Procedure coverage.** The Forge 1.12.2 baseline procedure block set is
+   shipped (442 templates) and 61 native triggers are implemented; four
+   complex triggers remain deferred. Right-click procedures on slabs are
+   skipped.
 7. **Block coverage.** Basic cubes, stairs, slabs, fences and walls are
    implemented. Other bases, custom/multipart states, inventories, world
    generation and tool tiers are hidden and belong to a later batch.
@@ -518,15 +522,37 @@ professions/trades, commands, functions, game rules and music discs.
 - Painting dimensions must be positive multiples of 16 pixels.
 - The 1.12.2 Ore Dictionary has no equivalent for function, structure, entity,
   biome or enchantment tags; those remain comments in generated code.
-- Damage type remains planned for the procedure batch; armor trim is not
-  available in 1.12.2.
+- Damage sources are generated as Java `DamageSource` subclasses because 1.12.2
+  has no damage-type registry; armor trim is not available in 1.12.2.
+
+## Workspace portability and global variables (2026.3-1.0.31.98-beta)
+
+### Implemented
+
+- Generated workspaces use the official Gradle 9.8.0 distribution URL and a
+  workspace-relative cache. The previous host-specific `file:///B:/...` URL was
+  removed from both wrapper properties files.
+- Session, world, map and player global-variable scopes based on the 1.12.2
+  reference implementation.
+- Requested types `number`, `logic`, `string`, `map`, `world`, `entity`,
+  `itemstack`, `direction`, `blockstate` and `registryname`.
+- Packet registration can map one message handler to both sides with a shared
+  packet id.
+
+### Known limitations
+
+- `world`, `map` and `entity` variables are session-scoped; world/map/player
+  persistence is intentionally not attempted for these Java object types.
+- `registryname` is a string-backed type, not a dedicated registry-name object.
+- The first build on a new machine must download the Gradle distribution from
+  `services.gradle.org`; the wrapper timeout is 60 seconds with three retries.
 
 ## Verification log
 
 | Step | Result |
 | --- | --- |
-| Plugin build (`gradlew build`, JDK 25) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (65 YAML documents, 685 templates, 130 template references) |
+| Plugin build (`gradlew build`, Java 25 toolchain) | `BUILD SUCCESSFUL` |
+| Static validator | `VALIDATION PASSED` (78 YAML documents, 685 templates, 130 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Base and element template rendering | Succeeded; tab, item and recipe sources and JSON generated |

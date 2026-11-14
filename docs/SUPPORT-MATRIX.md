@@ -6,7 +6,7 @@ Plugin id: `generator-forge-1.12.2`
 
 Target: MCreator EAP `2026.3.44621`, Minecraft `1.12.2`, Forge `14.23.5.2847`
 
-Current plugin snapshot: `2026.3-1.0.30.96-beta`
+Current plugin snapshot: `2026.3-1.0.31.98-beta`
 
 Status vocabulary:
 
@@ -15,7 +15,7 @@ Status vocabulary:
 - **Unavailable** - no implementation in the current snapshot; generation
   either stops explicitly or the field is hidden.
 
-This file is current as of `2026.3-1.0.30.96-beta`. `新功能列表.txt` remains the
+This file is current as of `2026.3-1.0.31.98-beta`. `新功能列表.txt` remains the
 canonical 2021.1-2026.3 feature list; this matrix describes the implemented
 subset and its implementation method.
 
@@ -60,6 +60,19 @@ subset and its implementation method.
 | Banner pattern | Degraded | Extends the 1.12.2 `BannerPattern` enum, generates banner/shield textures and a pattern item, and relies on vanilla `RecipesBanners` matching. `requireItem` is effectively always true because 1.12.2 has no loom/pattern registry. |
 | Painting | Unavailable | Custom painting rendering could not be made reliable on 1.12.2; the painting element is disabled and no painting item/entity/renderer is generated. |
 
+## Workspace variables
+
+Global variables are generated into `<basepackage>.network.<JavaModName>Variables`.
+Session values are static fields; world/map values use `WorldSavedData`; player
+values use a Forge capability with login, respawn and dimension synchronization.
+
+| Type | Available scopes | Notes |
+| --- | --- | --- |
+| `number`, `logic`, `string`, `direction`, `blockstate`, `itemstack`, `registryname` | local, session, world, map, player lifetime/persistent | `registryname` is string-backed. |
+| `world` | local, global session | Not serialized; world/map/player scopes are unavailable. |
+| `map` | local, global session | `java.util.HashMap`; not serialized. |
+| `entity` | local, global session | Session-scoped in the 1.12.2 reference implementation. |
+
 ## Unsupported mod elements
 
 These elements have no current definition/template implementation and must not be
@@ -88,7 +101,7 @@ advertised as supported:
 | Resource generation | Degraded | Generates item/block models, blockstates, metadata, language files, native loot-table JSON and Mixin resources. Tag JSON is inert because Ore Dictionary is the 1.12.2 backend. |
 | Tags / Ore Dictionary | Degraded | Item/block tags register through `OreDictionary`. Custom block/plant/fluid blocks and custom item/tool/armor/dimension/special-entity items are covered. Nested `TAG:` entries and non-item/block tag types are emitted as explicit generated comments rather than registered. |
 | Mixin pipeline | Degraded | Embedded Mixin `0.7.11-SNAPSHOT`, RFG refmap, `MixinTweaker`/`MixinConfigs`/`ForceLoadAsMod`, dynamic `mixins.<modid>.json`, `World#getBiome` injection. See `HANDOFF.md` section 3.14 for the build contract. |
-| Gradle build chain | Direct | Plugin builds with JDK 17; generated workspaces use JDK 25 + Gradle 9.8.0 + RetroFuturaGradle 2.0.6; generated mods compile/run with Java 8 toolchain. |
+| Gradle build chain | Direct | Plugin builds with JDK 25; generated workspaces use JDK 25 + Gradle 9.8.0 + RetroFuturaGradle 2.0.6; generated mods compile/run with Java 8 toolchain. |
 | Forge `14.23.5.2864` | Unavailable | Current RFG 2.0.6 target is 2847; a separate toolchain upgrade is required. |
 | Workspace-local caches | Direct for wrapper builds | The documented workflow sets `GRADLE_USER_HOME` to `caches/gradle`; MCreator's Tooling API build is a platform-controlled exception. |
 | Server-side safety | Direct | Common code uses server-safe Forge APIs; skybox/sound/renderer/keybind/particle client logic is isolated behind `@SideOnly`/client proxy paths. GUI client screens are created reflectively so a dedicated server does not resolve client GUI classes. |

@@ -36,8 +36,11 @@ public class ${JavaModName} {
 			REPLY extends net.minecraftforge.fml.common.network.simpleimpl.IMessage>
 			void addNetworkMessage(
 					Class<? extends net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler<REQ, REPLY>> handler,
-					Class<REQ> message, net.minecraftforge.fml.relauncher.Side side) {
-		PACKET_HANDLER.registerMessage(handler, message, networkId++, side);
+					Class<REQ> message, net.minecraftforge.fml.relauncher.Side... sides) {
+		for (net.minecraftforge.fml.relauncher.Side side : sides) {
+			PACKET_HANDLER.registerMessage(handler, message, networkId, side);
+		}
+		networkId++;
 	}
 
 	@Mod.EventHandler public void preInit(FMLPreInitializationEvent event) {
@@ -89,6 +92,9 @@ public class ${JavaModName} {
 		</#if>
 		<#if (types.procedures![])?has_content>
 		${package}.init.${JavaModName}Procedures.load();
+		</#if>
+		<#if w.hasVariables()>
+		${package}.network.${JavaModName}Variables.init();
 		</#if>
 
 		proxy.preInit(event);
