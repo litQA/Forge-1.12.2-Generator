@@ -88,6 +88,39 @@ jar {
 // textures into that namespace in the processed resource output.
 processResources {
     doLast {
+        // Modern block textures use names that do not exist in 1.12.2.
+        // Rewrite references in the processed models to their legacy equivalents.
+        def textureAliases = [
+                '"minecraft:blocks/granite"': '"minecraft:blocks/stone_granite"',
+                '"minecraft:blocks/diorite"': '"minecraft:blocks/stone_diorite"',
+                '"minecraft:blocks/andesite"': '"minecraft:blocks/stone_andesite"',
+                '"minecraft:blocks/dark_prismarine"': '"minecraft:blocks/prismarine_dark"',
+                '"minecraft:blocks/prismarine"': '"minecraft:blocks/prismarine_rough"',
+                '"minecraft:blocks/cobbled_deepslate"': '"minecraft:blocks/cobblestone"',
+                '"minecraft:blocks/deepslate"': '"minecraft:blocks/stone"',
+                '"minecraft:blocks/soul_soil"': '"minecraft:blocks/soul_sand"',
+                '"minecraft:blocks/crying_obsidian"': '"minecraft:blocks/obsidian"',
+                '"minecraft:blocks/honeycomb_block"': '"minecraft:blocks/wool_colored_yellow"',
+                '"minecraft:blocks/blackstone_top"': '"minecraft:blocks/stone"',
+                '"minecraft:blocks/blackstone"': '"minecraft:blocks/stone"',
+                '"minecraft:blocks/basalt_top"': '"minecraft:blocks/stone"',
+                '"minecraft:blocks/basalt_side"': '"minecraft:blocks/stone"',
+                '"minecraft:blocks/tuff"': '"minecraft:blocks/stone"',
+                '"minecraft:blocks/dripstone_block"': '"minecraft:blocks/stone"',
+                '"minecraft:items/heart_of_the_sea"': '"minecraft:items/prismarine_crystals"'
+        ]
+        def assetRoot = file(buildDir.toString() + '/resources/main/assets')
+        if (assetRoot.exists()) {
+            fileTree(assetRoot) { include '**/models/**/*.json' }.each { modelFile ->
+                def text = modelFile.getText('UTF-8')
+                def updated = text
+                textureAliases.each { current, legacy ->
+                    updated = updated.replace(current, legacy)
+                }
+                if (updated != text)
+                    modelFile.setText(updated, 'UTF-8')
+            }
+        }
         ['banner', 'shield'].each { kind ->
             def source = file('src/main/resources/assets/' + modId + '/textures/entity/' + kind)
             def target = file(buildDir.toString() + '/resources/main/assets/minecraft/textures/entity/' + kind)

@@ -5,7 +5,6 @@ import ${package}.${JavaModName};
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -305,7 +304,7 @@ public class ${JavaModName}Variables {
 
 		public static class SavedDataSyncMessageHandler implements IMessageHandler<SavedDataSyncMessage, IMessage> {
             @Override public IMessage onMessage(SavedDataSyncMessage message, MessageContext context) {
-                Minecraft.getMinecraft().addScheduledTask(() -> {
+                ${JavaModName}.proxy.scheduleClientTask(() -> {
                     if (message.data != null) {
                         if (message.dataType == 0)
                             MapVariables.clientSide.readFromNBT(message.data.writeToNBT(new NBTTagCompound()));
@@ -418,9 +417,9 @@ public class ${JavaModName}Variables {
 
 		public static class PlayerVariablesSyncMessageHandler implements IMessageHandler<PlayerVariablesSyncMessage, IMessage> {
             @Override public IMessage onMessage(PlayerVariablesSyncMessage message, MessageContext context) {
-                Minecraft.getMinecraft().addScheduledTask(() -> {
-                    EntityPlayer player = Minecraft.getMinecraft().player;
-                    if (message.data != null && player.hasCapability(PLAYER_VARIABLES, null)) {
+                ${JavaModName}.proxy.scheduleClientTask(() -> {
+                    EntityPlayer player = ${JavaModName}.proxy.getClientPlayer();
+                    if (message.data != null && player != null && player.hasCapability(PLAYER_VARIABLES, null)) {
                         PlayerVariables cap = player.getCapability(PLAYER_VARIABLES, null);
                         <#list variables as var>
                             <#if var.getScope().name() == "PLAYER_LIFETIME" || var.getScope().name() == "PLAYER_PERSISTENT">

@@ -1,6 +1,8 @@
 <#-- @formatter:off -->
 package ${package};
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -44,6 +46,14 @@ public class ClientProxy${JavaModName} implements IProxy${JavaModName} {
 	}
 
 	@Override public void serverLoad(FMLServerStartingEvent event) {
+	}
+
+	@Override public EntityPlayer getClientPlayer() {
+		return Minecraft.getMinecraft().player;
+	}
+
+	@Override public void scheduleClientTask(Runnable task) {
+		Minecraft.getMinecraft().addScheduledTask(task);
 	}
 
 }

@@ -1,5 +1,41 @@
 # Changelog
 
+# 2026.3-1.0.35.102-beta
+
+## New Content
+
+- Added recursive Ore Dictionary flattening for nested block/item tags. Member
+  entries are registered under both the parent and leaf names, with cycle
+  protection.
+- Added namespace normalization between MCreator's internal `mod:` tag
+  namespace and the workspace mod id for tag registration and procedure
+  literals.
+- Added tag support to plant `canBePlacedOn` entries.
+
+## Fixes
+
+- Fixed tag-based block placement and right-click checks that failed because
+  procedures used `cp_lib:*`/`cp_lib_*` names while initialization registered
+  only `mod_*` leaf names. Composite tags such as `cp_lib_farmlands`,
+  `cp_lib_crops` and `cp_lib_embryo_materials` are now registered.
+- Added build-time 1.13-to-1.12 texture aliases for converted workspaces
+  (`granite` -> `stone_granite`, `honeycomb_block` ->
+  `wool_colored_yellow`, and similar fallbacks), fixing purple/black faces.
+  Generator `subversion` is now `1.3` so existing workspaces refresh their base
+  build script.
+- Sorted custom multi-property blockstate variant keys alphabetically by
+  property name, fixing 1.12.2 `MissingVariantException` errors.
+- Reworked loot-table loading to use `ForgeHooks.loadLootTable` with the event
+  loot-table manager, avoiding `ForgeHooks.readLootEntryName` context errors.
+- Isolated workspace-variable client-player lookup and client task scheduling
+  behind the proxy. This fixes dedicated-server `EntityPlayerSP` class loading.
+- Inactive blocks without an item no longer register empty Ore Dictionary
+  stacks (`Item.getItemFromBlock` returns `Items.AIR`).
+- All four supplied workspaces regenerate, compile, build and join an integrated
+  world. Croparium also loads on a dedicated server without tag, texture, model
+  or loot-table registration errors. Manual tag right-click and placement
+  interaction still requires the user's real-client test.
+
 # 2026.3-1.0.34.101-beta
 
 ## Fixes

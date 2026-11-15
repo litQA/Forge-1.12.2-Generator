@@ -1,4 +1,13 @@
 <#-- @formatter:off -->
+<#function variantKey values>
+    <#local result = "">
+    <#list values?sort_by("key") as pair>
+        <#if result?has_content><#local result = result + ","></#if>
+        <#local result = result + pair.key + "=" + pair.value>
+    </#list>
+    <#return result>
+</#function>
+
 <#function customStateModel definedStates registryname property1 value1 property2 value2>
     <#local model = registryname>
     <#list definedStates as state>
@@ -232,7 +241,7 @@
             </#list>
             <#if ok><#assign model = registryname + "_" + state?index></#if>
         </#list>
-        "${bp.property().getName()?replace("CUSTOM:", "")?lower_case}=${b?c},${ep.property().getName()?replace("CUSTOM:", "")?lower_case}=${e?lower_case},${ip.property().getName()?replace("CUSTOM:", "")?lower_case}=${i}": { "model": "${modid}:${model}" }<#sep>,
+        "${variantKey([{"key": bp.property().getName()?replace("CUSTOM:", "")?lower_case, "value": b?c}, {"key": ep.property().getName()?replace("CUSTOM:", "")?lower_case, "value": e?lower_case}, {"key": ip.property().getName()?replace("CUSTOM:", "")?lower_case, "value": i}])}": { "model": "${modid}:${model}" }<#sep>,
         </#list>
         <#if !e?is_last>,</#if>
         </#list>
@@ -242,7 +251,7 @@
         <#assign p1 = boolProps[0]><#assign p2 = boolProps[1]>
         <#list [false, true] as v1>
         <#list [false, true] as v2>
-        "${p1.property().getName()?replace("CUSTOM:", "")?lower_case}=${v1?c},${p2.property().getName()?replace("CUSTOM:", "")?lower_case}=${v2?c}": { "model": "${modid}:${customStateModel(definedStates, registryname, p1.property(), v1, p2.property(), v2)}" }<#sep>,
+        "${variantKey([{"key": p1.property().getName()?replace("CUSTOM:", "")?lower_case, "value": v1?c}, {"key": p2.property().getName()?replace("CUSTOM:", "")?lower_case, "value": v2?c}])}": { "model": "${modid}:${customStateModel(definedStates, registryname, p1.property(), v1, p2.property(), v2)}" }<#sep>,
         </#list>
         <#if !v1?is_last>,</#if>
         </#list>
@@ -250,7 +259,7 @@
         <#assign bp = boolProps[0]><#assign ep = enumProps[0]>
         <#list [false, true] as b>
         <#list ep.property().getArrayData() as e>
-        "${bp.property().getName()?replace("CUSTOM:", "")?lower_case}=${b?c},${ep.property().getName()?replace("CUSTOM:", "")?lower_case}=${e?lower_case}": { "model": "${modid}:${customStateModel(definedStates, registryname, bp.property(), b, ep.property(), e)}" }<#sep>,
+        "${variantKey([{"key": bp.property().getName()?replace("CUSTOM:", "")?lower_case, "value": b?c}, {"key": ep.property().getName()?replace("CUSTOM:", "")?lower_case, "value": e?lower_case}])}": { "model": "${modid}:${customStateModel(definedStates, registryname, bp.property(), b, ep.property(), e)}" }<#sep>,
         </#list>
         <#if !b?is_last>,</#if>
         </#list>
@@ -258,7 +267,7 @@
         <#assign bp = boolProps[0]><#assign ip = intProps[0]>
         <#list [false, true] as b>
         <#list ip.property().getMin()..ip.property().getMax() as i>
-        "${bp.property().getName()?replace("CUSTOM:", "")?lower_case}=${b?c},${ip.property().getName()?replace("CUSTOM:", "")?lower_case}=${i}": { "model": "${modid}:${customStateModel(definedStates, registryname, bp.property(), b, ip.property(), i)}" }<#sep>,
+        "${variantKey([{"key": bp.property().getName()?replace("CUSTOM:", "")?lower_case, "value": b?c}, {"key": ip.property().getName()?replace("CUSTOM:", "")?lower_case, "value": i}])}": { "model": "${modid}:${customStateModel(definedStates, registryname, bp.property(), b, ip.property(), i)}" }<#sep>,
         </#list>
         <#if !b?is_last>,</#if>
         </#list>
@@ -266,7 +275,7 @@
         <#assign ep = enumProps[0]><#assign ip = intProps[0]>
         <#list ep.property().getArrayData() as e>
         <#list ip.property().getMin()..ip.property().getMax() as i>
-        "${ep.property().getName()?replace("CUSTOM:", "")?lower_case}=${e?lower_case},${ip.property().getName()?replace("CUSTOM:", "")?lower_case}=${i}": { "model": "${modid}:${customStateModel(definedStates, registryname, ep.property(), e, ip.property(), i)}" }<#sep>,
+        "${variantKey([{"key": ep.property().getName()?replace("CUSTOM:", "")?lower_case, "value": e?lower_case}, {"key": ip.property().getName()?replace("CUSTOM:", "")?lower_case, "value": i}])}": { "model": "${modid}:${customStateModel(definedStates, registryname, ep.property(), e, ip.property(), i)}" }<#sep>,
         </#list>
         <#if !e?is_last>,</#if>
         </#list>

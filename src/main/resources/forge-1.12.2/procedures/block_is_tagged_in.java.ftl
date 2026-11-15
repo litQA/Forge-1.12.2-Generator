@@ -5,5 +5,5 @@
     <#assign oreName = tagNameToOreDictionary(input$b?replace('"', ''))>
 (isBlockInOreDictionary("${oreName}", ${block}))
 <#else>
-(isBlockInOreDictionary((((${input$b}) + "").replace(':', '_').replace('/', '_').replace('-', '_').replace('.', '_').toLowerCase()), ${block}))
+(isBlockInOreDictionary((((${input$b}) + "").replace("mod:", "${modid}:").replace(':', '_').replace('/', '_').replace('-', '_').replace('.', '_').toLowerCase()), ${block}))
 </#if>

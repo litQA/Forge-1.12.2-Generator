@@ -192,8 +192,12 @@ interface while the generator emits Ore Dictionary registrations:
   `forge:planks` -> `plankWood`, `forge:logs` -> `logWood`.
   Other paths fall back to `<namespace>_<path>` in lower case with separators
   replaced by underscores.
-- Nested tag entries (`#tag`/`TAG:`) are not expanded because Ore Dictionary
-  has no nested tag concept.
+- Nested tag entries (`#tag`/`TAG:`) are recursively flattened so each member
+  is registered under the parent ore name as well as its own normalized name.
+  DFS cycle protection prevents recursive tag definitions from looping.
+- MCreator's internal `mod:` namespace is normalized to the workspace mod id,
+  so editor references and procedure string literals resolve to the same Ore
+  Dictionary names.
 - Other tag types (entities, biomes, structures, functions, enchantments,
   damage types, game events, etc.) have no 1.12.2 equivalent and are ignored by
   the Ore Dictionary generator.
@@ -647,6 +651,42 @@ The generated door and fence-gate variants now include the inherited
 `powered` property. Remaining non-fatal texture warnings in the converted melon
 workspace are cosmetic.
 
+## Croparium runtime compatibility batch (2026.3-1.0.35.102-beta)
+
+### Tags and Ore Dictionary
+
+Croparium's converted tags use MCreator's internal `mod:` namespace and nested
+`TAG:` entries. The generator previously registered only direct leaves under
+`mod_*`, while procedures used `cp_lib_*` or raw `cp_lib:*` strings, so every
+placement and right-click tag check failed.
+
+The tag generation now resolves the workspace mod id, recursively flattens
+nested tags, registers members under both parent and leaf names, and applies the
+same normalization to literal procedure inputs. Verified composite registrations
+in Croparium: `cp_lib_farmlands` (22), `cp_lib_crops` (40),
+`cp_lib_embryo_materials` (248), and `cp_lib_embryo_shards` (8). Plant
+`canBePlacedOn` entries also support tags through the same Ore Dictionary check.
+
+### Resource, model and loot compatibility
+
+- The workspace base `processResources` step rewrites newer vanilla texture
+  names to 1.12.2 equivalents and supplies fallbacks for removed blocks.
+  Generator `subversion` is now `1.3` so older workspaces refresh this step.
+- Custom multi-property blockstate keys are sorted alphabetically, matching
+  1.12.2's `ImmutableSortedMap` property order.
+- Loot tables load through `ForgeHooks.loadLootTable` with the active
+  `LootTableManager`, avoiding Forge loot-context errors from standalone Gson
+  parsing.
+- Workspace-variable sync handlers resolve the client player through the proxy,
+  so common code no longer loads `EntityPlayerSP` on a dedicated server.
+
+### Verification
+
+All four workspaces regenerate, compile and build. All four clients joined an
+integrated world without mod-initialization crashes; Croparium's client and
+dedicated server loaded without texture, model, Ore Dictionary or loot-table
+JSON errors. Manual right-click/placement gameplay remains for user testing.
+
 ## Verification log
 
 | Step | Result |
@@ -682,6 +722,7 @@ workspace are cosmetic.
 | GUI procedures | All generated GUI procedures render and compile against the generated GUI state/handler classes. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 | 34.101 startup regression | Four converted workspaces regenerate and compile. `test-croparium-lite` and `test-melon` previously reached the client main menu; final `test-everrose` and `test-enchants` clients loaded Forge and the texture atlas without startup exceptions or `MissingVariantException`. Gameplay behavior remains for user testing. |
+| 35.102 runtime compatibility | Four workspaces regenerate, compile, build and join an integrated world. Croparium registers flattened composite tags (`cp_lib_farmlands` 22, `cp_lib_crops` 40, `cp_lib_embryo_materials` 248, `cp_lib_embryo_shards` 8), emits sorted reactor variants, uses 1.12 texture aliases, loads loot tables through `ForgeHooks.loadLootTable`, and starts a dedicated server with no `EntityPlayerSP`/loot-context errors. Manual tag interaction remains for user testing. |
 
 The generated-mod build used the exact workspace base, templates and generated
 sources that are packaged in the plugin archive. The build was started through

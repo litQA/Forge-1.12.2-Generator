@@ -1,5 +1,6 @@
 <#-- @formatter:off -->
 <#include "/mcitems.ftl">
+<#include "/tags.ftl">
 <#include "/procedures.ftl">
 package ${package}.block;
 
@@ -24,6 +25,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 <#if data.plantType == "growapable">
 public class ${name}Block extends BlockBush {
@@ -54,9 +56,19 @@ public class ${name}Block extends BlockBush {
 	<#if data.plantType == "normal" || data.plantType == "sapling">
 	<#if data.canBePlacedOn?has_content>
 	@Override protected boolean canSustainBush(IBlockState state) {
-		return <#list data.canBePlacedOn as allowed>state.getBlock() == ${mappedBlockToBlock(allowed)}<#sep> || </#list>;
+		return <#list data.canBePlacedOn as allowed><#if allowed?starts_with("TAG:")>isBlockInOreDictionary("${tagNameToOreDictionary(allowed?remove_beginning("TAG:"))}", state.getBlock())<#else>state.getBlock() == ${mappedBlockToBlock(allowed)}</#if><#sep> || </#list>;
 	}
 	</#if>
+	</#if>
+
+	<#if data.canBePlacedOn?has_content && (data.plantType == "normal" || data.plantType == "sapling")>
+	private static boolean isBlockInOreDictionary(String tag, Block block) {
+		for (ItemStack stack : OreDictionary.getOres(tag)) {
+			if (Block.getBlockFromItem(stack.getItem()) == block)
+				return true;
+		}
+		return false;
+	}
 	</#if>
 
 	<#if data.plantType == "growapable">

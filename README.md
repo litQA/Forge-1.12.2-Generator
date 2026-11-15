@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.34.101-beta` |
+| Plugin version | `2026.3-1.0.35.102-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for generated Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -17,7 +17,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | Java toolchain for the mod | 8 |
 | License | CC BY-NC 4.0 (see `LICENSE`) |
 
-Current snapshot: `2026.3-1.0.34.101-beta`. It includes the generator
+Current snapshot: `2026.3-1.0.35.102-beta`. It includes the generator
 foundation, creative tabs, items, recipes, blocks, plants, fluids, tools,
 armor, enchantments, attributes, item extensions, native loot tables, potion
 effects/items, procedures, dimensions, biomes, custom trees, portals/igniters,
@@ -27,10 +27,10 @@ advancements, Java structure/feature worldgen, villager professions/trades,
 commands, functions, game rules, music discs, banner patterns, damage types,
 native procedure triggers, global workspace variables with persistent
 WorldSavedData/player-capability scopes, portable workspace conversion, and the
-1.12.2 procedure block baseline. The 1.0.34.101 compatibility pass hardens
-converted block-state metadata, multi-property variants, loot-table replacement,
-Ore Dictionary registration, slab model parents and the converted-workspace
-recipe policy.
+1.12.2 procedure block baseline. The 1.0.35.102 runtime compatibility pass adds
+recursive nested-tag flattening, namespace-normalized Ore Dictionary lookups,
+1.13-to-1.12 texture aliases, sorted blockstate variant keys, context-aware
+loot-table loading and dedicated-server-safe proxy isolation.
 The complete, implementation-oriented support overview is in
 [docs/SUPPORT-MATRIX.md](docs/SUPPORT-MATRIX.md); trigger levels are in
 [docs/TRIGGER-CLASSIFICATION.md](docs/TRIGGER-CLASSIFICATION.md); known
@@ -267,6 +267,10 @@ files:
   `forge:ingots/copper` -> `ingotCopper`, `forge:planks` -> `plankWood`.
   Other paths fall back to `<namespace>_<path>` with non-alphanumeric characters
   replaced by underscores.
+- Nested `TAG:` entries are recursively flattened. Every member is registered
+  under the parent ore name and its own normalized name, with cycle protection.
+- The internal `mod:` namespace is normalized to the workspace mod id, so
+  editor tags and procedure literals resolve to the same Ore Dictionary names.
 - Tag JSON files are still written for MCreator compatibility but are inert in
   1.12.2; they are placed under the unused `data/` folder.
 - Other tag types (entities, biomes, structures, functions, enchantments, ...)
@@ -279,8 +283,11 @@ files:
 - Brewing is generated as a per-element `IBrewingRecipe` and registered through
   `BrewingRecipeRegistry.addRecipe`; potion inputs and outputs use
   `POTION:<PotionType>` values.
-- Blasting, Smoking, Campfire cooking, Stone cutting and Smithing do not exist
-  in Forge 1.12.2 and stop generation with an explicit message.
+- Blasting, Smoking and Campfire cooking are emitted as furnace smelting
+  recipes because the corresponding 1.12.2 workstations do not exist.
+- Stone cutting and Smithing recipes converted from newer workspaces generate
+  no runtime recipe. The editor elements remain readable, but 1.12.2 has no
+  compatible station or recipe serializer.
 
 ## Requirements
 
@@ -395,7 +402,7 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.34.101-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.35.102-beta`.
 2. Generator validator on processed resources (YAML, mappings, FreeMarker
    syntax, template references): `VALIDATION PASSED` (82 YAML documents, 758
    FTL templates, 143 template references).
@@ -456,7 +463,7 @@ plugin-branch-2026.3/
     command/function, game-rule and music-disc templates were rendered with
     representative data and compiled with `javac --release 8`: `PASSED`.
 24. The plugin build reported `VALIDATION PASSED` and `BUILD SUCCESSFUL` for
-    `2026.3-1.0.34.101-beta`.
+    `2026.3-1.0.35.102-beta`.
 25. The variable render probe generated the variables class and proxies for all
     configured types/scopes; the generated Java compiled with `compileJava`
     without javac errors.
@@ -468,8 +475,8 @@ plugin-branch-2026.3/
 28. A headless `WorkspaceGeneratorSetup.setupWorkspaceBase` run replaced a
     deliberately stale Fabric `build.gradle` with the Forge
     RetroFuturaGradle base. The copied script contains no unescaped Groovy
-    interpolation, and generator `subversion` `1.1` forces the same setup for
-    workspaces created with the previous `1.0` base.
+    interpolation, and generator `subversion` `1.3` forces the same setup for
+    workspaces created with an older base.
 29. The four supplied converted workspaces were regenerated through the real
     MCreator generation path and built with `compileJava` and `build`:
     `test-croparium-lite`, `test-enchants`, `test-everrose` and `test-melon`
@@ -479,6 +486,19 @@ plugin-branch-2026.3/
     All four were also launched through `runClient` and completed Forge mod
     loading without mod-initialization crashes; gameplay behavior still
     requires a real client test.
+30. The 1.0.35.102 runtime pass was verified against the four workspaces:
+    - Croparium Ore Dictionary registration now contains the flattened
+      composites `cp_lib_farmlands` (22 entries), `cp_lib_crops` (40),
+      `cp_lib_embryo_materials` (248) and `cp_lib_embryo_shards` (8).
+    - Generated texture references use 1.12.2 aliases such as
+      `minecraft:blocks/stone_granite` and
+      `minecraft:blocks/wool_colored_yellow`.
+    - Reactor blockstates emit sorted keys such as
+      `level=0,state=inactive`; the client no longer reports missing variants.
+    - All four final clients joined an integrated world. Croparium and the
+      dedicated server loaded without texture, model, Ore Dictionary or loot
+      JSON errors. Manual tag right-click and placement interaction remains for
+      user testing.
 
 The latest user tests confirmed custom dimension portals, skyboxes, terrain,
 cave/Nether Mixin basics, custom biome/weight behavior and chunk seam fixes.
@@ -490,9 +510,9 @@ villager, command/function/game-rule, music-disc, trigger and variable changes
 in `1.0.30.96`/`1.0.31.98` require real-client testing before further
 development. The workspace-conversion fix in `1.0.32.99` also needs a real
 Fabric-to-Forge conversion test in MCreator. The four supplied converted
-workspaces compile and build in `1.0.34.101`; all four also complete client
-startup. Full gameplay behavior and the conversion UI flow still need
-real-client testing.
+workspaces compile, build and join an integrated world in `1.0.35.102`. Tag
+right-click/placement, full gameplay behavior and the conversion UI flow still
+need real-client testing.
 
 ## Attribution
 

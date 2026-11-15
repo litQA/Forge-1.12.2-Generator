@@ -5,9 +5,8 @@
   familiarity while the generated backend uses the ore dictionary.
 -->
 <#function oreDictionaryName tag>
-    <#assign path = tag.resourcePath()>
-    <#assign namespace = path?keep_before(":")>
-    <#assign name = path?keep_after(":")>
+    <#assign namespace = tag.getMinecraftNamespace(w.getWorkspace())>
+    <#assign name = tag.getName()>
 
     <#if namespace == "forge" || namespace == "minecraft">
         <#if name?starts_with("ores/")>
@@ -36,10 +35,63 @@
     <#return (namespace + "_" + name)?replace(":", "_")?replace("/", "_")?replace("-", "_")?replace(".", "_")?lower_case>
 </#function>
 
+<#function resolveTagPath path>
+    <#list w.getWorkspace().getTagElements().entrySet() as tagEntry>
+        <#assign tag = tagEntry.getKey()>
+        <#assign minecraftPath = tag.getMinecraftNamespace(w.getWorkspace()) + ":" + tag.getName()>
+        <#if minecraftPath == path || tag.resourcePath() == path>
+            <#return minecraftPath>
+        </#if>
+    </#list>
+    <#return path>
+</#function>
+
+<#function findTagElement path type="">
+    <#assign resolvedPath = resolveTagPath(path)>
+    <#list w.getWorkspace().getTagElements().entrySet() as tagEntry>
+        <#assign tag = tagEntry.getKey()>
+        <#if (type == "" || tag.type().name() == type)
+                && ((tag.getMinecraftNamespace(w.getWorkspace()) + ":" + tag.getName()) == resolvedPath || tag.resourcePath() == path)>
+            <#return tag>
+        </#if>
+    </#list>
+    <#return "">
+</#function>
+
+<#function tagEntriesFor tag>
+    <#list w.getWorkspace().getTagElements().entrySet() as tagEntry>
+        <#if tagEntry.getKey() == tag>
+            <#return tagEntry.getValue()>
+        </#if>
+    </#list>
+    <#return []>
+</#function>
+
+<#function collectTagEntries tag visited="">
+    <#assign result = []>
+    <#assign tagPath = tag.getMinecraftNamespace(w.getWorkspace()) + ":" + tag.getName()>
+    <#if visited?contains("|" + tagPath + "|")>
+        <#return result>
+    </#if>
+    <#assign nextVisited = visited + "|" + tagPath + "|">
+    <#list tagEntriesFor(tag) as entry>
+        <#if entry.name()?starts_with("TAG:")>
+            <#assign child = findTagElement(entry.name()?remove_beginning("TAG:"), tag.type().name())>
+            <#if child?has_content>
+                <#assign result = result + collectTagEntries(child, nextVisited)>
+            </#if>
+        <#else>
+            <#assign result = result + [entry]>
+        </#if>
+    </#list>
+    <#return result>
+</#function>
+
 <#function tagNameToOreDictionary path>
     <#if !path?contains(":")>
         <#assign path = "minecraft:" + path>
     </#if>
+    <#assign path = resolveTagPath(path)>
     <#assign namespace = path?keep_before(":")>
     <#assign name = path?keep_after(":")>
 

@@ -15,7 +15,7 @@ public class ${JavaModName}OreDictionary {
 	<#assign tagType = tag.type().name()>
 	<#if tagType == "ITEMS" || tagType == "BLOCKS">
 	<#assign oreName = oreDictionaryName(tag)>
-	<#list tagEntry.getValue() as entry>
+	<#list collectTagEntries(tag) as entry>
 		<#if tagType == "BLOCKS">
 		<@registerBlockTagEntry entry=entry oreName=oreName/>
 		<#else>

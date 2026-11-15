@@ -4,6 +4,7 @@ package ${package}.init;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,11 +15,13 @@ import net.minecraft.world.storage.loot.LootEntry;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.storage.loot.LootTableManager;
 import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -49,17 +52,23 @@ public class ${JavaModName}Loottables {
 	public static void onLootTableLoad(LootTableLoadEvent event) {
 		<#list (loottables![]) as loottable>
 		if (event.getName().equals(new ResourceLocation("${loottable.getNamespace()}:${loottable.getName()}"))) {
-			event.setTable(loadLootTable("${loottable.getName()}"));
+			event.setTable(loadLootTable("${loottable.getName()}",
+					new ResourceLocation("${loottable.getNamespace()}:${loottable.getName()}"), event.getLootTableManager()));
 		}
 		</#list>
 	}
 
-	private static LootTable loadLootTable(String path) {
+	private static LootTable loadLootTable(String path, ResourceLocation name, LootTableManager manager) {
 		String resourcePath = "/assets/${modid}/loot_tables/" + path + ".json";
 		try (InputStream stream = ${JavaModName}Loottables.class.getResourceAsStream(resourcePath)) {
 			if (stream == null)
 				return LootTable.EMPTY_LOOT_TABLE;
-			return LOOT_TABLE_GSON.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), LootTable.class);
+			String data;
+			try (Scanner scanner = new Scanner(stream, StandardCharsets.UTF_8.name())) {
+				scanner.useDelimiter("\\A");
+				data = scanner.hasNext() ? scanner.next() : "";
+			}
+			return ForgeHooks.loadLootTable(LOOT_TABLE_GSON, name, data, true, manager);
 		} catch (Exception exception) {
 			exception.printStackTrace();
 			return LootTable.EMPTY_LOOT_TABLE;
