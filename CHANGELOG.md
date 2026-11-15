@@ -1,5 +1,33 @@
 # Changelog
 
+# 2026.3-1.0.34.101-beta
+
+## Fixes
+
+- Lower-cased Forge 1.12.2 block-state property IDs and matching blockstate
+  JSON keys, and added 4-bit metadata serialization for single custom boolean,
+  integer and enum properties. This fixes the client startup crash caused by
+  uppercase custom properties such as `AGE_7` and `MOISTURE`.
+- Added generated blockstate variants for blocks with two custom properties,
+  including boolean/integer/enum combinations, so converted multi-state blocks
+  no longer report missing variants.
+- Fixed 1.12.2 slab model parents to `block/half_slab` and
+  `block/upper_slab`.
+- Loot tables now register a load event and replace matching existing tables
+  instead of re-registering built-in IDs such as
+  `minecraft:chests/abandoned_mineshaft`.
+- Ore Dictionary registration now treats `Item.getItemFromBlock(...) ==
+  Items.AIR` as "no item" and skips empty stacks.
+- Stone cutting and smithing recipes converted from newer workspaces no longer
+  generate code. Blasting, smoking and campfire cooking continue to generate
+  furnace recipes.
+- Confirmed the polling XP listeners are emitted only into procedures that use
+  `player_xp_change` or `player_xp_level_change`; no mod-wide XP tick listener
+  is generated.
+- All four supplied workspaces regenerate and compile, and all four complete
+  client startup without mod-initialization crashes. Real gameplay testing of
+  the remaining behaviors is still required.
+
 # 2026.3-1.0.33.100-beta
 
 ## New Content

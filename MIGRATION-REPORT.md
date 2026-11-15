@@ -610,6 +610,43 @@ All four workspaces were regenerated through MCreator's real
 RetroFuturaGradle. Each produced `BUILD SUCCESSFUL` and both normal and dev
 mod jars. Runtime behavior still requires the user's real-client test.
 
+## Runtime startup hardening batch (2026.3-1.0.34.101-beta)
+
+### Startup fixes
+
+Forge 1.12.2 validates block property names against `[a-z0-9_]+`. MCreator
+2026 stores custom property IDs in uppercase, so generated `AGE_7` and
+`MOISTURE` properties crashed during `RegistryEvent.Register`. The generator now
+lower-cases the runtime property ID and matching blockstate keys while keeping
+the Java field names unchanged.
+
+Single-property metadata serialization is clamped to 1.12.2's four metadata
+bits. This prevents `Block.setHarvestLevel` from indexing past its 16-entry
+state arrays when a converted enum has more than 16 values. Values beyond the
+metadata range are not persistent through metadata. Two-property boolean,
+integer and enum combinations now generate complete variants.
+
+### Other compatibility fixes
+
+- Loot tables that override built-ins are applied through
+  `LootTableLoadEvent` rather than re-registering the built-in ID.
+- Slab models use the 1.12.2 parents `block/half_slab` and
+  `block/upper_slab`.
+- Ore Dictionary block entries without a block item are skipped; 1.12.2
+  reports `Items.AIR` from `Item.getItemFromBlock` rather than `null`.
+- Converted stone cutting and smithing recipes generate no runtime recipe.
+  Blasting, smoking and campfire cooking remain furnace recipes.
+- XP polling is emitted only into the triggering procedure class; no mod-wide
+  tick listener is generated.
+
+### Verification
+
+All four workspaces regenerate and compile. All four were launched through
+`runClient` and completed Forge mod loading without mod-initialization crashes.
+The generated door and fence-gate variants now include the inherited
+`powered` property. Remaining non-fatal texture warnings in the converted melon
+workspace are cosmetic.
+
 ## Verification log
 
 | Step | Result |
@@ -644,6 +681,7 @@ mod jars. Runtime behavior still requires the user's real-client test.
 | AI tasks | All 27 AI task templates render together and compile against 1.12.2 AI classes. |
 | GUI procedures | All generated GUI procedures render and compile against the generated GUI state/handler classes. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
+| 34.101 startup regression | Four converted workspaces regenerate and compile. `test-croparium-lite` and `test-melon` previously reached the client main menu; final `test-everrose` and `test-enchants` clients loaded Forge and the texture atlas without startup exceptions or `MissingVariantException`. Gameplay behavior remains for user testing. |
 
 The generated-mod build used the exact workspace base, templates and generated
 sources that are packaged in the plugin archive. The build was started through

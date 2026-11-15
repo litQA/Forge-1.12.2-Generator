@@ -95,31 +95,38 @@
     <#assign value = entry.name()>
     <#if value?starts_with("CUSTOM:")>
         <#assign element = (w.getWorkspace().getModElementByName(value?replace("CUSTOM:", "")))!>
-        <#if element?? && (element.getTypeString() == "block" || element.getTypeString() == "plant" || element.getTypeString() == "fluid")>
-        net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", ${package}.init.${JavaModName}Blocks.${element.getRegistryNameUpper()});
+        <#if element?has_content && (element.getTypeString() == "block" || element.getTypeString() == "plant" || element.getTypeString() == "fluid")>
+        if (net.minecraft.item.Item.getItemFromBlock(${package}.init.${JavaModName}Blocks.${element.getRegistryNameUpper()}) != net.minecraft.init.Items.AIR) {
+            net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", ${package}.init.${JavaModName}Blocks.${element.getRegistryNameUpper()});
+        }
         <#else>
         // Unsupported custom block tag entry: ${value}
         </#if>
     <#elseif value?starts_with("EXTERNAL:")>
         <#assign lookup = registryNameFor(value)>
-        if (net.minecraft.block.Block.getBlockFromName("${lookup}") != null) {
+        if (net.minecraft.block.Block.getBlockFromName("${lookup}") != null
+                && net.minecraft.item.Item.getItemFromBlock(net.minecraft.block.Block.getBlockFromName("${lookup}")) != net.minecraft.init.Items.AIR) {
             net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", net.minecraft.block.Block.getBlockFromName("${lookup}"));
         }
     <#elseif value?starts_with("TAG:")>
         // Nested tags are not supported by the 1.12.2 Ore Dictionary: ${value}
     <#elseif value?contains(":")>
-        if (net.minecraft.block.Block.getBlockFromName("${value}") != null) {
+        if (net.minecraft.block.Block.getBlockFromName("${value}") != null
+                && net.minecraft.item.Item.getItemFromBlock(net.minecraft.block.Block.getBlockFromName("${value}")) != net.minecraft.init.Items.AIR) {
             net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", net.minecraft.block.Block.getBlockFromName("${value}"));
         }
     <#elseif value?starts_with("Blocks.")>
         <#assign lookup = classConstantToRegistry(value)>
-        if (net.minecraft.block.Block.getBlockFromName("${lookup}") != null) {
+        if (net.minecraft.block.Block.getBlockFromName("${lookup}") != null
+                && net.minecraft.item.Item.getItemFromBlock(net.minecraft.block.Block.getBlockFromName("${lookup}")) != net.minecraft.init.Items.AIR) {
             net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", net.minecraft.block.Block.getBlockFromName("${lookup}"));
         }
     <#elseif value?starts_with("Items.")>
         // Unsupported block tag entry: ${value}
     <#elseif value?has_content && !value?starts_with("TAG:") && !value?starts_with("#")>
-        net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", ${value?split("#")[0]});
+        if (net.minecraft.item.Item.getItemFromBlock(${value?split("#")[0]}) != net.minecraft.init.Items.AIR) {
+            net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", ${value?split("#")[0]});
+        }
     <#else>
         // Unsupported block tag entry: ${value}
     </#if>

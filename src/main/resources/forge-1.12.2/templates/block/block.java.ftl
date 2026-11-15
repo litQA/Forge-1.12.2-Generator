@@ -238,11 +238,11 @@ public class ${name}Block extends Block {
 
 	<#list customBool as property>
 	<#assign propName = property.property().getName()?replace("CUSTOM:", "")>
-	public static final PropertyBool ${propName?upper_case} = PropertyBool.create("${propName}");
+	public static final PropertyBool ${propName?upper_case} = PropertyBool.create("${propName?lower_case}");
 	</#list>
 	<#list customInt as property>
 	<#assign propName = property.property().getName()?replace("CUSTOM:", "")>
-	public static final PropertyInteger ${propName?upper_case} = PropertyInteger.create("${propName}", ${property.property().getMin()?c}, ${property.property().getMax()?c});
+	public static final PropertyInteger ${propName?upper_case} = PropertyInteger.create("${propName?lower_case}", ${property.property().getMin()?c}, ${property.property().getMax()?c});
 	</#list>
 	<#list customEnum as property>
 	<#assign propName = property.property().getName()?replace("CUSTOM:", "")>
@@ -254,7 +254,7 @@ public class ${name}Block extends Block {
 		}
 	}
 
-	public static final PropertyEnum<${propName?upper_case}Enum> ${propName?upper_case} = PropertyEnum.create("${propName}", ${propName?upper_case}Enum.class);
+	public static final PropertyEnum<${propName?upper_case}Enum> ${propName?upper_case} = PropertyEnum.create("${propName?lower_case}", ${propName?upper_case}Enum.class);
 	</#list>
 
 	<#if customBool?has_content || customInt?has_content || customEnum?has_content>
@@ -262,6 +262,35 @@ public class ${name}Block extends Block {
 		return new BlockStateContainer(this<#list customBool as property>, ${property.property().getName()?replace("CUSTOM:", "")?upper_case}</#list><#list customInt as property>, ${property.property().getName()?replace("CUSTOM:", "")?upper_case}</#list><#list customEnum as property>, ${property.property().getName()?replace("CUSTOM:", "")?upper_case}</#list>);
 	}
 
+	<#if customProps?size == 1>
+	<#assign singleProp = customProps[0].property()>
+	<#assign singleName = singleProp.getName()?replace("CUSTOM:", "")?upper_case>
+	<#if customBool?has_content>
+	@Override public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(${singleName}, (meta & 1) != 0);
+	}
+
+	@Override public int getMetaFromState(IBlockState state) {
+		return state.getValue(${singleName}) ? 1 : 0;
+	}
+	<#elseif customInt?has_content>
+	@Override public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(${singleName}, Math.min(Math.max(meta, ${singleProp.getMin()?c}), ${singleProp.getMax()?c}));
+	}
+
+	@Override public int getMetaFromState(IBlockState state) {
+		return Math.min(Math.max(state.getValue(${singleName}) - ${singleProp.getMin()?c}, 0), 15);
+	}
+	<#elseif customEnum?has_content>
+	@Override public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(${singleName}, ${singleName}Enum.values()[Math.min(Math.max(meta, 0), ${singleName}Enum.values().length - 1)]);
+	}
+
+	@Override public int getMetaFromState(IBlockState state) {
+		return Math.min(state.getValue(${singleName}).ordinal(), 15);
+	}
+	</#if>
+	<#else>
 	@Override public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState();
 	}
@@ -269,6 +298,7 @@ public class ${name}Block extends Block {
 	@Override public int getMetaFromState(IBlockState state) {
 		return 0;
 	}
+	</#if>
 	</#if>
 </#if>
 

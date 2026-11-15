@@ -1,5 +1,5 @@
 {
-    "parent": "block/slab_top",
+    "parent": "block/upper_slab",
     "textures": {
         "bottom": "${data.texture.format("%s:blocks/%s")}",
         "top": "${data.textureTop().format("%s:blocks/%s")}",
