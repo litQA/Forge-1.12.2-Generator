@@ -1,1 +1,1 @@
-/*@int*/(MathHelper.nextInt(new Random(), ${opt.toInt(input$min)}, ${opt.toInt(input$max)}))
+/*@int*/(${opt.toInt(input$min)} + new Random().nextInt(${opt.toInt(input$max)} - ${opt.toInt(input$min)} + 1))

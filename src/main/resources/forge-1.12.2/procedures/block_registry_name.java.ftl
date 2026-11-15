@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-(ForgeRegistries.BLOCKS.getKey(${mappedBlockToBlock(input$block)}).toString())
+(net.minecraftforge.fml.common.registry.ForgeRegistries.BLOCKS.getKey(${mappedBlockToBlock(input$block)}).toString())

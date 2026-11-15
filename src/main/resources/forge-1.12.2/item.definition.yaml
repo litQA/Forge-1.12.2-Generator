@@ -9,12 +9,12 @@ templates:
     writer: json
     condition: hasToolModel()
     name: "@MODASSETSROOT/models/item/@registryname.json"
-  # JSON, OBJ and Java models are planned for a later batch. Stop generation
-  # instead of emitting an item without a model.
-  - template: modbase/unsupported.ftl
-    condition: "renderType #= 1"
-    variables: "feature=item render type 'custom JSON model'"
-    name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItemJsonModelUnsupported.java"
+  - template: json/item_cmodel.json.ftl
+    writer: json
+    condition: hasCustomJSONModel()
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  # OBJ and Java models are planned for a later batch. Stop generation instead
+  # of emitting an item without a model.
   - template: modbase/unsupported.ftl
     condition: "renderType #= 2"
     variables: "feature=item render type 'custom OBJ model'"

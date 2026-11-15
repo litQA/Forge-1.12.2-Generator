@@ -31,8 +31,12 @@
 package ${package}.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockFence;
+import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockStairs;
+import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -90,6 +94,36 @@ public class ${name}Block extends BlockWall {
 
 	public ${name}Block() {
 		super(Blocks.COBBLESTONE);
+		setUnlocalizedName("${modid}.${registryname}");
+		setHardness(${data.hardness?c}f);
+		setResistance(${data.resistance?c}f);
+		setSoundType(SoundType.${generator.map(data.soundOnStep.getUnmappedValue(), "stepsounds")});
+	}
+<#elseif blockBase == "Door">
+public class ${name}Block extends BlockDoor {
+
+	public ${name}Block() {
+		super(Material.IRON);
+		setUnlocalizedName("${modid}.${registryname}");
+		setHardness(${data.hardness?c}f);
+		setResistance(${data.resistance?c}f);
+		setSoundType(SoundType.${generator.map(data.soundOnStep.getUnmappedValue(), "stepsounds")});
+	}
+<#elseif blockBase == "TrapDoor">
+public class ${name}Block extends BlockTrapDoor {
+
+	public ${name}Block() {
+		super(Material.IRON);
+		setUnlocalizedName("${modid}.${registryname}");
+		setHardness(${data.hardness?c}f);
+		setResistance(${data.resistance?c}f);
+		setSoundType(SoundType.${generator.map(data.soundOnStep.getUnmappedValue(), "stepsounds")});
+	}
+<#elseif blockBase == "FenceGate">
+public class ${name}Block extends BlockFenceGate {
+
+	public ${name}Block() {
+		super(BlockPlanks.EnumType.OAK);
 		setUnlocalizedName("${modid}.${registryname}");
 		setHardness(${data.hardness?c}f);
 		setResistance(${data.resistance?c}f);

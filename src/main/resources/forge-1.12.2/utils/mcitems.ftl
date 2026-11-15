@@ -13,7 +13,11 @@
         <#if raw?has_content>
             <#return raw>
         </#if>
-        <#return (mappedItem.getMappedValue(0))!"" >
+        <#assign mapped = (mappedItem.getMappedValue(0))!"" >
+        <#if mapped?has_content>
+            <#return mapped>
+        </#if>
+        <#return mappedItem?string>
     <#else>
         <#return mappedItem?string>
     </#if>
@@ -56,7 +60,13 @@
 </#function>
 
 <#function mappedMCItemToItemStackCode mappedItem amount=1>
-    <#if mcItemIsCustom(mappedItem)>
+    <#if mappedItem?is_string && mappedItem?starts_with("/*@ItemStack*/")>
+        <#return mappedItem?replace("/*@ItemStack*/", "")>
+    <#elseif mappedItem?is_string && mappedItem?contains("/*@?*/")>
+        <#assign outputs = mappedItem?keep_after("/*@?*/")?keep_before_last(")")>
+        <#return mappedItem?keep_before("/*@?*/") + "?" + mappedMCItemToItemStackCode(outputs?keep_before("/*@:*/"), amount)
+            + ":" + mappedMCItemToItemStackCode(outputs?keep_after("/*@:*/"), amount) + ")">
+    <#elseif mcItemIsCustom(mappedItem)>
         <#assign rawCustom = mcItemRaw(mappedItem)>
         <#if rawCustom?ends_with(".bucket")>
             <#assign fluid = (w.getWorkspace().getModElementByName(rawCustom?replace("CUSTOM:", "")?replace(".bucket", "")))!"">
@@ -79,11 +89,32 @@
             <#return "ItemStack.EMPTY">
         </#if>
     <#else>
-        <#assign parts = splitMetadata(mcItemMapped(mappedItem, 0))>
-        <#if parts?size gt 1>
-            <#return "new ItemStack(" + parts[0] + ", " + amount + ", " + parts[1] + ")">
+        <#assign rawMappedItem = mcItemRaw(mappedItem)>
+        <#if rawMappedItem?starts_with("Blocks.") || rawMappedItem?starts_with("Items.")
+                || rawMappedItem?starts_with("net.minecraft.") || rawMappedItem?starts_with("POTION:")>
+            <#assign mappedValue = mcItemMapped(mappedItem, 0)>
+            <#if !mappedValue?has_content>
+                <#assign mappedValue = rawMappedItem>
+            </#if>
+            <#assign parts = splitMetadata(mappedValue)>
+            <#assign itemName = parts[0]>
+            <#if itemName?starts_with("Blocks.") || itemName?starts_with("Items.")>
+                <#assign itemName = "net.minecraft.init." + itemName>
+            </#if>
+            <#if parts?size gt 1>
+                <#return "new ItemStack(" + itemName + ", " + amount + ", " + parts[1] + ")">
+            <#else>
+                <#return "new ItemStack(" + itemName + ", " + amount + ")">
+            </#if>
+        <#elseif !rawMappedItem?has_content>
+            <#return "ItemStack.EMPTY">
+        <#elseif rawMappedItem?matches("^[A-Za-z_$][A-Za-z0-9_$]*$") || rawMappedItem?contains("ItemStack")
+                || rawMappedItem?starts_with("new ") || rawMappedItem?starts_with("(")>
+            <#-- Existing ItemStack expressions and local variables are used as-is. -->
+            <#return rawMappedItem>
         <#else>
-            <#return "new ItemStack(" + parts[0] + ", " + amount + ")">
+            <#-- Unmarked expressions are item values and must be wrapped before copy(). -->
+            <#return "new ItemStack(" + rawMappedItem + ", " + amount + ")">
         </#if>
     </#if>
 </#function>

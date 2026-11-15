@@ -22,6 +22,7 @@ public class ${JavaModName} {
 	public static final String MODID = "${modid}";
 	public static final String NAME = "${JavaConventions.escapeStringForJava(settings.getModName())}";
 	public static final String VERSION = "${JavaConventions.escapeStringForJava(settings.getVersion())}";
+	public static final org.apache.logging.log4j.Logger LOGGER = org.apache.logging.log4j.LogManager.getLogger(${JavaModName}.class);
 
 	@SidedProxy(clientSide = "${package}.ClientProxy${JavaModName}", serverSide = "${package}.ServerProxy${JavaModName}")
 	public static IProxy${JavaModName} proxy;
@@ -41,6 +42,24 @@ public class ${JavaModName} {
 			PACKET_HANDLER.registerMessage(handler, message, networkId, side);
 		}
 		networkId++;
+	}
+
+	public static void queueServerWork(int ticks, Runnable task) {
+		Thread worker = new Thread(() -> {
+			try {
+				Thread.sleep(ticks * 50L);
+			} catch (InterruptedException interrupted) {
+				Thread.currentThread().interrupt();
+				return;
+			}
+			net.minecraft.server.MinecraftServer server =
+					net.minecraftforge.fml.common.FMLCommonHandler.instance().getMinecraftServerInstance();
+			if (server != null) {
+				server.addScheduledTask(task);
+			}
+		}, "mcreator-scheduled-task");
+		worker.setDaemon(true);
+		worker.start();
 	}
 
 	@Mod.EventHandler public void preInit(FMLPreInitializationEvent event) {
@@ -102,7 +121,7 @@ public class ${JavaModName} {
 
 	@Mod.EventHandler public void init(FMLInitializationEvent event) {
 		<#list w.getGElementsOfType('procedure') as procedure>
-		<#if procedure.procedurexml?contains('mod_load')>
+		<#if procedure.procedurexml?contains('<field name="trigger">mod_load</field>')>
 		${package}.procedures.${procedure.getModElement().getName()}Procedure.init(event);
 		</#if>
 		</#list>

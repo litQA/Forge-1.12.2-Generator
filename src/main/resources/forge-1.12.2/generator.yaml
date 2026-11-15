@@ -123,6 +123,9 @@ base_templates:
   - template: elementinits/recipes.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameRecipes.java"
     condition: "${types.recipes?has_content}"
+  - template: elementinits/commandparameters.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/command/CommandParameters.java"
+    condition: "${w.getGElementsOfType('command')?size != 0}"
   - template: elementinits/oredictionary.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameOreDictionary.java"
     condition: "${w.getWorkspace().getTagElements()?keys?size != 0}"

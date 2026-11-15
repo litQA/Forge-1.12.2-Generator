@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-(ForgeRegistries.ITEMS.getKey(${mappedMCItemToItem(input$item)}).toString())
+(net.minecraftforge.fml.common.registry.ForgeRegistries.ITEMS.getKey(${mappedMCItemToItem(input$item)}).toString())

@@ -1,6 +1,7 @@
 <#-- @formatter:off -->
 <#include "/creativeTabs.ftl">
 <#include "/procedures.ftl">
+<#assign blockBase = data.blockBase!"">
 package ${package}.item;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemDoor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -19,7 +21,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+<#if blockBase == "Door">
+public class ${name}ItemBlock extends ItemDoor {
+<#else>
 public class ${name}ItemBlock extends ItemBlock {
+</#if>
 
 	public ${name}ItemBlock(Block block) {
 		super(block);

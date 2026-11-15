@@ -1,21 +1,52 @@
-_default: GENERIC
-IN_FIRE: IN_FIRE
-LIGHTNING_BOLT: LIGHTNING_BOLT
-ON_FIRE: ON_FIRE
-LAVA: LAVA
-HOT_FLOOR: HOT_FLOOR
-IN_WALL: IN_WALL
-CRAMMING: CRAMMING
-DROWN: DROWN
-STARVE: STARVE
-CACTUS: CACTUS
-FALL: FALL
-FLY_INTO_WALL: FLY_INTO_WALL
-OUT_OF_WORLD: OUT_OF_WORLD
-GENERIC: GENERIC
-MAGIC: MAGIC
-WITHER: WITHER
-ANVIL: ANVIL
-FALLING_BLOCK: FALLING_BLOCK
-DRAGON_BREATH: DRAGON_BREATH
-FIREWORKS: FIREWORKS
+_default: ['new net.minecraft.util.DamageSource("generic")', '"generic"']
+GENERIC: ['new net.minecraft.util.DamageSource("generic")', '"generic"']
+IN_FIRE: ['new net.minecraft.util.DamageSource("inFire")', '"inFire"']
+CAMPFIRE: ['new net.minecraft.util.DamageSource("inFire")', '"inFire"']
+LIGHTNING_BOLT: ['new net.minecraft.util.DamageSource("lightningBolt")', '"lightningBolt"']
+ON_FIRE: ['new net.minecraft.util.DamageSource("onFire")', '"onFire"']
+LAVA: ['new net.minecraft.util.DamageSource("lava")', '"lava"']
+HOT_FLOOR: ['new net.minecraft.util.DamageSource("hotFloor")', '"hotFloor"']
+SULFUR_CUBE_HOT: ['new net.minecraft.util.DamageSource("hotFloor")', '"hotFloor"']
+IN_WALL: ['new net.minecraft.util.DamageSource("inWall")', '"inWall"']
+CRAMMING: ['new net.minecraft.util.DamageSource("cramming")', '"cramming"']
+DROWN: ['new net.minecraft.util.DamageSource("drown")', '"drown"']
+STARVE: ['new net.minecraft.util.DamageSource("starve")', '"starve"']
+CACTUS: ['new net.minecraft.util.DamageSource("cactus")', '"cactus"']
+FALL: ['new net.minecraft.util.DamageSource("fall")', '"fall"']
+ENDER_PEARL: ['new net.minecraft.util.DamageSource("fall")', '"fall"']
+FLY_INTO_WALL: ['new net.minecraft.util.DamageSource("flyIntoWall")', '"flyIntoWall"']
+OUT_OF_WORLD: ['new net.minecraft.util.DamageSource("outOfWorld")', '"outOfWorld"']
+MAGIC: ['new net.minecraft.util.DamageSource("magic")', '"magic"']
+WITHER: ['new net.minecraft.util.DamageSource("wither")', '"wither"']
+ANVIL: ['new net.minecraft.util.DamageSource("anvil")', '"anvil"']
+FALLING_BLOCK: ['new net.minecraft.util.DamageSource("fallingBlock")', '"fallingBlock"']
+DRAGON_BREATH: ['new net.minecraft.util.DamageSource("dragonBreath")', '"dragonBreath"']
+DRYOUT: ['new net.minecraft.util.DamageSource("drown")', '"drown"']
+SWEET_BERRY_BUSH: ['new net.minecraft.util.DamageSource("cactus")', '"cactus"']
+FREEZE: ['new net.minecraft.util.DamageSource("generic")', '"generic"']
+FALLING_STALACTITE: ['new net.minecraft.util.DamageSource("fallingBlock")', '"fallingBlock"']
+STALAGMITE: ['new net.minecraft.util.DamageSource("cactus")', '"cactus"']
+STING: ['new net.minecraft.util.DamageSource("cactus")', '"cactus"']
+MOB_ATTACK: ['new net.minecraft.util.DamageSource("mob")', '"mob"']
+MOB_ATTACK_NO_AGGRO: ['new net.minecraft.util.DamageSource("mob")', '"mob"']
+PLAYER_ATTACK: ['new net.minecraft.util.DamageSource("player")', '"player"']
+SPEAR: ['new net.minecraft.util.DamageSource("mob")', '"mob"']
+ARROW: ['new net.minecraft.util.DamageSource("arrow")', '"arrow"']
+TRIDENT: ['new net.minecraft.util.DamageSource("arrow")', '"arrow"']
+MOB_PROJECTILE: ['new net.minecraft.util.DamageSource("arrow")', '"arrow"']
+SPIT: ['new net.minecraft.util.DamageSource("mob")', '"mob"']
+WIND_CHARGE: ['new net.minecraft.util.DamageSource("mob")', '"mob"']
+FIREWORKS: ['new net.minecraft.util.DamageSource("fireworks")', '"fireworks"']
+FIREBALL: ['new net.minecraft.util.DamageSource("fireball")', '"fireball"']
+UNATTRIBUTED_FIREBALL: ['new net.minecraft.util.DamageSource("fireball")', '"fireball"']
+WITHER_SKULL: ['new net.minecraft.util.DamageSource("witherSkull")', '"witherSkull"']
+THROWN: ['new net.minecraft.util.DamageSource("thrown")', '"thrown"']
+INDIRECT_MAGIC: ['new net.minecraft.util.DamageSource("indirectMagic")', '"indirectMagic"']
+THORNS: ['new net.minecraft.util.DamageSource("thorns")', '"thorns"']
+EXPLOSION: ['new net.minecraft.util.DamageSource("explosion")', '"explosion"']
+PLAYER_EXPLOSION: ['new net.minecraft.util.DamageSource("explosion.player")', '"explosion.player"']
+SONIC_BOOM: ['new net.minecraft.util.DamageSource("magic")', '"magic"']
+BAD_RESPAWN_POINT: ['new net.minecraft.util.DamageSource("outOfWorld")', '"outOfWorld"']
+OUTSIDE_BORDER: ['new net.minecraft.util.DamageSource("outOfWorld")', '"outOfWorld"']
+GENERIC_KILL: ['new net.minecraft.util.DamageSource("generic")', '"generic"']
+MACE_SMASH: ['new net.minecraft.util.DamageSource("generic")', '"generic"']

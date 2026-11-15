@@ -1,0 +1,16 @@
+_default: net.minecraft.item.Item
+Sword: net.minecraft.item.ItemSword
+Pickaxe: net.minecraft.item.ItemPickaxe
+Axe: net.minecraft.item.ItemAxe
+Shovel: net.minecraft.item.ItemSpade
+Hoe: net.minecraft.item.ItemHoe
+Armor: net.minecraft.item.ItemArmor
+Banner: net.minecraft.item.ItemBanner
+Bed: net.minecraft.item.ItemBed
+Block: net.minecraft.item.ItemBlock
+Boat: net.minecraft.item.ItemBoat
+Bow: net.minecraft.item.ItemBow
+Dye: net.minecraft.item.ItemDye
+Potion: net.minecraft.item.ItemPotion
+Shield: net.minecraft.item.ItemShield
+SpawnEgg: net.minecraft.item.ItemMonsterPlacer

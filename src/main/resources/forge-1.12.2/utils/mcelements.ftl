@@ -16,7 +16,7 @@
     <#elseif slot == "/*@int*/3">
         <#return "EntityEquipmentSlot.HEAD">
     <#else>
-        <#return "EntityEquipmentSlot.func_220318_a(EntityEquipmentSlot.Type.ARMOR, ${opt.toInt(slot)})">
+        <#return "getEquipmentSlot(${opt.toInt(slot)})">
     </#if>
 </#function>
 

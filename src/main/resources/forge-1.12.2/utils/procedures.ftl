@@ -43,9 +43,27 @@
     </#if>
 </#macro>
 
+<#macro procedureOBJToCodeWithTarget object="">
+    <#if hasProcedure(object) && object?is_hash>
+        <#assign values = {}>
+        <#assign values += {"entity": "target"}>
+        <@procedureCode object=object customVals=values/>
+    </#if>
+</#macro>
+
 <#macro procedureOBJToConditionCode object="">
     <#if hasProcedure(object) && object?is_hash>
         <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace())/>
+    <#else>
+        true
+    </#if>
+</#macro>
+
+<#macro procedureOBJToConditionCodeWithStack object="">
+    <#if hasProcedure(object) && object?is_hash>
+        <#assign values = {}>
+        <#assign values += {"itemstack": "stack"}>
+        <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) customVals=values/>
     <#else>
         true
     </#if>

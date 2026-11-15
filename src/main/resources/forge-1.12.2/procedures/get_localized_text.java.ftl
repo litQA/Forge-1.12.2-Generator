@@ -1,1 +1,1 @@
-(new TextComponentTranslation(${input$key}).getString())
+(new TextComponentTranslation(${input$key}).getUnformattedText())

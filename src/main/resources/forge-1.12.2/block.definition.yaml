@@ -11,6 +11,9 @@ templates:
       - "!blockBase %= Slab"
       - "!blockBase %= Fence"
       - "!blockBase %= Wall"
+      - "!blockBase %= Door"
+      - "!blockBase %= TrapDoor"
+      - "!blockBase %= FenceGate"
       - "renderType() #?= 0,4,10,11"
     name: "@MODASSETSROOT/models/block/@registryname.json"
   - template: json/block_cross.json.ftl
@@ -92,6 +95,56 @@ templates:
     condition: "blockBase %= Wall"
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
 
+  # Door
+  - template: json/door_bottom.json.ftl
+    writer: json
+    condition: "blockBase %= Door"
+    name: "@MODASSETSROOT/models/block/@registryname_bottom.json"
+  - template: json/door_top.json.ftl
+    writer: json
+    condition: "blockBase %= Door"
+    name: "@MODASSETSROOT/models/block/@registryname_top.json"
+  - template: json/door_bottom_rh.json.ftl
+    writer: json
+    condition: "blockBase %= Door"
+    name: "@MODASSETSROOT/models/block/@registryname_bottom_rh.json"
+  - template: json/door_top_rh.json.ftl
+    writer: json
+    condition: "blockBase %= Door"
+    name: "@MODASSETSROOT/models/block/@registryname_top_rh.json"
+
+  # Trapdoor
+  - template: json/trapdoor_bottom.json.ftl
+    writer: json
+    condition: "blockBase %= TrapDoor"
+    name: "@MODASSETSROOT/models/block/@registryname_bottom.json"
+  - template: json/trapdoor_top.json.ftl
+    writer: json
+    condition: "blockBase %= TrapDoor"
+    name: "@MODASSETSROOT/models/block/@registryname_top.json"
+  - template: json/trapdoor_open.json.ftl
+    writer: json
+    condition: "blockBase %= TrapDoor"
+    name: "@MODASSETSROOT/models/block/@registryname_open.json"
+
+  # Fence gate
+  - template: json/fence_gate_closed.json.ftl
+    writer: json
+    condition: "blockBase %= FenceGate"
+    name: "@MODASSETSROOT/models/block/@registryname_closed.json"
+  - template: json/fence_gate_open.json.ftl
+    writer: json
+    condition: "blockBase %= FenceGate"
+    name: "@MODASSETSROOT/models/block/@registryname_open.json"
+  - template: json/fence_gate_wall_closed.json.ftl
+    writer: json
+    condition: "blockBase %= FenceGate"
+    name: "@MODASSETSROOT/models/block/@registryname_wall_closed.json"
+  - template: json/fence_gate_wall_open.json.ftl
+    writer: json
+    condition: "blockBase %= FenceGate"
+    name: "@MODASSETSROOT/models/block/@registryname_wall_open.json"
+
   # Block bases that are not implemented in this batch stop generation instead
   # of emitting a basic cube with the wrong model or collision shape.
   - template: modbase/unsupported.ftl
@@ -99,20 +152,8 @@ templates:
     variables: "feature=block base 'Leaves'"
     name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
   - template: modbase/unsupported.ftl
-    condition: "blockBase %= TrapDoor"
-    variables: "feature=block base 'TrapDoor'"
-    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
-  - template: modbase/unsupported.ftl
     condition: "blockBase %= Pane"
     variables: "feature=block base 'Pane'"
-    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
-  - template: modbase/unsupported.ftl
-    condition: "blockBase %= Door"
-    variables: "feature=block base 'Door'"
-    name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
-  - template: modbase/unsupported.ftl
-    condition: "blockBase %= FenceGate"
-    variables: "feature=block base 'FenceGate'"
     name: "@SRCROOT/@BASEPACKAGEPATH/block/@NAMEBlockUnsupported.java"
   - template: modbase/unsupported.ftl
     condition: "blockBase %= EndRod"

@@ -1,3 +1,4 @@
+<#include "mcitems.ftl">
 <#--
   Converts MCreator tag elements to Forge 1.12.2 ore dictionary names and
   registration code. 1.12.2 has no tag registry, so the tag UI is kept for
@@ -5,6 +6,40 @@
 -->
 <#function oreDictionaryName tag>
     <#assign path = tag.resourcePath()>
+    <#assign namespace = path?keep_before(":")>
+    <#assign name = path?keep_after(":")>
+
+    <#if namespace == "forge" || namespace == "minecraft">
+        <#if name?starts_with("ores/")>
+            <#return "ore" + camelCase(name?replace("ores/", ""))>
+        <#elseif name?starts_with("storage_blocks/")>
+            <#return "block" + camelCase(name?replace("storage_blocks/", ""))>
+        <#elseif name?starts_with("ingots/")>
+            <#return "ingot" + camelCase(name?replace("ingots/", ""))>
+        <#elseif name?starts_with("nuggets/")>
+            <#return "nugget" + camelCase(name?replace("nuggets/", ""))>
+        <#elseif name?starts_with("dusts/")>
+            <#return "dust" + camelCase(name?replace("dusts/", ""))>
+        <#elseif name?starts_with("gems/")>
+            <#return "gem" + camelCase(name?replace("gems/", ""))>
+        <#elseif name?starts_with("raw_materials/")>
+            <#return "raw" + camelCase(name?replace("raw_materials/", ""))>
+        <#elseif name == "planks">
+            <#return "plankWood">
+        <#elseif name == "logs" || name == "logs_that_burn">
+            <#return "logWood">
+        <#elseif name == "stone_tool_materials" || name == "stone_crafting_materials">
+            <#return "stoneToolMaterial">
+        </#if>
+    </#if>
+
+    <#return (namespace + "_" + name)?replace(":", "_")?replace("/", "_")?replace("-", "_")?replace(".", "_")?lower_case>
+</#function>
+
+<#function tagNameToOreDictionary path>
+    <#if !path?contains(":")>
+        <#assign path = "minecraft:" + path>
+    </#if>
     <#assign namespace = path?keep_before(":")>
     <#assign name = path?keep_after(":")>
 
@@ -51,10 +86,15 @@
     <#return name>
 </#function>
 
+<#function classConstantToRegistry value>
+    <#assign path = value?keep_before("#")>
+    <#return "minecraft:" + path?keep_after(".")?lower_case>
+</#function>
+
 <#macro registerBlockTagEntry entry oreName>
     <#assign value = entry.name()>
     <#if value?starts_with("CUSTOM:")>
-        <#assign element = w.getWorkspace().getModElementByName(value?replace("CUSTOM:", ""))>
+        <#assign element = (w.getWorkspace().getModElementByName(value?replace("CUSTOM:", "")))!>
         <#if element?? && (element.getTypeString() == "block" || element.getTypeString() == "plant" || element.getTypeString() == "fluid")>
         net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", ${package}.init.${JavaModName}Blocks.${element.getRegistryNameUpper()});
         <#else>
@@ -71,6 +111,13 @@
         if (net.minecraft.block.Block.getBlockFromName("${value}") != null) {
             net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", net.minecraft.block.Block.getBlockFromName("${value}"));
         }
+    <#elseif value?starts_with("Blocks.")>
+        <#assign lookup = classConstantToRegistry(value)>
+        if (net.minecraft.block.Block.getBlockFromName("${lookup}") != null) {
+            net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", net.minecraft.block.Block.getBlockFromName("${lookup}"));
+        }
+    <#elseif value?starts_with("Items.")>
+        // Unsupported block tag entry: ${value}
     <#elseif value?has_content && !value?starts_with("TAG:") && !value?starts_with("#")>
         net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", ${value?split("#")[0]});
     <#else>
@@ -81,8 +128,8 @@
 <#macro registerItemTagEntry entry oreName>
     <#assign value = entry.name()>
     <#if value?starts_with("CUSTOM:")>
-        <#assign element = w.getWorkspace().getModElementByName(value?replace("CUSTOM:", ""))>
-        <#if element??>
+        <#assign element = (w.getWorkspace().getModElementByName(value?replace("CUSTOM:", "")))!>
+        <#if element?has_content>
             <#if element.getTypeString() == "block" || element.getTypeString() == "plant">
                 <#if element.getGeneratableElement().hasBlockItem>
         net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", new net.minecraft.item.ItemStack(${package}.init.${JavaModName}Items.${element.getRegistryNameUpper()}_ITEM));
@@ -126,6 +173,11 @@
     <#elseif value?contains(":")>
         if (net.minecraft.item.Item.getByNameOrId("${value}") != null) {
             net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", net.minecraft.item.Item.getByNameOrId("${value}"));
+        }
+    <#elseif value?starts_with("Blocks.") || value?starts_with("Items.")>
+        <#assign lookup = classConstantToRegistry(value)>
+        if (net.minecraft.item.Item.getByNameOrId("${lookup}") != null) {
+            net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", net.minecraft.item.Item.getByNameOrId("${lookup}"));
         }
     <#elseif value?has_content && !value?starts_with("TAG:") && !value?starts_with("#")>
         net.minecraftforge.oredict.OreDictionary.registerOre("${oreName}", ${mappedMCItemToItemStackCode(w.itemBlock(value), 1)});

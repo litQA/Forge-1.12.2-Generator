@@ -1,5 +1,13 @@
 <#assign blockBase = data.blockBase!"">
-<#if data.itemTexture?? && !data.itemTexture.isEmpty()>
+<#if blockBase == "TrapDoor">
+{
+    "parent": "${modid}:block/${registryname}_bottom"
+}
+<#elseif blockBase == "FenceGate">
+{
+    "parent": "${modid}:block/${registryname}_closed"
+}
+<#elseif data.itemTexture?? && !data.itemTexture.isEmpty()>
 {
     "parent": "item/generated",
     "textures": {

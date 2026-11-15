@@ -1,2 +1,2 @@
 <#include "mcelements.ftl">
-ForgeRegistries.BLOCKS.getValue(${toResourceLocation(input$registryname)})
+/*@BlockState*/net.minecraftforge.fml.common.registry.ForgeRegistries.BLOCKS.getValue(${toResourceLocation(input$registryname)}).getDefaultState()

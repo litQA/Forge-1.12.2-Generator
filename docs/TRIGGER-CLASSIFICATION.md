@@ -4,7 +4,7 @@ This classification covers the 65 trigger templates shipped by the
 MCreator 2026.3 NeoForge generator. It reflects what the Forge 1.12.2
 generator can expose safely, not the existence of a modern registry/API.
 
-## Level 1 - simple / native Forge 1.12.2 support (61)
+## Level 1 - simple / native Forge 1.12.2 support (63)
 
 These triggers map directly to a Forge 1.12.2 event or lifecycle callback.
 The generator supplies a native trigger template and does not require a
@@ -38,21 +38,26 @@ Mixin, reflection, or a client/server packet workaround.
 `player_useitem_finish`, `player_useitem_start`, `player_useitem_stop`,
 `player_wakes_up`
 
+### Player XP (polled adapter)
+
+`player_xp_change` and `player_xp_level_change` use server-side
+`TickEvent.PlayerTickEvent` delta tracking because Forge 1.12.2 has no
+matching XP event. The first observed tick initializes the baseline without
+firing the procedure.
+
 ### Mod lifecycle
 
 `mod_clientload`, `mod_load`, `mod_serverload`
 
-## Level 2 - complex / possible with Mixin or an adapter (4)
+## Level 2 - complex / possible with Mixin or an adapter (2)
 
 These 2026.3 triggers have no matching Forge 1.12.2 event. They can be
-implemented later with a narrowly scoped Mixin or a state-tracking adapter.
+implemented later with a narrowly scoped Mixin or an adapter.
 
 | Trigger | Required adapter |
 | --- | --- |
 | `entity_switch_hand` | Mixin/injection around hand swapping; no 1.12.2 event exists. |
 | `entity_uses_totem` | Mixin around totem death protection or a controlled item-use adapter. |
-| `player_xp_change` | Mixin around `EntityPlayer#addExperience`, or per-player XP tracking on tick. |
-| `player_xp_level_change` | Mixin around `EntityPlayer#addExperienceLevel`, or per-player level tracking on tick. |
 
 ## Level 3 - unsupported (0)
 
@@ -71,3 +76,5 @@ unsupported at this point.
 - The 2025.3 Forge 1.12.2 reference already contains the 60 baseline trigger
   templates; 2026.3 adds `entity_blocks`, `entity_switch_hand`,
   `entity_uses_totem`, `player_xp_change`, and `player_xp_level_change`.
+  `entity_blocks` was wired to `LivingDestroyBlockEvent`; the two XP triggers
+  are implemented with the polling adapter above.

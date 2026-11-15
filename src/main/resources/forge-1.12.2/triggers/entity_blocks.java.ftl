@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onEntityBlocks(LivingDestroynet.minecraftforge.event.world.BlockEvent event) {
+	@net.minecraftforge.fml.common.eventhandler.SubscribeEvent public static void onEntityBlocks(net.minecraftforge.event.entity.living.LivingDestroyBlockEvent event) {
 		if (event != null && event.getEntityLiving() != null) {
 			<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
@@ -9,6 +9,7 @@
 			"z": "event.getPos().getZ()",
 			"world": "event.getEntityLiving().world",
 			"entity": "event.getEntityLiving()",
+			"sourceentity": "event.getEntityLiving()",
 			"blockstate": "event.getState()",
 			"event": "event"
 			}/>

@@ -574,12 +574,48 @@ A headless probe created a Forge 1.12.2 workspace, wrote a stale Fabric Loom
 `WorkspaceGeneratorSetup.setupWorkspaceBase`. The file was replaced with the
 RetroFuturaGradle build script and no raw `${...}` interpolation remained.
 
+## Four-workspace compatibility batch (2026.3-1.0.33.100-beta)
+
+### Coverage
+
+The four supplied converted workspaces were used as regression fixtures:
+`test-croparium-lite`, `test-enchants`, `test-everrose` and `test-melon`.
+They exercise commands, advanced recipes, custom attributes/enchantments,
+custom projectiles, doors, trapdoors, fence gates, particle types, XP triggers,
+custom JSON item models, feature XML and a large procedure baseline.
+
+### Compatibility decisions
+
+- Legacy 1.12.2 commands use generated sequential argument branches instead of
+  Brigadier. Literal, blockstate and item values populate a typed
+  `CommandParameters` holder consumed by command-parameter procedure blocks.
+- Blasting, smoking and campfire recipes use furnace smelting. Stone cutting
+  and smithing use shapeless crafting-table fallbacks because 1.12.2 has no
+  corresponding workstation. The visual workstation remains an MCreator
+  concept only.
+- Doors use `BlockDoor` plus `ItemDoor`; trapdoors use `BlockTrapDoor`; fence
+  gates use `BlockFenceGate`. All variants and model parents follow vanilla
+  1.12.2 assets.
+- `player_xp_change` and `player_xp_level_change` are detected by per-tick
+  server-side delta tracking because Forge 1.12.2 has no matching XP events.
+- Custom JSON item models are emitted under `assets/<modid>/custom` and use
+  `custom/<model>` parents.
+- Missing custom tag entries are skipped with a generation warning instead of
+  aborting the whole workspace.
+
+### Verification
+
+All four workspaces were regenerated through MCreator's real
+`Generator.generateBase`/`generateElement` path, then compiled and packaged with
+RetroFuturaGradle. Each produced `BUILD SUCCESSFUL` and both normal and dev
+mod jars. Runtime behavior still requires the user's real-client test.
+
 ## Verification log
 
 | Step | Result |
 | --- | --- |
 | Plugin build (`gradlew build`, Java 25 toolchain) | `BUILD SUCCESSFUL` |
-| Static validator | `VALIDATION PASSED` (78 YAML documents, 685 templates, 130 template references) |
+| Static validator | `VALIDATION PASSED` (82 YAML documents, 758 templates, 143 template references) |
 | Plugin discovery in MCreator 2026.3.44621 | Plugin loaded, `compatible=true`, weight 100 |
 | Workspace creation with `forge-1.12.2` | Succeeded in headless MCreator harness |
 | Workspace base refresh over stale Fabric `build.gradle` | `setupWorkspaceBase` replaced the file with the Forge RFG base; `subversion` `1.1` marks older workspaces for setup |

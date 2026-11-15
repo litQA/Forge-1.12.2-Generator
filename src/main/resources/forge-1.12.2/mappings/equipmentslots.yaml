@@ -1,0 +1,12 @@
+_default: EntityEquipmentSlot.MAINHAND
+any: EntityEquipmentSlot.MAINHAND
+mainhand: EntityEquipmentSlot.MAINHAND
+offhand: EntityEquipmentSlot.OFFHAND
+hand: EntityEquipmentSlot.MAINHAND
+feet: EntityEquipmentSlot.FEET
+legs: EntityEquipmentSlot.LEGS
+chest: EntityEquipmentSlot.CHEST
+head: EntityEquipmentSlot.HEAD
+armor: EntityEquipmentSlot.CHEST
+body: EntityEquipmentSlot.CHEST
+saddle: EntityEquipmentSlot.CHEST

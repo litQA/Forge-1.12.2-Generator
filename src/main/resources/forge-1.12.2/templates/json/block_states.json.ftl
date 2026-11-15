@@ -20,6 +20,85 @@
         { "when": { "west": "true" }, "apply": { "model": "${modid}:${registryname}", "y": 270, "uvlock": true } }
     ]
 }
+<#elseif blockBase == "Door">
+{
+    "variants": {
+        "facing=east,half=lower,hinge=left,open=false": { "model": "${modid}:${registryname}_bottom" },
+        "facing=south,half=lower,hinge=left,open=false": { "model": "${modid}:${registryname}_bottom", "y": 90 },
+        "facing=west,half=lower,hinge=left,open=false": { "model": "${modid}:${registryname}_bottom", "y": 180 },
+        "facing=north,half=lower,hinge=left,open=false": { "model": "${modid}:${registryname}_bottom", "y": 270 },
+        "facing=east,half=lower,hinge=right,open=false": { "model": "${modid}:${registryname}_bottom_rh" },
+        "facing=south,half=lower,hinge=right,open=false": { "model": "${modid}:${registryname}_bottom_rh", "y": 90 },
+        "facing=west,half=lower,hinge=right,open=false": { "model": "${modid}:${registryname}_bottom_rh", "y": 180 },
+        "facing=north,half=lower,hinge=right,open=false": { "model": "${modid}:${registryname}_bottom_rh", "y": 270 },
+        "facing=east,half=lower,hinge=left,open=true": { "model": "${modid}:${registryname}_bottom_rh", "y": 90 },
+        "facing=south,half=lower,hinge=left,open=true": { "model": "${modid}:${registryname}_bottom_rh", "y": 180 },
+        "facing=west,half=lower,hinge=left,open=true": { "model": "${modid}:${registryname}_bottom_rh", "y": 270 },
+        "facing=north,half=lower,hinge=left,open=true": { "model": "${modid}:${registryname}_bottom_rh" },
+        "facing=east,half=lower,hinge=right,open=true": { "model": "${modid}:${registryname}_bottom", "y": 270 },
+        "facing=south,half=lower,hinge=right,open=true": { "model": "${modid}:${registryname}_bottom" },
+        "facing=west,half=lower,hinge=right,open=true": { "model": "${modid}:${registryname}_bottom", "y": 90 },
+        "facing=north,half=lower,hinge=right,open=true": { "model": "${modid}:${registryname}_bottom", "y": 180 },
+        "facing=east,half=upper,hinge=left,open=false": { "model": "${modid}:${registryname}_top" },
+        "facing=south,half=upper,hinge=left,open=false": { "model": "${modid}:${registryname}_top", "y": 90 },
+        "facing=west,half=upper,hinge=left,open=false": { "model": "${modid}:${registryname}_top", "y": 180 },
+        "facing=north,half=upper,hinge=left,open=false": { "model": "${modid}:${registryname}_top", "y": 270 },
+        "facing=east,half=upper,hinge=right,open=false": { "model": "${modid}:${registryname}_top_rh" },
+        "facing=south,half=upper,hinge=right,open=false": { "model": "${modid}:${registryname}_top_rh", "y": 90 },
+        "facing=west,half=upper,hinge=right,open=false": { "model": "${modid}:${registryname}_top_rh", "y": 180 },
+        "facing=north,half=upper,hinge=right,open=false": { "model": "${modid}:${registryname}_top_rh", "y": 270 },
+        "facing=east,half=upper,hinge=left,open=true": { "model": "${modid}:${registryname}_top_rh", "y": 90 },
+        "facing=south,half=upper,hinge=left,open=true": { "model": "${modid}:${registryname}_top_rh", "y": 180 },
+        "facing=west,half=upper,hinge=left,open=true": { "model": "${modid}:${registryname}_top_rh", "y": 270 },
+        "facing=north,half=upper,hinge=left,open=true": { "model": "${modid}:${registryname}_top_rh" },
+        "facing=east,half=upper,hinge=right,open=true": { "model": "${modid}:${registryname}_top", "y": 270 },
+        "facing=south,half=upper,hinge=right,open=true": { "model": "${modid}:${registryname}_top" },
+        "facing=west,half=upper,hinge=right,open=true": { "model": "${modid}:${registryname}_top", "y": 90 },
+        "facing=north,half=upper,hinge=right,open=true": { "model": "${modid}:${registryname}_top", "y": 180 }
+    }
+}
+<#elseif blockBase == "TrapDoor">
+{
+    "variants": {
+        "facing=north,half=bottom,open=false": { "model": "${modid}:${registryname}_bottom" },
+        "facing=south,half=bottom,open=false": { "model": "${modid}:${registryname}_bottom" },
+        "facing=east,half=bottom,open=false": { "model": "${modid}:${registryname}_bottom" },
+        "facing=west,half=bottom,open=false": { "model": "${modid}:${registryname}_bottom" },
+        "facing=north,half=top,open=false": { "model": "${modid}:${registryname}_top" },
+        "facing=south,half=top,open=false": { "model": "${modid}:${registryname}_top" },
+        "facing=east,half=top,open=false": { "model": "${modid}:${registryname}_top" },
+        "facing=west,half=top,open=false": { "model": "${modid}:${registryname}_top" },
+        "facing=north,half=bottom,open=true": { "model": "${modid}:${registryname}_open" },
+        "facing=south,half=bottom,open=true": { "model": "${modid}:${registryname}_open", "y": 180 },
+        "facing=east,half=bottom,open=true": { "model": "${modid}:${registryname}_open", "y": 90 },
+        "facing=west,half=bottom,open=true": { "model": "${modid}:${registryname}_open", "y": 270 },
+        "facing=north,half=top,open=true": { "model": "${modid}:${registryname}_open" },
+        "facing=south,half=top,open=true": { "model": "${modid}:${registryname}_open", "y": 180 },
+        "facing=east,half=top,open=true": { "model": "${modid}:${registryname}_open", "y": 90 },
+        "facing=west,half=top,open=true": { "model": "${modid}:${registryname}_open", "y": 270 }
+    }
+}
+<#elseif blockBase == "FenceGate">
+{
+    "variants": {
+        "facing=south,in_wall=false,open=false": { "model": "${modid}:${registryname}_closed", "uvlock": true },
+        "facing=west,in_wall=false,open=false": { "model": "${modid}:${registryname}_closed", "uvlock": true, "y": 90 },
+        "facing=north,in_wall=false,open=false": { "model": "${modid}:${registryname}_closed", "uvlock": true, "y": 180 },
+        "facing=east,in_wall=false,open=false": { "model": "${modid}:${registryname}_closed", "uvlock": true, "y": 270 },
+        "facing=south,in_wall=false,open=true": { "model": "${modid}:${registryname}_open", "uvlock": true },
+        "facing=west,in_wall=false,open=true": { "model": "${modid}:${registryname}_open", "uvlock": true, "y": 90 },
+        "facing=north,in_wall=false,open=true": { "model": "${modid}:${registryname}_open", "uvlock": true, "y": 180 },
+        "facing=east,in_wall=false,open=true": { "model": "${modid}:${registryname}_open", "uvlock": true, "y": 270 },
+        "facing=south,in_wall=true,open=false": { "model": "${modid}:${registryname}_wall_closed", "uvlock": true },
+        "facing=west,in_wall=true,open=false": { "model": "${modid}:${registryname}_wall_closed", "uvlock": true, "y": 90 },
+        "facing=north,in_wall=true,open=false": { "model": "${modid}:${registryname}_wall_closed", "uvlock": true, "y": 180 },
+        "facing=east,in_wall=true,open=false": { "model": "${modid}:${registryname}_wall_closed", "uvlock": true, "y": 270 },
+        "facing=south,in_wall=true,open=true": { "model": "${modid}:${registryname}_wall_open", "uvlock": true },
+        "facing=west,in_wall=true,open=true": { "model": "${modid}:${registryname}_wall_open", "uvlock": true, "y": 90 },
+        "facing=north,in_wall=true,open=true": { "model": "${modid}:${registryname}_wall_open", "uvlock": true, "y": 180 },
+        "facing=east,in_wall=true,open=true": { "model": "${modid}:${registryname}_wall_open", "uvlock": true, "y": 270 }
+    }
+}
 <#else>
 {
     "variants": {

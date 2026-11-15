@@ -1,9 +1,29 @@
 <#-- @formatter:off -->
 <#assign featureType = (featuretype!"")>
 <#assign featureBlock = "">
+<#assign featureXml = (data.featurexml!"")>
+<#if featureXml?has_content>
+<#assign blockMatches = featureXml?matches('(?s)<field name="block">([^<]+)</field>')>
+<#list blockMatches as blockMatch>
+<#assign candidate = blockMatch?groups[1]>
+<#if !featureBlock?has_content && candidate != "Blocks.AIR">
+<#if candidate?starts_with("CUSTOM:")>
+<#assign element = (w.getWorkspace().getModElementByName(candidate?replace("CUSTOM:", "")))!>
+<#if element?has_content>
+<#assign featureBlock = modid + ":" + element.getRegistryName()>
+</#if>
+<#elseif candidate?starts_with("Blocks.")>
+<#assign featureBlock = "minecraft:" + candidate?keep_after(".")?lower_case>
+<#elseif candidate?contains(":")>
+<#assign featureBlock = candidate>
+</#if>
+</#if>
+</#list>
+<#else>
 <#assign blockMatches = (configurationcode!"")?matches('"Name"\\s*:\\s*"([^"]+)"')>
 <#if blockMatches?has_content>
 <#assign featureBlock = blockMatches?first?groups[1]>
+</#if>
 </#if>
 <#if featureType == "feature_simple_block" || featureType == "feature_random_patch_simple" || featureType == "feature_random_patch" || featureType == "feature_ore" || featureType == "feature_scattered_ore" || featureType == "feature_no_op">
 <#else>

@@ -178,7 +178,7 @@ public class ${name}Item extends Item {
 	@Override public boolean hitEntity(ItemStack itemstack, EntityLivingBase target, EntityLivingBase attacker) {
 		boolean retval = super.hitEntity(itemstack, target, attacker);
 		double x = target.posX, y = target.posY, z = target.posZ;
-		<@procedureOBJToCode data.onEntityHitWith/>
+		<@procedureOBJToCodeWithTarget data.onEntityHitWith/>
 		return retval;
 	}
 	</#if>

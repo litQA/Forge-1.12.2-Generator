@@ -1,5 +1,44 @@
 # Changelog
 
+# 2026.3-1.0.33.100-beta
+
+## New Content
+
+- Added native 1.12.2 doors, trapdoors and fence gates, including `ItemDoor`,
+  full blockstate variants and the required block/item model templates.
+- Added legacy 1.12.2 command argument parsing for literal, blockstate and item
+  arguments. Command procedures can now read typed arguments and invoke their
+  target procedure.
+- Added polling triggers for `player_xp_change` and `player_xp_level_change`,
+  since Forge 1.12.2 does not expose the corresponding modern XP events.
+- Added custom projectile, item-type, equipment-slot, dimension and damage
+  source mappings, plus custom JSON item models and modern feature block XML
+  parsing.
+- Blasting, smoking and campfire recipes now use furnace smelting. Stone cutting
+  and smithing recipes fall back to shapeless crafting-table recipes because
+  1.12.2 has no equivalent workstations.
+
+## Fixes
+
+- Fixed dynamic `ItemStack` values, itemstack procedure returns and
+  `call_procedure` dependency inputs so generated procedures receive actual
+  argument expressions instead of empty values or dependency names.
+- Fixed custom attribute and enchantment mapping templates, custom projectile
+  mapping and custom item tag registration.
+- Fixed Ore Dictionary tag handling for blocks, items and unsupported 1.13+
+  constants; missing custom entries are skipped instead of aborting generation.
+- Fixed 1.12.2 procedure compatibility for equipment slots, attribute values,
+  item type checks, damage sources, particles, blockstate properties, command
+  result helpers, logging and entity-range sorting.
+- Fixed GUI slot validation procedures so the slot's `ItemStack stack` is
+  passed to the dependency named `itemstack`.
+- Fixed `entity_blocks` to use `LivingDestroyBlockEvent` and to pass the source
+  entity, and fixed `mod_load` trigger detection to match the trigger field
+  rather than procedure text.
+- The four supplied workspaces (`test-croparium-lite`, `test-enchants`,
+  `test-everrose`, `test-melon`) regenerate and build successfully with this
+  version.
+
 # 2026.3-1.0.32.99-beta
 
 ## Fixes

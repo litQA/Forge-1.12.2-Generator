@@ -75,6 +75,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 	<#elseif slots == "hand">new EntityEquipmentSlot[] { EntityEquipmentSlot.MAINHAND, EntityEquipmentSlot.OFFHAND }
 	<#elseif slots == "armor">new EntityEquipmentSlot[] { EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET }
 	<#elseif slots == "body">new EntityEquipmentSlot[] { EntityEquipmentSlot.CHEST }
+	<#elseif (slots!"any")?starts_with("EntityEquipmentSlot.")>new EntityEquipmentSlot[] { ${slots} }
 	<#else>new EntityEquipmentSlot[] { EntityEquipmentSlot.${(slots!"any")?upper_case} }
 	</#if>
 </#macro>

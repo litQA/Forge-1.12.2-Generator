@@ -72,11 +72,12 @@ public class ${name}Command extends CommandBase {
 		for (int i = 0; i < args.length; i++)
 			cmdparams.put(Integer.toString(i), args[i]);
 
-		${argscode}
+		CommandParameters.VALUES.clear();
+		CommandParameters.SENDER = arguments;
+		boolean __commandExecuted = false;
+		int __argIndex = 0;
 
-		// The 2026.3 command argument editor emits Brigadier syntax. The 1.12.2
-		// backend exposes the shared x/y/z/world/entity/direction/cmdparams
-		// variables and supports the call-procedure block.
+		${argscode}
 	}
 
 	@Override
