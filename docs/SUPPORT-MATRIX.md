@@ -3,10 +3,10 @@
 ## Document purpose
 
 This document states what the Forge 1.12.2 generator supports relative to the
-MCreator 2026.3 NeoForge generator feature set. It is intended for commercial
-planning, scope review and customer communication.
+MCreator 2026.3 NeoForge generator feature set. It is intended for project
+planning, scope review and stakeholder communication.
 
-The levels describe implementation quality and delivery risk, not just whether
+The levels describe implementation quality and implementation risk, not just whether
 a field is visible in the editor. A feature can be present in generated code and
 still be unsuitable for a critical gameplay path if it depends on emulation or
 an injected runtime layer.
@@ -34,17 +34,17 @@ generators, hand-written mods or later Forge versions.
 
 ## Support levels
 
-| Level | Name | Commercial guidance |
+| Level | Name | Guidance |
 | --- | --- | --- |
 | 1 | **Native API** | **Safe. Use with confidence.** Implemented with native 1.12.2/Forge APIs, without Mixin, reflection injection or a behavioral substitute. |
-| 2 | **Mixin or other equivalent implementation** | **Usable. Be aware of possible compatibility issues with other mods.** Implemented with Mixin, enum extension, reflection or another runtime-level equivalent. Test alongside the customer's mod list. |
+| 2 | **Mixin or other equivalent implementation** | **Usable. Be aware of possible compatibility issues with other mods.** Implemented with Mixin, enum extension, reflection or another runtime-level equivalent. Test alongside the project's mod list. |
 | 3 | **Downgraded/emulated support using alternative methods** | **Risky. The result may not be fully equivalent to the expected feature. Avoid large-scale use, as behavior may be unexpected.** The implementation method is stated for every row in this tier. |
-| 4 | **Not implemented - very high effort** | **Not implemented. Very difficult, with unknown stability; there is a low probability of adding this in the future.** Do not include it in a committed delivery scope without a separate feasibility phase. |
+| 4 | **Not implemented - very high effort** | **Not implemented. Very difficult, with unknown stability; there is a low probability of adding this in the future.** Do not include it in a committed scope without a separate feasibility phase. |
 | 5 | **Not implemented - major rework required** | **Not implemented. Requires major code changes. Consider implementing the requirement with another mod or accepting the limitation.** |
 
 Levels 4 and 5 are not promises of future support. They are included so that
-the missing parts of the NeoForge feature set are explicit in a commercial
-scope discussion.
+the missing parts of the NeoForge feature set are explicit in a scope
+discussion.
 
 ## Native API
 
@@ -303,7 +303,7 @@ Saplings do not generate a tree feature chain in this snapshot; see Level 4.
 **Usable. Be aware of possible compatibility issues with other mods.**
 
 These features work through runtime injection or registry extension. They are
-tested in the target environment, but a customer's mod list, coremods or
+tested in the target environment, but a project's mod list, coremods or
 conflicting mixins can affect them.
 
 ### World generation injection
@@ -325,9 +325,9 @@ conflicting mixins can affect them.
 **Risky. The result may not be fully equivalent to the expected feature. Avoid
 large-scale use, as behavior may be unexpected.**
 
-Every row states the implementation method and the limitation that matters for
-delivery. These features are supported for normal projects but should not be
-sold as exact NeoForge parity.
+Every row states the implementation method and its practical limitation. These
+features are supported for normal projects but should not be presented as exact
+NeoForge parity.
 
 ### Recipe compatibility
 
@@ -547,7 +547,7 @@ added by extending the current template layer without replacing core systems.
 | Modern item model system and custom model loaders | 1.12.2 uses JSON item models and the legacy `ModelRenderer`. | Use JSON models or a dedicated model-loader mod. |
 | Full NeoForge event, capability and registry parity | The target is Forge 1.12.2, not NeoForge. | Target a supported NeoForge version for features that depend on NeoForge APIs. |
 
-## Validation basis and delivery guidance
+## Validation basis and usage guidance
 
 This snapshot was validated with:
 
@@ -559,12 +559,12 @@ This snapshot was validated with:
 - Client startup smoke tests through Forge mod loading, with no generated-mod
   crash in the latest run.
 
-Recommended commercial use:
+Recommended use:
 
 1. Scope Level 1 and Level 2 features as supported functionality.
 2. Treat Level 3 features as compatibility features. Include an acceptance test
    for each one and avoid making them a critical dependency without a fallback.
-3. Do not sell Level 4 or Level 5 features without a separate feasibility phase.
+3. Do not include Level 4 or Level 5 features in a committed scope without a separate feasibility phase.
 4. Rebuild the generated workspace jar after every regeneration. `runClient`
    loads the built jar, so a stale jar can mask or reproduce bugs that are no
    longer present in generated sources.
