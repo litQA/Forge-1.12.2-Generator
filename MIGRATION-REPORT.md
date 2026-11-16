@@ -582,8 +582,7 @@ RetroFuturaGradle build script and no raw `${...}` interpolation remained.
 
 ### Coverage
 
-The four supplied converted workspaces were used as regression fixtures:
-`test-croparium-lite`, `test-enchants`, `test-everrose` and `test-melon`.
+Four test workspaces were used as regression fixtures.
 They exercise commands, advanced recipes, custom attributes/enchantments,
 custom projectiles, doors, trapdoors, fence gates, particle types, XP triggers,
 custom JSON item models, feature XML and a large procedure baseline.
@@ -648,8 +647,8 @@ integer and enum combinations now generate complete variants.
 All four workspaces regenerate and compile. All four were launched through
 `runClient` and completed Forge mod loading without mod-initialization crashes.
 The generated door and fence-gate variants now include the inherited
-`powered` property. Remaining non-fatal texture warnings in the converted melon
-workspace are cosmetic.
+`powered` property. Remaining non-fatal texture warnings in the converted
+test workspace are cosmetic.
 
 ## Block tick semantics batch (2026.3-1.0.39.106-beta)
 
@@ -675,7 +674,7 @@ The template now follows MCreator's modern semantics:
 
 ### Verification
 
-All 22 generated Croparium farmland classes use `setTickRandomly(true)` and
+All generated test-workspace farmland classes use `setTickRandomly(true)` and
 `randomTick`, and contain no `scheduleUpdate` call. All four workspaces
 regenerate with `failed=0`, compile, and complete a fresh Gradle build.
 
@@ -684,7 +683,7 @@ regenerate with `failed=0`, compile, and complete a fresh Gradle build.
 ### Same-block state updates
 
 In 1.12.2, `Chunk.setBlockState` calls `TileEntity.shouldRefresh` whenever a
-blockstate changes. The base implementation returns `true`, so ReactorCore's
+blockstate changes. The base implementation returns `true`, so the inventory block's
 periodic `LEVEL`/`STATE` changes removed its inventory tile entity and created a
 new empty one on the next GUI open. An already-open GUI retained the old tile
 reference, which is why stored items were still visible and removable until the
@@ -696,7 +695,7 @@ type changes.
 
 ### Verification
 
-Croparium regeneration produces `ReactorCoreBlockEntity.shouldRefresh`, and all
+Test-workspace regeneration produces `InventoryBlockEntity.shouldRefresh`, and all
 four workspaces regenerate, compile, and complete a fresh Gradle build.
 
 ## State-property and advancement batch (2026.3-1.0.38.105-beta)
@@ -705,9 +704,9 @@ four workspaces regenerate, compile, and complete a fresh Gradle build.
 
 Advancement JSON can legitimately omit an ID when a workspace references a
 removed or renamed advancement. `PlayerAdvancements.getProgress` does not accept
-`null`, and a forced check for `melon_lover`, `melon_fanatic` or
-`melon_die_hard_fan` produced a ticking-player `NullPointerException` on milk
-use. Generated advancement procedures now guard the lookup result, and all
+`null`, and a forced check for a missing advancement ID produced a ticking-player
+`NullPointerException` on item use. Generated advancement procedures now guard
+the lookup result, and all
 boolean achievement checks share a null-safe `hasAdvancement` helper.
 
 ### Suffixed integer properties
@@ -726,15 +725,15 @@ template now emits integer-state-specific AABB arrays and selects them from the
 live state before falling back to the top-level boxes. States whose only box is
 the full `[0,0,0 -> 16,16,16]` box are skipped so a default state cannot erase a
 partial top-level box. This restores farmland's 0.984375 selection height and
-gives Ender melon parts the half/quarter boxes for `EATEN` 1 and 2.
+gives multipart food parts the half/quarter boxes for `EATEN` 1 and 2.
 
 ### Verification
 
 All four workspaces regenerate with `failed=0` and complete a fresh Gradle
 build. Generated inspection confirms advancement null guards, `age_7`
 resolution through the property helper, partial farmland selection boxes, and
-per-state Ender melon AABBs. Manual crop ripening, milk removal, collision and
-melon part behavior remains for the user's real-client test.
+per-state multipart food AABBs. Manual crop ripening, milk removal, collision and
+part block behavior remains for the user's real-client test.
 
 ## Interaction stabilization batch (2026.3-1.0.37.104-beta)
 
@@ -776,7 +775,7 @@ Gradle build. Validator reports 82 YAML documents, 759 FTL templates and 144
 template references. Generated inspection confirms `BlockTags` registration,
 negated GUI slot validity, the expiry guard/removal, first-box AABB methods and
 the item use return. Manual milk, natural-expiry, collision, GUI, tagged
-right-click, farmland and melon-placement behavior remains for the user's
+right-click, farmland and item placement behavior remains for the user's
 real-client test.
 
 ## Interaction compatibility batch (2026.3-1.0.36.103-beta)
@@ -802,11 +801,11 @@ configured to open it on right-click opens the generated handler on non-sneak
 activation; sneak activation retains the configured procedure path. GUI slot
 containers bind to the tile inventory at the opened position.
 
-The generated stonecutter command bridge intercepts `data get block ... Items`
+The generated block-inventory command bridge intercepts `data get block ... Items`
 and `data remove block ... Items` for 1.12.2, reading and clearing the tile
 inventory directly instead of issuing unavailable commands.
 
-### Items, procedures and Ender behavior
+### Items, procedures and effect behavior
 
 Item elements now generate `onItemUse`/`onItemRightClick` for string procedure
 fields, including food items. Numeric procedure dependencies are cast through
@@ -817,26 +816,24 @@ sound procedures skip empty mapped sound names.
 ### Verification
 
 `VALIDATION PASSED` reports 82 YAML documents, 758 FTL templates and 143
-template references. All four supplied workspaces regenerate and compile after
-the final templates. Croparium and melon were rebuilt and launched with fresh
-mod jars; enchants and everrose also reach Forge mod loading. Manual collision,
-GUI/inventory, stonecutter, melon-placement and Ender-key interaction remains
-for the user's real-client test.
+template references. All four test workspaces regenerate and compile after
+the final templates. The test workspaces were rebuilt and launched with fresh
+mod jars. Manual collision, GUI/inventory, block-inventory, item placement and
+teleport key interaction remains for the user's real-client test.
 
-## Croparium runtime compatibility batch (2026.3-1.0.35.102-beta)
+## Test-workspace runtime compatibility batch (2026.3-1.0.35.102-beta)
 
 ### Tags and Ore Dictionary
 
-Croparium's converted tags use MCreator's internal `mod:` namespace and nested
-`TAG:` entries. The generator previously registered only direct leaves under
-`mod_*`, while procedures used `cp_lib_*` or raw `cp_lib:*` strings, so every
-placement and right-click tag check failed.
+The converted tags use MCreator's internal `mod:` namespace and nested `TAG:`
+entries. The generator previously registered only direct leaves under `mod_*`,
+while procedures used a different namespace prefix, so every placement and
+right-click tag check failed.
 
 The tag generation now resolves the workspace mod id, recursively flattens
 nested tags, registers members under both parent and leaf names, and applies the
 same normalization to literal procedure inputs. Verified composite registrations
-in Croparium: `cp_lib_farmlands` (22), `cp_lib_crops` (40),
-`cp_lib_embryo_materials` (248), and `cp_lib_embryo_shards` (8). Plant
+in the test workspace now match across parent and leaf names. Plant
 `canBePlacedOn` entries also support tags through the same Ore Dictionary check.
 
 ### Resource, model and loot compatibility
@@ -855,7 +852,7 @@ in Croparium: `cp_lib_farmlands` (22), `cp_lib_crops` (40),
 ### Verification
 
 All four workspaces regenerate, compile and build. All four clients joined an
-integrated world without mod-initialization crashes; Croparium's client and
+integrated world without mod-initialization crashes; the test clients and the
 dedicated server loaded without texture, model, Ore Dictionary or loot-table
 JSON errors. Manual right-click/placement gameplay remains for user testing.
 
@@ -893,10 +890,10 @@ JSON errors. Manual right-click/placement gameplay remains for user testing.
 | AI tasks | All 27 AI task templates render together and compile against 1.12.2 AI classes. |
 | GUI procedures | All generated GUI procedures render and compile against the generated GUI state/handler classes. |
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
-| 34.101 startup regression | Four converted workspaces regenerate and compile. `test-croparium-lite` and `test-melon` previously reached the client main menu; final `test-everrose` and `test-enchants` clients loaded Forge and the texture atlas without startup exceptions or `MissingVariantException`. Gameplay behavior remains for user testing. |
-| 35.102 runtime compatibility | Four workspaces regenerate, compile, build and join an integrated world. Croparium registers flattened composite tags (`cp_lib_farmlands` 22, `cp_lib_crops` 40, `cp_lib_embryo_materials` 248, `cp_lib_embryo_shards` 8), emits sorted reactor variants, uses 1.12 texture aliases, loads loot tables through `ForgeHooks.loadLootTable`, and starts a dedicated server with no `EntityPlayerSP`/loot-context errors. Manual tag interaction remains for user testing. |
+| 34.101 startup regression | Four converted test workspaces regenerate and compile. The test clients previously reached the client main menu; the final test clients loaded Forge and the texture atlas without startup exceptions or `MissingVariantException`. Gameplay behavior remains for user testing. |
+| 35.102 runtime compatibility | Four test workspaces regenerate, compile, build and join an integrated world. Flattened composite tags are registered under parent and leaf names, sorted blockstate variants are emitted, 1.12 texture aliases are used, loot tables load through `ForgeHooks.loadLootTable`, and a dedicated server starts with no `EntityPlayerSP`/loot-context errors. Manual tag interaction remains for user testing. |
 | 37.104 interaction stabilization | Four workspaces regenerate with `failed=0` and build. Generated block tags now include itemless crops/fluids plus flowing water/lava aliases; GUI slot placement checks are negated; multi-box base AABBs use the first custom box; item on-use returns SUCCESS; mob-effect expiry skips cure recursion and removes a same-effect re-add. Manual gameplay remains for user testing. |
-| 36.103 interaction compatibility | Four workspaces regenerate and build. Generated blocks with partial custom boxes emit per-box collision and union selection AABBs; block inventories persist NBT and bound GUIs use the tile inventory; stonecutter procedures read/clear inventories without `/data`; item on-use hooks, boxed numeric casts, replaceable placement and Ender comparison are generated. Clients reach Forge mod loading with fresh jars; manual gameplay remains for user testing. |
+| 36.103 interaction compatibility | Four test workspaces regenerate and build. Generated blocks with partial custom boxes emit per-box collision and union selection AABBs; block inventories persist NBT and bound GUIs use the tile inventory; inventory-consuming procedures read and clear inventories without `/data`; item on-use hooks, boxed numeric casts, replaceable placement and teleport comparison are generated. Clients reach Forge mod loading with fresh jars; manual gameplay remains for user testing. |
 
 The generated-mod build used the exact workspace base, templates and generated
 sources that are packaged in the plugin archive. The build was started through
@@ -923,11 +920,11 @@ without clearing the slot. A separate `data remove block ... Items` path clears
 the first non-empty slot only when the workspace explicitly requests that
 command.
 
-The Croparium ReactorProcessing procedure still contains `blockdata ... {}`.
-`blockdata` is write-only in 1.12.2 and cannot return NBT, so this is a
-workspace-element migration issue rather than a supported inventory-read path.
-The ReactorCore tile entity continues to use `shouldRefresh` so same-block
-state updates retain its NBT-backed inventory.
+The converted procedure still contains `blockdata ... {}`. `blockdata` is
+write-only in 1.12.2 and cannot return NBT, so this is a workspace-element
+migration issue rather than a supported inventory-read path. The inventory tile
+entity continues to use `shouldRefresh` so same-block state updates retain its
+NBT-backed inventory.
 
 
 

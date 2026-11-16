@@ -33,11 +33,11 @@ recursive nested-tag flattening, namespace-normalized Ore Dictionary lookups,
 loot-table loading and dedicated-server-safe proxy isolation. The 1.0.36.103
 interaction compatibility pass adds multi-box custom block collision boxes,
 block inventories with GUI binding, item on-use procedure hooks, a 1.12.2
-inventory bridge for stonecutter procedures, boxed-number procedure dependency
-casts, and safer melon placement/teleport checks. The 1.0.37.104 stabilization
+block-inventory bridge for inventory-consuming procedures, boxed-number procedure dependency
+casts, and safer item placement/teleport checks. The 1.0.37.104 stabilization
 pass adds itemless block-tag registration, flowing-fluid aliases, corrected GUI
 slot placement checks, non-full multi-box selection/collision, deterministic
-item on-use results, and mob-effect expiry guards that prevent Ender Resonance
+item on-use results, and mob-effect expiry guards that prevent the mob effect
 recursion or lingering. The 1.0.38.105 pass adds safe advancement lookups,
 suffixed crop-property resolution, and per-state custom collision boxes for
 integer block properties. The 1.0.40.107 pass preserves tile-entity inventories
@@ -415,12 +415,12 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.38.105-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.41.108-beta`.
 2. Generator validator on processed resources (YAML, mappings, FreeMarker
    syntax, template references): `VALIDATION PASSED` (82 YAML documents, 759
    FTL templates, 144 template references).
-3. The full `test_workspaces/test-1/src/main/java` source tree was compiled
-   against the 1.12.2 classes with `javac --release 8`: `PASSED`. This includes
+3. A generated test workspace's full source tree was compiled against the
+   1.12.2 classes with `javac --release 8`: `PASSED`. This includes
    the custom block loot-table drop path and potion attribute cleanup path.
 4. The enchantment and armor templates were rendered with FreeMarker using the
    test element data, then compiled with `javac --release 8`: `PASSED`.
@@ -490,28 +490,24 @@ plugin-branch-2026.3/
     RetroFuturaGradle base. The copied script contains no unescaped Groovy
     interpolation, and generator `subversion` `1.3` forces the same setup for
     workspaces created with an older base.
-29. The four supplied converted workspaces were regenerated through the real
-    MCreator generation path and built with `compileJava` and `build`:
-    `test-croparium-lite`, `test-enchants`, `test-everrose` and `test-melon`
-    all produced `BUILD SUCCESSFUL` and normal mod jars. Their command
-    argument dispatch, door/trapdoor/fence-gate models, custom projectiles,
-    custom JSON item models and XP triggers are covered by this run.
-    All four were also launched through `runClient` and completed Forge mod
-    loading without mod-initialization crashes; gameplay behavior still
-    requires a real client test.
-30. The 1.0.35.102 runtime pass was verified against the four workspaces:
-    - Croparium Ore Dictionary registration now contains the flattened
-      composites `cp_lib_farmlands` (22 entries), `cp_lib_crops` (40),
-      `cp_lib_embryo_materials` (248) and `cp_lib_embryo_shards` (8).
+29. The four test workspaces were regenerated through the real MCreator
+    generation path and built with `compileJava` and `build`; all produced
+    `BUILD SUCCESSFUL` and normal mod jars. Their command argument dispatch,
+    door/trapdoor/fence-gate models, custom projectiles, custom JSON item models
+    and XP triggers are covered by this run. All four were also launched through
+    `runClient` and completed Forge mod loading without mod-initialization
+    crashes; gameplay behavior still requires a real client test.
+30. The 1.0.35.102 runtime pass was verified against the four test workspaces:
+    - Ore Dictionary registration now contains the flattened parent and leaf
+      composite tags.
     - Generated texture references use 1.12.2 aliases such as
       `minecraft:blocks/stone_granite` and
       `minecraft:blocks/wool_colored_yellow`.
-    - Reactor blockstates emit sorted keys such as
+    - Converted blockstates emit sorted keys such as
       `level=0,state=inactive`; the client no longer reports missing variants.
-    - All four final clients joined an integrated world. Croparium and the
-      dedicated server loaded without texture, model, Ore Dictionary or loot
-      JSON errors. Manual tag right-click and placement interaction remains for
-      user testing.
+    - All four final clients joined an integrated world; the dedicated server
+      also loaded without texture, model, Ore Dictionary or loot JSON errors.
+      Manual tag right-click and placement interaction remains for user testing.
 31. The 1.0.36.103 interaction pass was verified against the four workspaces:
     - Every workspace regenerates, compiles, builds and reaches Forge mod
       loading with the rebuilt mod jar; no startup, model, Ore Dictionary or
@@ -520,21 +516,21 @@ plugin-branch-2026.3/
       box for custom `boundingBoxes`, with slabs and non-collidable blocks
       excluded from duplicate overrides.
     - Block inventories persist through `IInventory` NBT and bound GUIs use the
-      tile inventory; the stonecutter button reads and clears that inventory.
+      tile inventory; the block GUI button reads and clears that inventory.
     - Item `onRightClickedOnBlock` procedures generate `onItemUse`, and the
-      Ender teleport water comparison uses the target block state correctly.
+      teleport water comparison uses the target block state correctly.
     - Manual GUI, collision and right-click gameplay checks remain for the
       user's real-client test.
 32. The 1.0.37.104 stabilization pass was verified against the four workspaces:
     - Every workspace regenerates with `failed=0` and completes a fresh
       `gradlew build`.
-    - Generated `CpLibModBlockTags` preserves itemless crop/plant/fluid block
-      tags; Ore Dictionary and block-tag procedure lookups consult it.
+    - The generated block-tag registry preserves itemless crop/plant/fluid
+      block tags; Ore Dictionary and block-tag procedure lookups consult it.
     - GUI slot placement conditions are negated for `isItemValid`, mob-effect
       expiry removes a same-effect re-add, and custom multi-box
       selection/collision uses the first box while retaining per-box collision.
     - Item on-use procedures return `EnumActionResult.SUCCESS`; manual milk,
-      natural-expiry, collision, GUI, tagged right-click, farmland and melon
+      natural-expiry, collision, GUI, tagged right-click, farmland and part-block
       placement behavior remains for the user's real-client test.
 33. The 1.0.38.105 regression pass was verified against all four workspaces:
     - Advancement checks emit null-safe `hasAdvancement` calls; missing
@@ -555,11 +551,11 @@ world/new chunks. The entity, GUI, overlay, key-binding and particle batch in
 villager, command/function/game-rule, music-disc, trigger and variable changes
 in `1.0.30.96`/`1.0.31.98` require real-client testing before further
 development. The workspace-conversion fix in `1.0.32.99` also needs a real
-Fabric-to-Forge conversion test in MCreator. The four supplied converted
-workspaces compile, build and reach Forge mod loading in `1.0.38.105`. Custom
-collision, block GUI/inventory, stonecutter output, melon placement, tag
-right-click and the Ender key/effect flow still need real-client gameplay
-testing; the conversion UI flow also remains to be rechecked.
+Fabric-to-Forge conversion test in MCreator. The four test workspaces compile,
+build and reach Forge mod loading in `1.0.38.105`. Custom collision, block
+GUI/inventory, block-inventory output, item placement, tag right-click and the
+teleport/effect flow still need real-client gameplay testing; the conversion UI
+flow also remains to be rechecked.
 
 ## Attribution
 

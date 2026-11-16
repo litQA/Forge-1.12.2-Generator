@@ -7,7 +7,7 @@
 - The `data get block` compatibility reader no longer clears the inventory slot
   it reads. Reading block inventory NBT is now non-destructive.
 - Explicit `data remove block ... Items` commands still clear the first
-  non-empty inventory slot, preserving the stonecutter consumption path.
+  non-empty inventory slot, preserving the inventory-consuming block path.
 - Procedures that do not request `data remove block` no longer emit
   `setInventorySlotContents(..., ItemStack.EMPTY)`.
 - Documented that converted workspaces may contain unsupported 1.13+ commands:
@@ -21,7 +21,7 @@
 - Generated inventory tile entities now override `shouldRefresh` and preserve
   their inventory across blockstate changes on the same block. Previously a
   `world.setBlockState` level/state update replaced the tile entity with an
-  empty one, so ReactorCore contents vanished after the next GUI reopen.
+  empty one, so the inventory block contents vanished after the next GUI reopen.
 - Tile entities are still recreated when the block type itself changes.
 
 # 2026.3-1.0.39.106-beta
@@ -35,8 +35,8 @@
   blocks no longer execute their tick procedure every game tick.
 - Blocks with both `onRandomUpdateEvent` and random `onTickUpdate` share one
   `randomTick` override, avoiding duplicate methods.
-- Croparium farmland now uses random-tick calls without `scheduleUpdate`; all
-  four supplied workspaces regenerate, compile and build with this change.
+- Test-workspace farmland now uses random-tick calls without `scheduleUpdate`;
+  all four test workspaces regenerate, compile and build with this change.
 
 # 2026.3-1.0.38.105-beta
 
@@ -57,10 +57,10 @@
 - Crop right-click ripening and growth procedures now find suffixed custom crop
   properties and advance the actual blockstate instead of silently skipping the
   state write.
-- Ender melon parts use their `EATEN` selection/collision boxes and farmland no
-  longer falls back to the full-block selection box.
-- All four supplied workspaces regenerate, compile and build with the final
-  generator. Manual crop, milk, collision, GUI and melon part tests remain for
+- Multipart part blocks use their `EATEN` selection/collision boxes and
+  farmland no longer falls back to the full-block selection box.
+- All four test workspaces regenerate, compile and build with the final
+  generator. Manual crop, milk, collision, GUI and part-block tests remain for
   the user's real-client test.
 
 # 2026.3-1.0.37.104-beta
@@ -80,7 +80,7 @@
 
 - Mob-effect expiry no longer re-runs the ending procedure when milk or another
   cure removes the effect. Natural expiry runs the ending procedure and then
-  removes any same-effect re-add, preventing Ender Resonance from lingering.
+  removes any same-effect re-add, preventing the mob effect from lingering.
 - GUI `disablePlacement` conditions are negated when generating
   `Slot.isItemValid`, so items matching the placement tag are accepted.
 - Custom multi-box blocks use the first custom box for selection/collision
@@ -104,18 +104,18 @@
   hooks, including converted food items.
 - `executeCommandGetResult` supports a 1.12.2 inventory bridge for
   `data get block ... Items` / `data remove block ... Items`, allowing
-  converted stonecutter procedures to read and clear block inventories.
+  converted inventory-consuming procedures to read and clear block inventories.
 
 ## Fixes
 
 - Boxed numeric procedure dependencies are converted through `Number` before
   primitive casts, fixing the Integer-to-Double crash when a mob effect ends.
 - Fixed `compareBlocks` using the first block for both operands, which blocked
-  the Ender teleport keybind by treating any same-metadata block as water.
+  the teleport keybind by treating any same-metadata block as water.
 - Added a `minecraft_replaceable` special case for vanilla blocks without items
-  so melon placement procedures can target air and other non-item blocks.
+  so item placement procedures can target air and other non-item blocks.
 - Sound procedures skip empty mapped sound names instead of creating an invalid
-  `ResourceLocation`, which could abort stonecutter output logic.
+  `ResourceLocation`, which could abort block-inventory output logic.
 - All four supplied workspaces regenerate, compile and build with the final
   generator. Their clients reach mod loading and integrated worlds; the
   generated AABB, GUI, inventory and item hooks are statically verified.
@@ -136,9 +136,8 @@
 ## Fixes
 
 - Fixed tag-based block placement and right-click checks that failed because
-  procedures used `cp_lib:*`/`cp_lib_*` names while initialization registered
-  only `mod_*` leaf names. Composite tags such as `cp_lib_farmlands`,
-  `cp_lib_crops` and `cp_lib_embryo_materials` are now registered.
+  procedures and initialization used different namespace prefixes. Composite
+  parent and leaf tags are now registered under both names.
 - Added build-time 1.13-to-1.12 texture aliases for converted workspaces
   (`granite` -> `stone_granite`, `honeycomb_block` ->
   `wool_colored_yellow`, and similar fallbacks), fixing purple/black faces.
@@ -152,10 +151,10 @@
   behind the proxy. This fixes dedicated-server `EntityPlayerSP` class loading.
 - Inactive blocks without an item no longer register empty Ore Dictionary
   stacks (`Item.getItemFromBlock` returns `Items.AIR`).
-- All four supplied workspaces regenerate, compile, build and join an integrated
-  world. Croparium also loads on a dedicated server without tag, texture, model
-  or loot-table registration errors. Manual tag right-click and placement
-  interaction still requires the user's real-client test.
+- All four test workspaces regenerate, compile, build and join an integrated
+  world. The test workspace also loads on a dedicated server without tag,
+  texture, model or loot-table registration errors. Manual tag right-click and
+  placement interaction still requires the user's real-client test.
 
 # 2026.3-1.0.34.101-beta
 
@@ -220,8 +219,7 @@
 - Fixed `entity_blocks` to use `LivingDestroyBlockEvent` and to pass the source
   entity, and fixed `mod_load` trigger detection to match the trigger field
   rather than procedure text.
-- The four supplied workspaces (`test-croparium-lite`, `test-enchants`,
-  `test-everrose`, `test-melon`) regenerate and build successfully with this
+- The four supplied test workspaces regenerate and build successfully with this
   version.
 
 # 2026.3-1.0.32.99-beta
