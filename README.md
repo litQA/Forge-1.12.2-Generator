@@ -44,7 +44,7 @@ integer block properties. The 1.0.40.107 pass preserves tile-entity inventories
 through same-block state updates. The 1.0.39.106 pass correctly maps block
 `onTickUpdate` to `randomTick` when `tickRandomly` is enabled and no longer
 reschedules zero-rate update ticks every game tick.
-The complete, implementation-oriented support overview is in
+The complete five-tier commercial support matrix is in
 [docs/SUPPORT-MATRIX.md](docs/SUPPORT-MATRIX.md); trigger levels are in
 [docs/TRIGGER-CLASSIFICATION.md](docs/TRIGGER-CLASSIFICATION.md); known
 limitations and the migration rationale are in
