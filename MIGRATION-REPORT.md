@@ -914,6 +914,21 @@ living entities, projectiles, boats, GUIs, overlays, key bindings and custom
 particles in game. Per the delivery specification this real-device test is
 performed by the user before the next batch starts.
 
+## 41.108: non-destructive block-inventory command bridge
+
+Converted workspaces can contain 1.13+ command syntax. The 1.12.2 generator
+supports `data get block ... Items` as a compatibility read, but that read must
+not mutate the block. The generated bridge now returns the slot count/item id
+without clearing the slot. A separate `data remove block ... Items` path clears
+the first non-empty slot only when the workspace explicitly requests that
+command.
+
+The Croparium ReactorProcessing procedure still contains `blockdata ... {}`.
+`blockdata` is write-only in 1.12.2 and cannot return NBT, so this is a
+workspace-element migration issue rather than a supported inventory-read path.
+The ReactorCore tile entity continues to use `shouldRefresh` so same-block
+state updates retain its NBT-backed inventory.
+
 
 
 

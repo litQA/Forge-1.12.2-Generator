@@ -1,5 +1,19 @@
 # Changelog
 
+# 2026.3-1.0.41.108-beta
+
+## Fixes
+
+- The `data get block` compatibility reader no longer clears the inventory slot
+  it reads. Reading block inventory NBT is now non-destructive.
+- Explicit `data remove block ... Items` commands still clear the first
+  non-empty inventory slot, preserving the stonecutter consumption path.
+- Procedures that do not request `data remove block` no longer emit
+  `setInventorySlotContents(..., ItemStack.EMPTY)`.
+- Documented that converted workspaces may contain unsupported 1.13+ commands:
+  `blockdata` is write-only and cannot read NBT in 1.12.2, and `data get block`
+  requires the generator compatibility bridge.
+
 # 2026.3-1.0.40.107-beta
 
 ## Fixes

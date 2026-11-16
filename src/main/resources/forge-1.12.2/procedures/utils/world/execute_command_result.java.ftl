@@ -9,7 +9,6 @@ private static String executeCommandGetResult(World world, double posX, double p
 				if (!stack.isEmpty()) {
 					ResourceLocation id = stack.getItem().getRegistryName();
 					String result = "{count: " + stack.getCount() + ", id: \"" + (id == null ? "minecraft:air" : id.toString()) + "\"}";
-					inventory.setInventorySlotContents(i, ItemStack.EMPTY);
 					return result;
 				}
 			}
