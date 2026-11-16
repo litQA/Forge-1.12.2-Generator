@@ -1,5 +1,15 @@
 # Changelog
 
+# 2026.3-1.0.40.107-beta
+
+## Fixes
+
+- Generated inventory tile entities now override `shouldRefresh` and preserve
+  their inventory across blockstate changes on the same block. Previously a
+  `world.setBlockState` level/state update replaced the tile entity with an
+  empty one, so ReactorCore contents vanished after the next GUI reopen.
+- Tile entities are still recreated when the block type itself changes.
+
 # 2026.3-1.0.39.106-beta
 
 ## Fixes

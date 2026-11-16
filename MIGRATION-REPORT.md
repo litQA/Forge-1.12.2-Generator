@@ -679,6 +679,26 @@ All 22 generated Croparium farmland classes use `setTickRandomly(true)` and
 `randomTick`, and contain no `scheduleUpdate` call. All four workspaces
 regenerate with `failed=0`, compile, and complete a fresh Gradle build.
 
+## Tile inventory persistence batch (2026.3-1.0.40.107-beta)
+
+### Same-block state updates
+
+In 1.12.2, `Chunk.setBlockState` calls `TileEntity.shouldRefresh` whenever a
+blockstate changes. The base implementation returns `true`, so ReactorCore's
+periodic `LEVEL`/`STATE` changes removed its inventory tile entity and created a
+new empty one on the next GUI open. An already-open GUI retained the old tile
+reference, which is why stored items were still visible and removable until the
+GUI was reopened.
+
+Generated inventory tile entities now override `shouldRefresh` and return false
+for state changes within the same block, while still refreshing when the block
+type changes.
+
+### Verification
+
+Croparium regeneration produces `ReactorCoreBlockEntity.shouldRefresh`, and all
+four workspaces regenerate, compile, and complete a fresh Gradle build.
+
 ## State-property and advancement batch (2026.3-1.0.38.105-beta)
 
 ### Advancement lookups

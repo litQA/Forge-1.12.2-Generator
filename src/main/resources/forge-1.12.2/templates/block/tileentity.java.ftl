@@ -3,14 +3,17 @@ package ${package}.block.entity;
 
 import java.util.Arrays;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.World;
 
 public class ${name}BlockEntity extends TileEntity implements IInventory {
 
@@ -74,6 +77,10 @@ public class ${name}BlockEntity extends TileEntity implements IInventory {
 	@Override public boolean isUsableByPlayer(EntityPlayer player) {
 		return world != null && world.getTileEntity(pos) == this
 				&& player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
+	}
+
+	@Override public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+		return oldState.getBlock() != newState.getBlock();
 	}
 
 	@Override public void openInventory(EntityPlayer player) {
