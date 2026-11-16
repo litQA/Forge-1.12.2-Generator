@@ -304,6 +304,15 @@ public class ${name}Block extends Block {
 </#if>
 
 	<#assign customBoxes = []>
+	<#assign definedStates = data.getDefinedStates()![]>
+	<#function hasPartialStateBox stateDef>
+	<#if !(stateDef.boundingBoxes![])?has_content><#return false></#if>
+	<#if stateDef.boundingBoxes?is_sequence><#assign stateBoxes = stateDef.boundingBoxes><#else><#assign stateBoxes = [stateDef.boundingBoxes]></#if>
+	<#list stateBoxes as box>
+	<#if !box.subtract && !(box.mx == 0 && box.my == 0 && box.mz == 0 && box.Mx == 16 && box.My == 16 && box.Mz == 16)><#return true></#if>
+	</#list>
+	<#return false>
+	</#function>
 	<#if blockBase != "Slab" && !data.isNotColidable>
 	<#if (data.boundingBoxes![])?has_content>
 	<#if data.boundingBoxes?is_sequence><#assign rawBoxes = data.boundingBoxes><#else><#assign rawBoxes = [data.boundingBoxes]></#if>
@@ -322,15 +331,53 @@ public class ${name}Block extends Block {
 	};
 	private static final AxisAlignedBB CUSTOM_BOUNDING_BOX = CUSTOM_BOUNDING_BOXES[0];
 
+	<#list definedStates as stateDef>
+	<#assign stateIsInteger = false>
+	<#list stateDef.stateMap.keySet() as mapProperty><#if stateDef.stateMap.get(mapProperty)?is_number><#assign stateIsInteger = true></#if></#list>
+	<#if (stateDef.boundingBoxes![])?has_content && (stateDef.stateMap!{})?has_content && stateIsInteger && hasPartialStateBox(stateDef)>
+	<#if stateDef.boundingBoxes?is_sequence><#assign stateRawBoxes = stateDef.boundingBoxes><#else><#assign stateRawBoxes = [stateDef.boundingBoxes]></#if>
+	<#assign stateBoxes = []>
+	<#list stateRawBoxes as box>
+	<#if !box.subtract><#assign stateBoxes += [box]></#if>
+	</#list>
+	<#if stateBoxes?has_content>
+	private static final AxisAlignedBB[] CUSTOM_STATE_BOXES_${stateDef?index} = new AxisAlignedBB[] {
+		<#list stateBoxes as box>new AxisAlignedBB(${(box.mx / 16)?c}D, ${(box.my / 16)?c}D, ${(box.mz / 16)?c}D, ${(box.Mx / 16)?c}D, ${(box.My / 16)?c}D, ${(box.Mz / 16)?c}D)<#sep>, </#list>
+	};
+	</#if>
+	</#if>
+	</#list>
+
 	@Override public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		<#list definedStates as stateDef>
+		<#assign stateIsInteger = false>
+		<#list stateDef.stateMap.keySet() as mapProperty><#if stateDef.stateMap.get(mapProperty)?is_number><#assign stateIsInteger = true></#if></#list>
+		<#if (stateDef.boundingBoxes![])?has_content && (stateDef.stateMap!{})?has_content && stateIsInteger && hasPartialStateBox(stateDef)>
+		if (<#list stateDef.stateMap.keySet() as mapProperty>state.getValue(${mapProperty.getName()?replace("CUSTOM:", "")?upper_case}) == ${stateDef.stateMap.get(mapProperty)?c}<#sep> && </#sep></#list>) {
+			return CUSTOM_STATE_BOXES_${stateDef?index}[0];
+		}
+		</#if>
+		</#list>
 		return CUSTOM_BOUNDING_BOX;
 	}
 
 	@Override public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return CUSTOM_BOUNDING_BOX;
+		return getBoundingBox(state, world, pos);
 	}
 
 	@Override public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, java.util.List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState) {
+		<#list definedStates as stateDef>
+		<#assign stateIsInteger = false>
+		<#list stateDef.stateMap.keySet() as mapProperty><#if stateDef.stateMap.get(mapProperty)?is_number><#assign stateIsInteger = true></#if></#list>
+		<#if (stateDef.boundingBoxes![])?has_content && (stateDef.stateMap!{})?has_content && stateIsInteger && hasPartialStateBox(stateDef)>
+		if (<#list stateDef.stateMap.keySet() as mapProperty>state.getValue(${mapProperty.getName()?replace("CUSTOM:", "")?upper_case}) == ${stateDef.stateMap.get(mapProperty)?c}<#sep> && </#sep></#list>) {
+			for (AxisAlignedBB box : CUSTOM_STATE_BOXES_${stateDef?index}) {
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, box);
+			}
+			return;
+		}
+		</#if>
+		</#list>
 		for (AxisAlignedBB box : CUSTOM_BOUNDING_BOXES) {
 			addCollisionBoxToList(pos, entityBox, collidingBoxes, box);
 		}

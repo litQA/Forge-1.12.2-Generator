@@ -651,6 +651,43 @@ The generated door and fence-gate variants now include the inherited
 `powered` property. Remaining non-fatal texture warnings in the converted melon
 workspace are cosmetic.
 
+## State-property and advancement batch (2026.3-1.0.38.105-beta)
+
+### Advancement lookups
+
+Advancement JSON can legitimately omit an ID when a workspace references a
+removed or renamed advancement. `PlayerAdvancements.getProgress` does not accept
+`null`, and a forced check for `melon_lover`, `melon_fanatic` or
+`melon_die_hard_fan` produced a ticking-player `NullPointerException` on milk
+use. Generated advancement procedures now guard the lookup result, and all
+boolean achievement checks share a null-safe `hasAdvancement` helper.
+
+### Suffixed integer properties
+
+Converted custom crops use properties such as `age_7` rather than the literal
+`age`. The generated blockstate property templates previously requested `age`,
+received `null`, and skipped the state write while still consuming the shard
+and spawning particles. A shared `getIntegerProperty(block, name)` helper first
+tries the exact name and then accepts a `PropertyInteger` prefixed by
+`name + "_"`. Get, set and with-property templates use that helper.
+
+### Per-state collision boxes
+
+Custom block state definitions can carry their own `boundingBoxes`. The block
+template now emits integer-state-specific AABB arrays and selects them from the
+live state before falling back to the top-level boxes. States whose only box is
+the full `[0,0,0 -> 16,16,16]` box are skipped so a default state cannot erase a
+partial top-level box. This restores farmland's 0.984375 selection height and
+gives Ender melon parts the half/quarter boxes for `EATEN` 1 and 2.
+
+### Verification
+
+All four workspaces regenerate with `failed=0` and complete a fresh Gradle
+build. Generated inspection confirms advancement null guards, `age_7`
+resolution through the property helper, partial farmland selection boxes, and
+per-state Ender melon AABBs. Manual crop ripening, milk removal, collision and
+melon part behavior remains for the user's real-client test.
+
 ## Interaction stabilization batch (2026.3-1.0.37.104-beta)
 
 ### Mob-effect expiry

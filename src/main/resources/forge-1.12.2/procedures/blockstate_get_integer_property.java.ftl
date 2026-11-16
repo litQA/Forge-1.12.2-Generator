@@ -6,5 +6,5 @@
 <#assign blockCode = "blockstate.getBlock()">
 <#assign stateCode = "blockstate">
 </#if>
-/*@int*/(${blockCode}.getBlockState().getProperty(${input$property}) instanceof net.minecraft.block.properties.PropertyInteger
-    ? ${stateCode}.getValue((net.minecraft.block.properties.PropertyInteger) ${blockCode}.getBlockState().getProperty(${input$property})) : -1)
+/*@int*/(getIntegerProperty(${blockCode}, ${input$property}) != null
+    ? ${stateCode}.getValue(getIntegerProperty(${blockCode}, ${input$property})) : -1)

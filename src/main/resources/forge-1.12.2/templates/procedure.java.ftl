@@ -227,11 +227,36 @@ public class ${name}Procedure {
 		return state;
 	}
 
+	private static PropertyInteger getIntegerProperty(Block block, String name) {
+		IProperty property = block.getBlockState().getProperty(name);
+		if (property instanceof PropertyInteger) {
+			return (PropertyInteger) property;
+		}
+		for (IProperty candidate : block.getBlockState().getProperties()) {
+			if (candidate instanceof PropertyInteger && candidate.getName().startsWith(name + "_")) {
+				return (PropertyInteger) candidate;
+			}
+		}
+		return null;
+	}
+
+	private static boolean hasAdvancement(Entity entity, String id) {
+		if (!(entity instanceof EntityPlayerMP)) {
+			return false;
+		}
+		EntityPlayerMP player = (EntityPlayerMP) entity;
+		if (player.mcServer == null) {
+			return false;
+		}
+		Advancement advancement = player.mcServer.getAdvancementManager().getAdvancement(new ResourceLocation(id));
+		return advancement != null && player.getAdvancements().getProgress(advancement).isDone();
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static IBlockState withIntegerProperty(IBlockState state, String property, int value) {
-		IProperty _property = state.getBlock().getBlockState().getProperty(property);
-		if (_property instanceof net.minecraft.block.properties.PropertyInteger) {
-			return state.withProperty((net.minecraft.block.properties.PropertyInteger) _property, value);
+		PropertyInteger _property = getIntegerProperty(state.getBlock(), property);
+		if (_property != null) {
+			return state.withProperty(_property, value);
 		}
 		return state;
 	}

@@ -1,5 +1,30 @@
 # Changelog
 
+# 2026.3-1.0.38.105-beta
+
+## New Content
+
+- Advancement procedures now share a generated `hasAdvancement` helper that
+  resolves the advancement database with null guards.
+- Blockstate integer-property procedures resolve MCreator suffixes such as
+  `age_7` when the requested property is the unprefixed baseline name (`age`).
+- Per-state custom bounding boxes are generated for integer block properties.
+  States that only contain a full-size box are skipped so they cannot override
+  a partial top-level collision or selection box.
+
+## Fixes
+
+- Missing advancements no longer cause `PlayerAdvancements.getProgress(null)`
+  crashes when an advancement check runs for an unregistered ID.
+- Crop right-click ripening and growth procedures now find suffixed custom crop
+  properties and advance the actual blockstate instead of silently skipping the
+  state write.
+- Ender melon parts use their `EATEN` selection/collision boxes and farmland no
+  longer falls back to the full-block selection box.
+- All four supplied workspaces regenerate, compile and build with the final
+  generator. Manual crop, milk, collision, GUI and melon part tests remain for
+  the user's real-client test.
+
 # 2026.3-1.0.37.104-beta
 
 ## New Content
