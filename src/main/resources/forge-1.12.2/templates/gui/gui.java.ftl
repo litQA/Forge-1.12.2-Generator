@@ -27,7 +27,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -66,7 +68,12 @@ public class ${name}Gui {
 			this.x = x;
 			this.y = y;
 			this.z = z;
-			this.internal = new InventoryBasic("", true, Math.max(1, ${data.getMaxSlotID() + 1}));
+			IInventory _internal = new InventoryBasic("", true, Math.max(1, ${data.getMaxSlotID() + 1}));
+			TileEntity _tile = world.getTileEntity(new BlockPos(x, y, z));
+			if (_tile instanceof IInventory) {
+				_internal = (IInventory) _tile;
+			}
+			this.internal = _internal;
 
 			<#if data.type == 1>
 			<#list data.components as component>
@@ -209,7 +216,7 @@ public class ${name}Gui {
 			}
 			</#if>
 
-			if (!player.world.isRemote) {
+			if (!player.world.isRemote && this.internal instanceof InventoryBasic) {
 				for (int i = 0; i < this.internal.getSizeInventory(); ++i) {
 					ItemStack stack = this.internal.getStackInSlot(i);
 					if (!stack.isEmpty()) {

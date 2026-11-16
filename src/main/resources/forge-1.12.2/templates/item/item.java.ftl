@@ -11,7 +11,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -116,6 +120,16 @@ public class ${name}Item extends <#if data.isMusicDisc>ItemRecord<#elseif data.i
 	<#if data.animation.getUnmappedValue()?lower_case != "none" && data.animation.getUnmappedValue()?lower_case != "">
 	@Override public EnumAction getItemUseAction(ItemStack itemstack) {
 		return ${generator.map(data.animation.getUnmappedValue()?lower_case, "itemuseanimations")};
+	}
+	</#if>
+
+	<#if hasProcedure(data.onRightClickedOnBlock)>
+	@Override public EnumActionResult onItemUse(EntityPlayer entity, World world, BlockPos pos, EnumHand hand, EnumFacing direction, float hitX, float hitY, float hitZ) {
+		EnumActionResult retval = super.onItemUse(entity, world, pos, hand, direction, hitX, hitY, hitZ);
+		double x = pos.getX(), y = pos.getY(), z = pos.getZ();
+		ItemStack itemstack = entity.getHeldItem(hand);
+		<@procedureOBJToCode data.onRightClickedOnBlock/>
+		return retval;
 	}
 	</#if>
 

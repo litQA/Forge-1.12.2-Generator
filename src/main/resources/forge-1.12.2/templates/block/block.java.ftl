@@ -51,6 +51,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -302,6 +303,57 @@ public class ${name}Block extends Block {
 	</#if>
 </#if>
 
+	<#assign customBoxes = []>
+	<#if blockBase != "Slab" && !data.isNotColidable>
+	<#if (data.boundingBoxes![])?has_content>
+	<#if data.boundingBoxes?is_sequence><#assign rawBoxes = data.boundingBoxes><#else><#assign rawBoxes = [data.boundingBoxes]></#if>
+	<#list rawBoxes as box>
+	<#assign boxIsFull = box.mx == 0 && box.my == 0 && box.mz == 0 && box.Mx == 16 && box.My == 16 && box.Mz == 16>
+	<#if !box.subtract && (!boxIsFull || rawBoxes?size gt 1)><#assign customBoxes += [box]></#if>
+	</#list>
+	</#if>
+	</#if>
+	<#if customBoxes?has_content>
+	<#assign solidBoxes = customBoxes>
+	<#if solidBoxes?has_content>
+	<#assign minX = 16><#assign minY = 16><#assign minZ = 16><#assign maxX = 0><#assign maxY = 0><#assign maxZ = 0>
+	<#list solidBoxes as box>
+	<#if box.mx lt minX><#assign minX = box.mx></#if>
+	<#if box.my lt minY><#assign minY = box.my></#if>
+	<#if box.mz lt minZ><#assign minZ = box.mz></#if>
+	<#if box.Mx gt maxX><#assign maxX = box.Mx></#if>
+	<#if box.My gt maxY><#assign maxY = box.My></#if>
+	<#if box.Mz gt maxZ><#assign maxZ = box.Mz></#if>
+	</#list>
+	private static final AxisAlignedBB[] CUSTOM_BOUNDING_BOXES = new AxisAlignedBB[] {
+		<#list solidBoxes as box>new AxisAlignedBB(${(box.mx / 16)?c}D, ${(box.my / 16)?c}D, ${(box.mz / 16)?c}D, ${(box.Mx / 16)?c}D, ${(box.My / 16)?c}D, ${(box.Mz / 16)?c}D)<#sep>, </#list>
+	};
+	private static final AxisAlignedBB CUSTOM_BOUNDING_BOX = new AxisAlignedBB(${(minX / 16)?c}D, ${(minY / 16)?c}D, ${(minZ / 16)?c}D, ${(maxX / 16)?c}D, ${(maxY / 16)?c}D, ${(maxZ / 16)?c}D);
+
+	@Override public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return CUSTOM_BOUNDING_BOX;
+	}
+
+	@Override public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return CUSTOM_BOUNDING_BOX;
+	}
+
+	@Override public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, java.util.List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState) {
+		for (AxisAlignedBB box : CUSTOM_BOUNDING_BOXES) {
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, box);
+		}
+	}
+
+	@Override public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+	</#if>
+	</#if>
+
 	<#if blockBase != "Slab" && data.isNotColidable>
 	@Override public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return NULL_AABB;
@@ -317,7 +369,7 @@ public class ${name}Block extends Block {
 	@Override public net.minecraft.util.BlockRenderLayer getBlockLayer() {
 		return net.minecraft.util.BlockRenderLayer.${data.transparencyType?upper_case};
 	}
-	<#if blockBase != "Slab">
+	<#if blockBase != "Slab" && ((customBoxes![])?has_content == false)>
 	@Override public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
@@ -380,6 +432,22 @@ public class ${name}Block extends Block {
 	@Override public TileEntity createTileEntity(World world, IBlockState state) {
 		return new ${package}.block.entity.${name}BlockEntity();
 	}
+
+	<#if data.inventoryDropWhenDestroyed>
+	@Override public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity tile = world.getTileEntity(pos);
+		if (tile instanceof IInventory) {
+			IInventory inventory = (IInventory) tile;
+			for (int i = 0; i < inventory.getSizeInventory(); i++) {
+				ItemStack stack = inventory.getStackInSlot(i);
+				if (!stack.isEmpty()) {
+					spawnAsEntity(world, pos, stack);
+				}
+			}
+		}
+		super.breakBlock(world, pos, state);
+	}
+	</#if>
 	</#if>
 
 	<#if blockBase != "Slab" && !data.useLootTableForDrops && data.customDrop?? && !data.customDrop.isEmpty()>
@@ -486,15 +554,25 @@ public class ${name}Block extends Block {
 	}
 	</#if>
 
-	<#if blockBase != "Slab" && hasProcedure(data.onRightClicked)>
+	<#if blockBase != "Slab" && (hasProcedure(data.onRightClicked) || ((data.openGUIOnRightClick!false) && (data.guiBoundTo!"")?has_content))>
 	@Override public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		double x = pos.getX(), y = pos.getY(), z = pos.getZ();
 		IBlockState blockstate = state;
 		Entity entity = player;
 		EnumFacing direction = facing;
 		ItemStack itemstack = player.getHeldItem(hand);
+		<#if (data.openGUIOnRightClick!false) && (data.guiBoundTo!"")?has_content>
+		if (!player.isSneaking()) {
+			if (!world.isRemote) {
+				${package}.init.${JavaModName}GUIs.open(player, ${package}.init.${JavaModName}GUIs.idForName("${data.guiBoundTo}"), world, pos.getX(), pos.getY(), pos.getZ());
+			}
+			return true;
+		}
+		</#if>
+		<#if hasProcedure(data.onRightClicked)>
 		<@procedureOBJToCode data.onRightClicked/>
-		return true;
+		</#if>
+		return <#if hasProcedure(data.onRightClicked)>true<#else>false</#if>;
 	}
 	</#if>
 }

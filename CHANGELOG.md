@@ -1,5 +1,37 @@
 # Changelog
 
+# 2026.3-1.0.36.103-beta
+
+## New Content
+
+- Custom block collision/selection boxes are generated from `boundingBoxes`.
+  Multi-box definitions use per-box collision and a union selection box; slabs
+  and non-collidable blocks keep their native boxes.
+- Block inventories now generate a real NBT-backed `IInventory` tile entity,
+  and a block bound to a GUI opens that GUI on non-sneak activation while
+  retaining the sneak right-click procedure path. Inventory contents drop when
+  the block is destroyed if requested.
+- Item on-block and on-air right-click procedure fields now generate item use
+  hooks, including converted food items.
+- `executeCommandGetResult` supports a 1.12.2 inventory bridge for
+  `data get block ... Items` / `data remove block ... Items`, allowing
+  converted stonecutter procedures to read and clear block inventories.
+
+## Fixes
+
+- Boxed numeric procedure dependencies are converted through `Number` before
+  primitive casts, fixing the Integer-to-Double crash when a mob effect ends.
+- Fixed `compareBlocks` using the first block for both operands, which blocked
+  the Ender teleport keybind by treating any same-metadata block as water.
+- Added a `minecraft_replaceable` special case for vanilla blocks without items
+  so melon placement procedures can target air and other non-item blocks.
+- Sound procedures skip empty mapped sound names instead of creating an invalid
+  `ResourceLocation`, which could abort stonecutter output logic.
+- All four supplied workspaces regenerate, compile and build with the final
+  generator. Their clients reach mod loading and integrated worlds; the
+  generated AABB, GUI, inventory and item hooks are statically verified.
+  Manual in-game interaction remains for the user's real-client test.
+
 # 2026.3-1.0.35.102-beta
 
 ## New Content

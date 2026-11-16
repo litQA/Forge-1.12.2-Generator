@@ -38,32 +38,68 @@
 </#function>
 
 <#macro procedureOBJToCode object="">
-    <#if hasProcedure(object) && object?is_hash>
-        <@procedureToCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace())/>
+    <#if hasProcedure(object)>
+        <#if object?is_hash>
+            <@procedureToCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace())/>
+        <#elseif object?is_string>
+            <#assign procedureElement = (generator.getWorkspace().getModElementByName(object))!>
+            <#if procedureElement?has_content>
+                <@procedureToCode name=object dependencies=procedureElement.getGeneratableElement().getDependencies()/>
+            </#if>
+        </#if>
     </#if>
 </#macro>
 
 <#macro procedureOBJToCodeWithTarget object="">
-    <#if hasProcedure(object) && object?is_hash>
-        <#assign values = {}>
-        <#assign values += {"entity": "target"}>
-        <@procedureCode object=object customVals=values/>
+    <#if hasProcedure(object)>
+        <#if object?is_hash>
+            <#assign values = {}>
+            <#assign values += {"entity": "target"}>
+            <@procedureCode object=object customVals=values/>
+        <#elseif object?is_string>
+            <#assign procedureElement = (generator.getWorkspace().getModElementByName(object))!>
+            <#if procedureElement?has_content>
+                <#assign values = {}>
+                <#assign values += {"entity": "target"}>
+                <@procedureToCode name=object dependencies=procedureElement.getGeneratableElement().getDependencies() customVals=values/>
+            </#if>
+        </#if>
     </#if>
 </#macro>
 
 <#macro procedureOBJToConditionCode object="">
-    <#if hasProcedure(object) && object?is_hash>
-        <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace())/>
+    <#if hasProcedure(object)>
+        <#if object?is_hash>
+            <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace())/>
+        <#elseif object?is_string>
+            <#assign procedureElement = (generator.getWorkspace().getModElementByName(object))!>
+            <#if procedureElement?has_content>
+                <@procedureToRetvalCode name=object dependencies=procedureElement.getGeneratableElement().getDependencies()/>
+            <#else>
+                true
+            </#if>
+        </#if>
     <#else>
         true
     </#if>
 </#macro>
 
 <#macro procedureOBJToConditionCodeWithStack object="">
-    <#if hasProcedure(object) && object?is_hash>
-        <#assign values = {}>
-        <#assign values += {"itemstack": "stack"}>
-        <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) customVals=values/>
+    <#if hasProcedure(object)>
+        <#if object?is_hash>
+            <#assign values = {}>
+            <#assign values += {"itemstack": "stack"}>
+            <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace()) customVals=values/>
+        <#elseif object?is_string>
+            <#assign procedureElement = (generator.getWorkspace().getModElementByName(object))!>
+            <#assign values = {}>
+            <#assign values += {"itemstack": "stack"}>
+            <#if procedureElement?has_content>
+                <@procedureToRetvalCode name=object dependencies=procedureElement.getGeneratableElement().getDependencies() customVals=values/>
+            <#else>
+                true
+            </#if>
+        </#if>
     <#else>
         true
     </#if>

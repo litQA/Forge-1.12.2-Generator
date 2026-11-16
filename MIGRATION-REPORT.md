@@ -651,6 +651,50 @@ The generated door and fence-gate variants now include the inherited
 `powered` property. Remaining non-fatal texture warnings in the converted melon
 workspace are cosmetic.
 
+## Interaction compatibility batch (2026.3-1.0.36.103-beta)
+
+### Collision and placement
+
+Custom block `boundingBoxes` now generate pixel-to-block AABBs. Multi-box
+definitions use each non-subtract box for collision and a union box for the
+selection outline; single full-size defaults are skipped, and slab or
+non-collidable blocks keep their native overrides. Subtract boxes are not
+implemented and are ignored.
+
+`minecraft_replaceable` uses a dedicated block check because
+`Item.getItemFromBlock(Blocks.AIR)` returns `Items.AIR`, not `null`. This lets
+converted placement procedures treat air, fluids, fire and similar no-item
+blocks as replaceable.
+
+### Blocks, inventories and GUIs
+
+Blocks with `hasInventory` generate an `IInventory` tile entity with persistent
+`Items` NBT, stack limits and optional drop-on-break. A block bound to a GUI and
+configured to open it on right-click opens the generated handler on non-sneak
+activation; sneak activation retains the configured procedure path. GUI slot
+containers bind to the tile inventory at the opened position.
+
+The generated stonecutter command bridge intercepts `data get block ... Items`
+and `data remove block ... Items` for 1.12.2, reading and clearing the tile
+inventory directly instead of issuing unavailable commands.
+
+### Items, procedures and Ender behavior
+
+Item elements now generate `onItemUse`/`onItemRightClick` for string procedure
+fields, including food items. Numeric procedure dependencies are cast through
+`Number`, fixing boxed Integer-to-Double failures when a mob effect ends. The
+shared `compareBlocks` helper now compares both block states correctly, and
+sound procedures skip empty mapped sound names.
+
+### Verification
+
+`VALIDATION PASSED` reports 82 YAML documents, 758 FTL templates and 143
+template references. All four supplied workspaces regenerate and compile after
+the final templates. Croparium and melon were rebuilt and launched with fresh
+mod jars; enchants and everrose also reach Forge mod loading. Manual collision,
+GUI/inventory, stonecutter, melon-placement and Ender-key interaction remains
+for the user's real-client test.
+
 ## Croparium runtime compatibility batch (2026.3-1.0.35.102-beta)
 
 ### Tags and Ore Dictionary
@@ -723,6 +767,7 @@ JSON errors. Manual right-click/placement gameplay remains for user testing.
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 | 34.101 startup regression | Four converted workspaces regenerate and compile. `test-croparium-lite` and `test-melon` previously reached the client main menu; final `test-everrose` and `test-enchants` clients loaded Forge and the texture atlas without startup exceptions or `MissingVariantException`. Gameplay behavior remains for user testing. |
 | 35.102 runtime compatibility | Four workspaces regenerate, compile, build and join an integrated world. Croparium registers flattened composite tags (`cp_lib_farmlands` 22, `cp_lib_crops` 40, `cp_lib_embryo_materials` 248, `cp_lib_embryo_shards` 8), emits sorted reactor variants, uses 1.12 texture aliases, loads loot tables through `ForgeHooks.loadLootTable`, and starts a dedicated server with no `EntityPlayerSP`/loot-context errors. Manual tag interaction remains for user testing. |
+| 36.103 interaction compatibility | Four workspaces regenerate and build. Generated blocks with partial custom boxes emit per-box collision and union selection AABBs; block inventories persist NBT and bound GUIs use the tile inventory; stonecutter procedures read/clear inventories without `/data`; item on-use hooks, boxed numeric casts, replaceable placement and Ender comparison are generated. Clients reach Forge mod loading with fresh jars; manual gameplay remains for user testing. |
 
 The generated-mod build used the exact workspace base, templates and generated
 sources that are packaged in the plugin archive. The build was started through

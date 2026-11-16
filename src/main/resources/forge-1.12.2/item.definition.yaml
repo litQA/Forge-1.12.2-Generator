@@ -30,7 +30,7 @@ templates:
 field_exclusions: [guiTexture, customProperties, states, animations, immuneToFire,
                    isPiglinCurrency, repairItems, glowCondition,
                    guiBoundTo, openGUIOnRightClick, inventorySize, inventoryStackSize,
-                   onRightClickedInAir, onRightClickedOnBlock, onCrafted, onEntityHitWith,
+                   onCrafted, onEntityHitWith,
                    onItemInInventoryTick, onItemInUseTick, onStoppedUsing, onEntitySwing,
                    onDroppedByPlayer, onFinishUsingItem, everyTickWhileUsing,
                    onItemEntityDestroyed, enableRanged, shootConstantly, rangedItemChargesPower,

@@ -32,12 +32,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.DamageSource;
@@ -160,7 +162,7 @@ public class ${name}Procedure {
 			return<#if return_type??> <#if return_type.getJavaType(generator.getWorkspace()) == "boolean">false<#else>${return_type.getDefaultValue(generator.getWorkspace())}</#if></#if>;
 		}
 		</#list>
-		<#if return_type??>return </#if>execute(<#list dependencies as dependency>(${dependency.getType(generator.getWorkspace())}) dependencies.get("${dependency.getName()}")<#sep>, </#list>);
+		<#if return_type??>return </#if>execute(<#list dependencies as dependency><#assign depType = dependency.getType(generator.getWorkspace())><#if depType == "double">((Number) dependencies.get("${dependency.getName()}")).doubleValue()<#elseif depType == "float">((Number) dependencies.get("${dependency.getName()}")).floatValue()<#elseif depType == "int">((Number) dependencies.get("${dependency.getName()}")).intValue()<#elseif depType == "long">((Number) dependencies.get("${dependency.getName()}")).longValue()<#elseif depType == "short">((Number) dependencies.get("${dependency.getName()}")).shortValue()<#elseif depType == "byte">((Number) dependencies.get("${dependency.getName()}")).byteValue()<#else>(${depType}) dependencies.get("${dependency.getName()}")</#if><#sep>, </#list>);
 	}
 	<#else>
 	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> executeProcedure(Map<String, Object> dependencies) {
@@ -176,7 +178,7 @@ public class ${name}Procedure {
 		}
 		</#list>
 
-		<#if return_type??>return </#if>execute(<#list dependencies as dependency>(${dependency.getType(generator.getWorkspace())}) dependencies.get("${dependency.getName()}")<#sep>, </#list>);
+		<#if return_type??>return </#if>execute(<#list dependencies as dependency><#assign depType = dependency.getType(generator.getWorkspace())><#if depType == "double">((Number) dependencies.get("${dependency.getName()}")).doubleValue()<#elseif depType == "float">((Number) dependencies.get("${dependency.getName()}")).floatValue()<#elseif depType == "int">((Number) dependencies.get("${dependency.getName()}")).intValue()<#elseif depType == "long">((Number) dependencies.get("${dependency.getName()}")).longValue()<#elseif depType == "short">((Number) dependencies.get("${dependency.getName()}")).shortValue()<#elseif depType == "byte">((Number) dependencies.get("${dependency.getName()}")).byteValue()<#else>(${depType}) dependencies.get("${dependency.getName()}")</#if><#sep>, </#list>);
 	}
 	</#if>
 
@@ -191,6 +193,17 @@ public class ${name}Procedure {
 	}
 
 	private static boolean isBlockInOreDictionary(String tag, Block block) {
+		// Blocks without an item cannot be represented in the Ore Dictionary.
+		if ("minecraft_replaceable".equals(tag)) {
+			if (block == net.minecraft.init.Blocks.AIR || block == net.minecraft.init.Blocks.WATER
+					|| block == net.minecraft.init.Blocks.FLOWING_WATER || block == net.minecraft.init.Blocks.LAVA
+					|| block == net.minecraft.init.Blocks.FLOWING_LAVA || block == net.minecraft.init.Blocks.FIRE
+					|| block == net.minecraft.init.Blocks.TALLGRASS || block == net.minecraft.init.Blocks.DEADBUSH
+					|| block == net.minecraft.init.Blocks.VINE || block == net.minecraft.init.Blocks.SNOW_LAYER
+					|| block == net.minecraft.init.Blocks.REEDS || block == net.minecraft.init.Blocks.DOUBLE_PLANT) {
+				return true;
+			}
+		}
 		for (ItemStack stack : OreDictionary.getOres(tag)) {
 			if (Block.getBlockFromItem(stack.getItem()) == block) {
 				return true;
