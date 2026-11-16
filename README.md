@@ -527,7 +527,7 @@ villager, command/function/game-rule, music-disc, trigger and variable changes
 in `1.0.30.96`/`1.0.31.98` require real-client testing before further
 development. The workspace-conversion fix in `1.0.32.99` also needs a real
 Fabric-to-Forge conversion test in MCreator. The four supplied converted
-workspaces compile, build and join an integrated world in `1.0.36.103`. Custom
+workspaces compile, build and reach Forge mod loading in `1.0.36.103`. Custom
 collision, block GUI/inventory, stonecutter output, melon placement, tag
 right-click and the Ender key/effect flow still need real-client gameplay
 testing; the conversion UI flow also remains to be rechecked.
