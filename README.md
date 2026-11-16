@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.38.105-beta` |
+| Plugin version | `2026.3-1.0.39.106-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for generated Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -17,7 +17,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | Java toolchain for the mod | 8 |
 | License | CC BY-NC 4.0 (see `LICENSE`) |
 
-Current snapshot: `2026.3-1.0.38.105-beta`. It includes the generator
+Current snapshot: `2026.3-1.0.39.106-beta`. It includes the generator
 foundation, creative tabs, items, recipes, blocks, plants, fluids, tools,
 armor, enchantments, attributes, item extensions, native loot tables, potion
 effects/items, procedures, dimensions, biomes, custom trees, portals/igniters,
@@ -40,7 +40,9 @@ slot placement checks, non-full multi-box selection/collision, deterministic
 item on-use results, and mob-effect expiry guards that prevent Ender Resonance
 recursion or lingering. The 1.0.38.105 pass adds safe advancement lookups,
 suffixed crop-property resolution, and per-state custom collision boxes for
-integer block properties.
+integer block properties. The 1.0.39.106 pass correctly maps block
+`onTickUpdate` to `randomTick` when `tickRandomly` is enabled and no longer
+reschedules zero-rate update ticks every game tick.
 The complete, implementation-oriented support overview is in
 [docs/SUPPORT-MATRIX.md](docs/SUPPORT-MATRIX.md); trigger levels are in
 [docs/TRIGGER-CLASSIFICATION.md](docs/TRIGGER-CLASSIFICATION.md); known

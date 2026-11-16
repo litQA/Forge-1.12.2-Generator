@@ -1,5 +1,19 @@
 # Changelog
 
+# 2026.3-1.0.39.106-beta
+
+## Fixes
+
+- Block `onTickUpdate` now respects `tickRandomly`. Random-tick blocks generate
+  `randomTick` and call `setTickRandomly(true)`, instead of generating
+  `updateTick` that schedules itself again with delay `0`.
+- Update-tick rescheduling is emitted only for a positive `tickRate`; zero-rate
+  blocks no longer execute their tick procedure every game tick.
+- Blocks with both `onRandomUpdateEvent` and random `onTickUpdate` share one
+  `randomTick` override, avoiding duplicate methods.
+- Croparium farmland now uses random-tick calls without `scheduleUpdate`; all
+  four supplied workspaces regenerate, compile and build with this change.
+
 # 2026.3-1.0.38.105-beta
 
 ## New Content

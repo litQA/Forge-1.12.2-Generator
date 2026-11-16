@@ -651,6 +651,34 @@ The generated door and fence-gate variants now include the inherited
 `powered` property. Remaining non-fatal texture warnings in the converted melon
 workspace are cosmetic.
 
+## Block tick semantics batch (2026.3-1.0.39.106-beta)
+
+### Update tick versus random tick
+
+The block template previously emitted `updateTick` for every `onTickUpdate`
+procedure and then called `world.scheduleUpdate(pos, this, tickRate)`. With the
+converted farmland data (`tickRandomly: true`, `tickRate: 0`), this scheduled a
+new update with zero delay on every invocation, so the moisture/drying procedure
+ran once per game tick.
+
+The template now follows MCreator's modern semantics:
+
+- `tickRandomly: true` registers `setTickRandomly(true)` and generates
+  `randomTick` for `onTickUpdate`; no explicit update is scheduled.
+- Non-random `onTickUpdate` generates `updateTick` and reschedules only when
+  `tickRate` is positive. A zero rate no longer creates a self-perpetuating
+  every-tick loop.
+- `onBlockAdded` schedules the initial non-random tick only under the same
+  positive-rate condition.
+- Blocks that use both `onRandomUpdateEvent` and a random `onTickUpdate` emit a
+  single combined `randomTick` override.
+
+### Verification
+
+All 22 generated Croparium farmland classes use `setTickRandomly(true)` and
+`randomTick`, and contain no `scheduleUpdate` call. All four workspaces
+regenerate with `failed=0`, compile, and complete a fresh Gradle build.
+
 ## State-property and advancement batch (2026.3-1.0.38.105-beta)
 
 ### Advancement lookups

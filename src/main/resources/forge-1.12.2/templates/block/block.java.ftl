@@ -507,13 +507,13 @@ public class ${name}Block extends Block {
 	}
 	</#if>
 
-	<#if hasProcedure(data.onRandomUpdateEvent)>
+	<#if data.tickRandomly || hasProcedure(data.onRandomUpdateEvent)>
 	{
 		setTickRandomly(true);
 	}
 	</#if>
 
-	<#if hasProcedure(data.onTickUpdate)>
+	<#if hasProcedure(data.onTickUpdate) && !data.tickRandomly>
 	@Override public int tickRate(World world) {
 		return ${data.tickRate?c};
 	}
@@ -526,11 +526,13 @@ public class ${name}Block extends Block {
 		EnumFacing direction = null;
 		ItemStack itemstack = ItemStack.EMPTY;
 		<@procedureOBJToCode data.onTickUpdate/>
+		<#if data.tickRate gt 0>
 		world.scheduleUpdate(pos, this, this.tickRate(world));
+		</#if>
 	}
 	</#if>
 
-	<#if hasProcedure(data.onRandomUpdateEvent)>
+	<#if hasProcedure(data.onRandomUpdateEvent) || (hasProcedure(data.onTickUpdate) && data.tickRandomly)>
 	@Override public void randomTick(World world, BlockPos pos, IBlockState state, java.util.Random rand) {
 		super.randomTick(world, pos, state, rand);
 		double x = pos.getX(), y = pos.getY(), z = pos.getZ();
@@ -538,11 +540,16 @@ public class ${name}Block extends Block {
 		Entity entity = null;
 		EnumFacing direction = null;
 		ItemStack itemstack = ItemStack.EMPTY;
+		<#if hasProcedure(data.onRandomUpdateEvent)>
 		<@procedureOBJToCode data.onRandomUpdateEvent/>
+		</#if>
+		<#if hasProcedure(data.onTickUpdate) && data.tickRandomly>
+		<@procedureOBJToCode data.onTickUpdate/>
+		</#if>
 	}
 	</#if>
 
-	<#if hasProcedure(data.onBlockAdded) || hasProcedure(data.onTickUpdate)>
+	<#if hasProcedure(data.onBlockAdded) || (hasProcedure(data.onTickUpdate) && !data.tickRandomly && data.tickRate gt 0)>
 	@Override public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		super.onBlockAdded(world, pos, state);
 		double x = pos.getX(), y = pos.getY(), z = pos.getZ();
@@ -551,7 +558,7 @@ public class ${name}Block extends Block {
 		EnumFacing direction = null;
 		ItemStack itemstack = ItemStack.EMPTY;
 		<@procedureOBJToCode data.onBlockAdded/>
-		<#if hasProcedure(data.onTickUpdate)>
+		<#if hasProcedure(data.onTickUpdate) && !data.tickRandomly && data.tickRate gt 0>
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 		</#if>
 	}
