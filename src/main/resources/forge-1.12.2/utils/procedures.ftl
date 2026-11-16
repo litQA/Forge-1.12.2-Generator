@@ -30,8 +30,23 @@
 </#macro>
 
 <#function hasReturnValueOf object type>
-    <#if hasProcedure(object) && object.getReturnValueType??>
-        <#return object.getReturnValueType(generator.getWorkspace()) == type>
+    <#if !hasProcedure(object)>
+        <#return false>
+    <#elseif object?is_string>
+        <#assign procedureElement = (generator.getWorkspace().getModElementByName(object))!>
+        <#if !procedureElement?has_content>
+            <#return false>
+        </#if>
+        <#assign procedureObject = procedureElement.getGeneratableElement()>
+        <#if type == "EnumActionResult" || type == "ActionResultType">
+            <#-- Procedure return types are encoded in the Blockly XML; generatable elements do not expose them directly. -->
+            <#return (procedureObject.procedurexml!"")?contains("ActionResultType")>
+        </#if>
+    <#else>
+        <#assign procedureObject = object>
+    </#if>
+    <#if procedureObject.getReturnValueType??>
+        <#return procedureObject.getReturnValueType(generator.getWorkspace()) == type>
     <#else>
         <#return false>
     </#if>
@@ -165,8 +180,13 @@
 </#macro>
 
 <#macro procedureOBJToInteractionResultCode object="">
-    <#if hasProcedure(object) && object?is_hash && object.getDependencies??>
-        (EnumActionResult) <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace())/>
+    <#if hasReturnValueOf(object, "EnumActionResult") || hasReturnValueOf(object, "ActionResultType")>
+        <#if object?is_hash>
+            (EnumActionResult) <@procedureToRetvalCode name=object.getName() dependencies=object.getDependencies(generator.getWorkspace())/>
+        <#elseif object?is_string>
+            <#assign procedureElement = (generator.getWorkspace().getModElementByName(object))!>
+            (EnumActionResult) <@procedureToRetvalCode name=object dependencies=procedureElement.getGeneratableElement().getDependencies()/>
+        </#if>
     <#else>
         EnumActionResult.PASS
     </#if>

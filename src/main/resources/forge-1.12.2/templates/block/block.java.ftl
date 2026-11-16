@@ -317,18 +317,10 @@ public class ${name}Block extends Block {
 	<#assign solidBoxes = customBoxes>
 	<#if solidBoxes?has_content>
 	<#assign minX = 16><#assign minY = 16><#assign minZ = 16><#assign maxX = 0><#assign maxY = 0><#assign maxZ = 0>
-	<#list solidBoxes as box>
-	<#if box.mx lt minX><#assign minX = box.mx></#if>
-	<#if box.my lt minY><#assign minY = box.my></#if>
-	<#if box.mz lt minZ><#assign minZ = box.mz></#if>
-	<#if box.Mx gt maxX><#assign maxX = box.Mx></#if>
-	<#if box.My gt maxY><#assign maxY = box.My></#if>
-	<#if box.Mz gt maxZ><#assign maxZ = box.Mz></#if>
-	</#list>
 	private static final AxisAlignedBB[] CUSTOM_BOUNDING_BOXES = new AxisAlignedBB[] {
 		<#list solidBoxes as box>new AxisAlignedBB(${(box.mx / 16)?c}D, ${(box.my / 16)?c}D, ${(box.mz / 16)?c}D, ${(box.Mx / 16)?c}D, ${(box.My / 16)?c}D, ${(box.Mz / 16)?c}D)<#sep>, </#list>
 	};
-	private static final AxisAlignedBB CUSTOM_BOUNDING_BOX = new AxisAlignedBB(${(minX / 16)?c}D, ${(minY / 16)?c}D, ${(minZ / 16)?c}D, ${(maxX / 16)?c}D, ${(maxY / 16)?c}D, ${(maxZ / 16)?c}D);
+	private static final AxisAlignedBB CUSTOM_BOUNDING_BOX = CUSTOM_BOUNDING_BOXES[0];
 
 	@Override public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return CUSTOM_BOUNDING_BOX;

@@ -126,6 +126,8 @@ base_templates:
   - template: elementinits/commandparameters.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/command/CommandParameters.java"
     condition: "${w.getGElementsOfType('command')?size != 0}"
+  - template: elementinits/blocktags.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBlockTags.java"
   - template: elementinits/oredictionary.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameOreDictionary.java"
     condition: "${w.getWorkspace().getTagElements()?keys?size != 0}"

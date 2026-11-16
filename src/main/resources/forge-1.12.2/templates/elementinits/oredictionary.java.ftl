@@ -8,6 +8,20 @@ import net.minecraft.item.ItemStack;
 
 public class ${JavaModName}OreDictionary {
 
+	private static void registerBlockTag(String tag, net.minecraft.block.Block block) {
+		if (block == null)
+			return;
+		${JavaModName}BlockTags.add(tag, block);
+		if (block == Blocks.WATER) {
+			${JavaModName}BlockTags.add(tag, Blocks.FLOWING_WATER);
+		} else if (block == Blocks.LAVA) {
+			${JavaModName}BlockTags.add(tag, Blocks.FLOWING_LAVA);
+		}
+		if (net.minecraft.item.Item.getItemFromBlock(block) != Items.AIR) {
+			net.minecraftforge.oredict.OreDictionary.registerOre(tag, block);
+		}
+	}
+
 	public static void init() {
 <#assign tagElements = w.getWorkspace().getTagElements()>
 <#list tagElements.entrySet() as tagEntry>

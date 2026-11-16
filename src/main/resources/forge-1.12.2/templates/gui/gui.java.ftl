@@ -113,7 +113,7 @@ public class ${name}Gui {
 				<#if component.getClass().getSimpleName() == "InputSlot">
 				<#if component.disablePlacement?? && (hasProcedure(component.disablePlacement) || component.disablePlacement.getFixedValue())>
 				@Override public boolean isItemValid(ItemStack stack) {
-					return <@procedureOBJToConditionCodeWithStack component.disablePlacement/>;
+					return !(<@procedureOBJToConditionCodeWithStack component.disablePlacement/>);
 				}
 				<#elseif component.inputLimit?? && component.inputLimit.getUnmappedValue()?has_content && !component.inputLimit.getUnmappedValue()?starts_with("TAG:")>
 				@Override public boolean isItemValid(ItemStack stack) {

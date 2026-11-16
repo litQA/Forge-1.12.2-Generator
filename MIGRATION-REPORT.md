@@ -651,6 +651,49 @@ The generated door and fence-gate variants now include the inherited
 `powered` property. Remaining non-fatal texture warnings in the converted melon
 workspace are cosmetic.
 
+## Interaction stabilization batch (2026.3-1.0.37.104-beta)
+
+### Mob-effect expiry
+
+1.12.2 natural expiry calls `onFinishedPotionEffect` before the expiring entry is
+removed, while milk/cure calls it while the old effect is still present. The
+generated expiry path now runs the procedure only when the effect is absent or
+its duration is non-positive. After a natural-expiry procedure, any re-add of the
+same effect is removed. Milk/cure therefore skips the ending procedure instead of
+re-adding the effect recursively, and a natural end cannot leave a lingering
+lower-level effect.
+
+### Itemless block tags and GUI slots
+
+Ore Dictionary cannot represent blocks without an item, so itemless crops,
+plants and fluids were dropped from block tags. A generated `BlockTags` map now
+records every block-tag entry independently of the Ore Dictionary; the
+Ore Dictionary path remains for item-backed entries. Water and lava entries also
+include their flowing block variants so farmland moisture scans work at source
+and flowing positions.
+
+`disablePlacement` GUI conditions mean “true = cannot place.” The generated
+`Slot.isItemValid` now negates that condition, so matching tag items enter the
+slot instead of every item being rejected.
+
+### Collision and item placement
+
+Custom multi-box blocks retain per-box collision through
+`addCollisionBoxToList`, but the base selection/collision AABB now uses the first
+custom box rather than the full union. Item on-block procedures return
+`EnumActionResult.SUCCESS` after execution instead of the always-PASS result
+from `super`, keeping client prediction and server placement consistent.
+
+### Verification
+
+All four supplied workspaces regenerate with `failed=0` and complete a fresh
+Gradle build. Validator reports 82 YAML documents, 759 FTL templates and 144
+template references. Generated inspection confirms `BlockTags` registration,
+negated GUI slot validity, the expiry guard/removal, first-box AABB methods and
+the item use return. Manual milk, natural-expiry, collision, GUI, tagged
+right-click, farmland and melon-placement behavior remains for the user's
+real-client test.
+
 ## Interaction compatibility batch (2026.3-1.0.36.103-beta)
 
 ### Collision and placement
@@ -767,6 +810,7 @@ JSON errors. Manual right-click/placement gameplay remains for user testing.
 | ForgeGradle 2.3 / Gradle 4.10.3 (superseded) | Failed during MCreator synchronization with `Unsupported class file major version 69`. The old chain cannot parse or load MCreator's Java 25 synchronization action. |
 | 34.101 startup regression | Four converted workspaces regenerate and compile. `test-croparium-lite` and `test-melon` previously reached the client main menu; final `test-everrose` and `test-enchants` clients loaded Forge and the texture atlas without startup exceptions or `MissingVariantException`. Gameplay behavior remains for user testing. |
 | 35.102 runtime compatibility | Four workspaces regenerate, compile, build and join an integrated world. Croparium registers flattened composite tags (`cp_lib_farmlands` 22, `cp_lib_crops` 40, `cp_lib_embryo_materials` 248, `cp_lib_embryo_shards` 8), emits sorted reactor variants, uses 1.12 texture aliases, loads loot tables through `ForgeHooks.loadLootTable`, and starts a dedicated server with no `EntityPlayerSP`/loot-context errors. Manual tag interaction remains for user testing. |
+| 37.104 interaction stabilization | Four workspaces regenerate with `failed=0` and build. Generated block tags now include itemless crops/fluids plus flowing water/lava aliases; GUI slot placement checks are negated; multi-box base AABBs use the first custom box; item on-use returns SUCCESS; mob-effect expiry skips cure recursion and removes a same-effect re-add. Manual gameplay remains for user testing. |
 | 36.103 interaction compatibility | Four workspaces regenerate and build. Generated blocks with partial custom boxes emit per-box collision and union selection AABBs; block inventories persist NBT and bound GUIs use the tile inventory; stonecutter procedures read/clear inventories without `/data`; item on-use hooks, boxed numeric casts, replaceable placement and Ender comparison are generated. Clients reach Forge mod loading with fresh jars; manual gameplay remains for user testing. |
 
 The generated-mod build used the exact workspace base, templates and generated

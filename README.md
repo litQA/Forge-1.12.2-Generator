@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.36.103-beta` |
+| Plugin version | `2026.3-1.0.37.104-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2847` |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for generated Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -17,7 +17,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | Java toolchain for the mod | 8 |
 | License | CC BY-NC 4.0 (see `LICENSE`) |
 
-Current snapshot: `2026.3-1.0.36.103-beta`. It includes the generator
+Current snapshot: `2026.3-1.0.37.104-beta`. It includes the generator
 foundation, creative tabs, items, recipes, blocks, plants, fluids, tools,
 armor, enchantments, attributes, item extensions, native loot tables, potion
 effects/items, procedures, dimensions, biomes, custom trees, portals/igniters,
@@ -34,7 +34,11 @@ loot-table loading and dedicated-server-safe proxy isolation. The 1.0.36.103
 interaction compatibility pass adds multi-box custom block collision boxes,
 block inventories with GUI binding, item on-use procedure hooks, a 1.12.2
 inventory bridge for stonecutter procedures, boxed-number procedure dependency
-casts, and safer melon placement/teleport checks.
+casts, and safer melon placement/teleport checks. The 1.0.37.104 stabilization
+pass adds itemless block-tag registration, flowing-fluid aliases, corrected GUI
+slot placement checks, non-full multi-box selection/collision, deterministic
+item on-use results, and mob-effect expiry guards that prevent Ender Resonance
+recursion or lingering.
 The complete, implementation-oriented support overview is in
 [docs/SUPPORT-MATRIX.md](docs/SUPPORT-MATRIX.md); trigger levels are in
 [docs/TRIGGER-CLASSIFICATION.md](docs/TRIGGER-CLASSIFICATION.md); known
@@ -406,10 +410,10 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.36.103-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.37.104-beta`.
 2. Generator validator on processed resources (YAML, mappings, FreeMarker
-   syntax, template references): `VALIDATION PASSED` (82 YAML documents, 758
-   FTL templates, 143 template references).
+   syntax, template references): `VALIDATION PASSED` (82 YAML documents, 759
+   FTL templates, 144 template references).
 3. The full `test_workspaces/test-1/src/main/java` source tree was compiled
    against the 1.12.2 classes with `javac --release 8`: `PASSED`. This includes
    the custom block loot-table drop path and potion attribute cleanup path.
@@ -467,7 +471,7 @@ plugin-branch-2026.3/
     command/function, game-rule and music-disc templates were rendered with
     representative data and compiled with `javac --release 8`: `PASSED`.
 24. The plugin build reported `VALIDATION PASSED` and `BUILD SUCCESSFUL` for
-    `2026.3-1.0.36.103-beta`.
+    `2026.3-1.0.37.104-beta`.
 25. The variable render probe generated the variables class and proxies for all
     configured types/scopes; the generated Java compiled with `compileJava`
     without javac errors.
@@ -516,6 +520,17 @@ plugin-branch-2026.3/
       Ender teleport water comparison uses the target block state correctly.
     - Manual GUI, collision and right-click gameplay checks remain for the
       user's real-client test.
+32. The 1.0.37.104 stabilization pass was verified against the four workspaces:
+    - Every workspace regenerates with `failed=0` and completes a fresh
+      `gradlew build`.
+    - Generated `CpLibModBlockTags` preserves itemless crop/plant/fluid block
+      tags; Ore Dictionary and block-tag procedure lookups consult it.
+    - GUI slot placement conditions are negated for `isItemValid`, mob-effect
+      expiry removes a same-effect re-add, and custom multi-box
+      selection/collision uses the first box while retaining per-box collision.
+    - Item on-use procedures return `EnumActionResult.SUCCESS`; manual milk,
+      natural-expiry, collision, GUI, tagged right-click, farmland and melon
+      placement behavior remains for the user's real-client test.
 
 The latest user tests confirmed custom dimension portals, skyboxes, terrain,
 cave/Nether Mixin basics, custom biome/weight behavior and chunk seam fixes.
@@ -527,7 +542,7 @@ villager, command/function/game-rule, music-disc, trigger and variable changes
 in `1.0.30.96`/`1.0.31.98` require real-client testing before further
 development. The workspace-conversion fix in `1.0.32.99` also needs a real
 Fabric-to-Forge conversion test in MCreator. The four supplied converted
-workspaces compile, build and reach Forge mod loading in `1.0.36.103`. Custom
+workspaces compile, build and reach Forge mod loading in `1.0.37.104`. Custom
 collision, block GUI/inventory, stonecutter output, melon placement, tag
 right-click and the Ender key/effect flow still need real-client gameplay
 testing; the conversion UI flow also remains to be rechecked.

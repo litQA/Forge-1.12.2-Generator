@@ -82,11 +82,17 @@ public class ${name}MobEffect extends Potion {
 		}
 		</#list>
 		<#if hasProcedure(data.onExpired)>
-		double x = entity.posX;
-		double y = entity.posY;
-		double z = entity.posZ;
-		World world = entity.world;
-		<@procedureOBJToCode data.onExpired/>
+		// Milk and upgrades remove a still-running effect; only run the expiry logic for natural expiry.
+		PotionEffect activeEffect = entity.getActivePotionEffect(this);
+		if (activeEffect == null || activeEffect.getDuration() <= 0) {
+			double x = entity.posX;
+			double y = entity.posY;
+			double z = entity.posZ;
+			World world = entity.world;
+			<@procedureOBJToCode data.onExpired/>
+			// An expiry handler must not revive the effect it is handling.
+			entity.removeActivePotionEffect(this);
+		}
 		</#if>
 	}
 	</#if>

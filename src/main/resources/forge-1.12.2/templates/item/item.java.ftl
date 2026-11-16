@@ -128,8 +128,12 @@ public class ${name}Item extends <#if data.isMusicDisc>ItemRecord<#elseif data.i
 		EnumActionResult retval = super.onItemUse(entity, world, pos, hand, direction, hitX, hitY, hitZ);
 		double x = pos.getX(), y = pos.getY(), z = pos.getZ();
 		ItemStack itemstack = entity.getHeldItem(hand);
+		<#if hasReturnValueOf(data.onRightClickedOnBlock, "EnumActionResult") || hasReturnValueOf(data.onRightClickedOnBlock, "ActionResultType")>
+		return <@procedureOBJToInteractionResultCode data.onRightClickedOnBlock/>;
+		<#else>
 		<@procedureOBJToCode data.onRightClickedOnBlock/>
-		return retval;
+		return EnumActionResult.SUCCESS;
+		</#if>
 	}
 	</#if>
 

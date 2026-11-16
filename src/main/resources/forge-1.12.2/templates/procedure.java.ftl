@@ -204,6 +204,9 @@ public class ${name}Procedure {
 				return true;
 			}
 		}
+		if (${package}.init.${JavaModName}BlockTags.contains(tag, block)) {
+			return true;
+		}
 		for (ItemStack stack : OreDictionary.getOres(tag)) {
 			if (Block.getBlockFromItem(stack.getItem()) == block) {
 				return true;

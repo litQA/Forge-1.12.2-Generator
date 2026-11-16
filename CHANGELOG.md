@@ -1,5 +1,31 @@
 # Changelog
 
+# 2026.3-1.0.37.104-beta
+
+## New Content
+
+- Added a generated block-tag registry for blocks without items. Itemless
+  plants, crops, fluids and other blocks are now registered outside the Ore
+  Dictionary and are consulted by block-tag procedures.
+- Water and lava block-tag entries now include their flowing variants, so
+  farmland moisture scans detect both source and flowing fluids.
+- Item `onRightClickedOnBlock` procedures are treated as successful uses and
+  return `EnumActionResult.SUCCESS` after execution, keeping client and server
+  placement behavior consistent.
+
+## Fixes
+
+- Mob-effect expiry no longer re-runs the ending procedure when milk or another
+  cure removes the effect. Natural expiry runs the ending procedure and then
+  removes any same-effect re-add, preventing Ender Resonance from lingering.
+- GUI `disablePlacement` conditions are negated when generating
+  `Slot.isItemValid`, so items matching the placement tag are accepted.
+- Custom multi-box blocks use the first custom box for selection/collision
+  base AABBs while retaining per-box collision; the previous union AABB made
+  collision appear full-block.
+- All four supplied workspaces regenerate, compile and build with the final
+  generator. Fresh jars avoid stale-bytecode behavior.
+
 # 2026.3-1.0.36.103-beta
 
 ## New Content
