@@ -1,3 +1,5 @@
+<img width="1000" alt="forge generator banner 1 12 2" src="https://github.com/user-attachments/assets/147e8a32-d5cf-4a7d-88be-e4475f840045" />
+
 # Forge 1.12.2 Generator - Feature Support Matrix
 
 ## Document purpose
@@ -31,6 +33,14 @@ needs normal build, client/server and gameplay acceptance testing.
 The matrix applies to elements generated with this plugin and to converted
 workspaces using the shipped workspace base. It does not describe third-party
 generators, hand-written mods or later Forge versions.
+
+## Contents
+
+1. [Native API](#native-api)
+2. [Mixin or other equivalent implementation](#mixin-or-other-equivalent-implementation)
+3. [Downgraded/emulated support using alternative methods](#downgradedemulated-support-using-alternative-methods)
+4. [Not implemented - very high effort](#not-implemented---very-high-effort)
+5. [Not implemented - major rework required](#not-implemented---major-rework-required)
 
 ## Support levels
 
@@ -568,3 +578,7 @@ Recommended use:
 4. Rebuild the generated workspace jar after every regeneration. `runClient`
    loads the built jar, so a stale jar can mask or reproduce bugs that are no
    longer present in generated sources.
+
+[![MCreator](https://mcreator.net/image/brand/mcreator300s.png)](https://mcreator.net/)
+
+MCreator is an open-source software used to make Minecraft Java Edition mods, Minecraft Bedrock Edition Add-Ons, resource packs, and data packs using an intuitive easy-to-learn interface or with an integrated code editor. It is used worldwide by Minecraft players, aspiring mod developers, for education, online classes, and STEM workshops.
