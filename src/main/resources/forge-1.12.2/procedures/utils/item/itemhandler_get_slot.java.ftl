@@ -1,9 +1,10 @@
 private static ItemStack getItemStackFromItemStackSlot(int slotID, ItemStack itemStack) {
-	AtomicReference<ItemStack> result = new AtomicReference<>(ItemStack.EMPTY);
-	if(itemStack.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-        IItemHandler capability = itemStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		result.set(capability.getStackInSlot(slotID).copy());
+	if (itemStack.getItem() instanceof IInventory) {
+		IInventory inventory = (IInventory) itemStack.getItem();
+		if (slotID >= 0 && slotID < inventory.getSizeInventory()) {
+			return inventory.getStackInSlot(slotID).copy();
+		}
 	}
 
-	return result.get();
+	return ItemStack.EMPTY;
 }

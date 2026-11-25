@@ -252,6 +252,16 @@ public class ${name}Procedure {
 		return advancement != null && player.getAdvancements().getProgress(advancement).isDone();
 	}
 
+	private static IInventory getEntityInventory(Entity entity) {
+		if (entity instanceof IInventory) {
+			return (IInventory) entity;
+		}
+		if (entity instanceof EntityPlayer) {
+			return ((EntityPlayer) entity).inventory;
+		}
+		return null;
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static IBlockState withIntegerProperty(IBlockState state, String property, int value) {
 		PropertyInteger _property = getIntegerProperty(state.getBlock(), property);

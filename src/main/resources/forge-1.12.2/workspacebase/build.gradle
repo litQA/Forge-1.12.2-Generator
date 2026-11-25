@@ -41,6 +41,10 @@ minecraft {
 repositories {
     mavenCentral()
     maven {
+        name = 'MinecraftForge'
+        url = uri('https://maven.minecraftforge.net/')
+    }
+    maven {
         name = 'SpongePowered'
         url = uri('https://repo.spongepowered.org/maven')
     }
@@ -49,6 +53,17 @@ repositories {
 configurations {
     embed
     implementation.extendsFrom(embed)
+}
+
+// RetroFuturaGradle 2.0.6 pins 1.12.2 to Forge 2847 internally. Pin the
+// resolved Forge dependency to 2864 so the generated workspace uses the
+// requested build instead of only changing the displayed metadata.
+configurations.configureEach {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'net.minecraftforge' && details.requested.name == 'forge') {
+            details.useVersion '1.12.2-14.23.5.2864'
+        }
+    }
 }
 
 dependencies {
