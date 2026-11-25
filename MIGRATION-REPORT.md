@@ -330,7 +330,8 @@ generator, and the support matrix marks them as unavailable.
 - Plugin build: Gradle 9.8.0, Java 25 toolchain, official Gradle distribution
   URL, caches inside the project (`gradlew` sets `GRADLE_USER_HOME`).
 - Generated mod: RetroFuturaGradle 2.0.6, Gradle 9.8.0, Java 8 toolchain, MCP
-  snapshot `20171003`, Forge `1.12.2-14.23.5.2864`.
+  snapshot `20171003`, Forge `1.12.2-14.23.5.2864` requested, with generated
+  `mcmod.info` declaring compatibility `14.23.5.2847`–`14.23.5.2864`.
 - Gradle 9.8 runs on MCreator's Java 25 runtime, so MCreator's Java 25 Gradle
   synchronization action can be parsed and loaded. RetroFuturaGradle then
   compiles and runs the mod with a Java 8 toolchain. The previous ForgeGradle
@@ -343,10 +344,10 @@ generator, and the support matrix marks them as unavailable.
 - RetroFuturaGradle 2.0.6 still derives `1.12.2-14.23.5.2847` internally and
   exposes no supported `forgeVersion` setter. The generated workspace base
   therefore keeps RFG for the toolchain and adds a `resolutionStrategy`
-  override for `net.minecraftforge:forge`, resolving it to
-  `1.12.2-14.23.5.2864`. The override was verified with the
-  `forgeUniversal` configuration; a generated project reports the requested
-  version rewritten from 2847 to 2864.
+  override that requests `1.12.2-14.23.5.2864` for `net.minecraftforge:forge`.
+  A dependency report can show the request rewritten from 2847 to 2864, but the
+  actual development runtime still uses 2847 when a 2864 universal/userdev
+  artifact is not available in the local cache or repository.
 
 ## Known Limitations
 
@@ -944,11 +945,30 @@ The item-stack slot procedures fall back to items implementing `IInventory`;
 1.12.2 has no equivalent item-stack capability, so those procedures are
 best-effort rather than a full capability bridge.
 
-Forge 2864 is selected by a generated workspace `resolutionStrategy` override.
+Forge 2864 is requested by a generated workspace `resolutionStrategy` override.
 Changing only `generator.yaml` updates the displayed version but does not
-change RFG's hardcoded dependency. The generated workspace base now forces
+change RFG's hardcoded dependency. The generated workspace base requests
 `net.minecraftforge:forge:1.12.2-14.23.5.2864` and adds the MinecraftForge
-Maven repository.
+Maven repository. When a 2864 universal/userdev artifact is unavailable, the
+development runtime remains 2847; generated `mcmod.info` accepts both versions.
+
+## 49.116: tag-file output and mixin debug cleanup
+
+Forge 1.12.2 has no tag registry. Earlier generator builds wrote inert JSON files
+under `data/<modid>/tags` only to keep MCreator's tag editor workflow alive.
+That output is now disabled entirely: the tag template is a no-op and the tag
+file mapping targets a path outside the workspace, so no tag directory or tag
+JSON is emitted. `ITEMS` and `BLOCKS` tags are still registered through the Ore
+Dictionary by the generated `<Mod>OreDictionary` class, and the tag editor
+remains usable. Existing workspaces may retain legacy tag JSON files; delete the
+`src/main/resources/data/<modid>/tags` directory once after upgrading.
+
+The generated workspace base no longer adds `-Dmixin.debug=true` to client launch
+arguments. The required `-Dmixin.configs=` argument remains, and the workspace
+base subversion was bumped so existing workspaces refresh their launch
+arguments. `mcmod.info` now declares Forge compatibility from 2847 through 2864
+so a cached 2847 development runtime launches while an external 2864 client is
+accepted.
 
 
 

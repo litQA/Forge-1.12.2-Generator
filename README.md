@@ -9,15 +9,15 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.42.109-beta` |
-| Minecraft / Forge | `1.12.2` / `14.23.5.2864` |
+| Plugin version | `2026.3-1.0.49.116-beta` |
+| Minecraft / Forge | `1.12.2` / `14.23.5.2864` (declared compatible `2847`–`2864`) |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for generated Gradle / MCreator | 25 (bundled MCreator JDK) |
 | Java for plugin source build | 25 (Gradle 9.8 toolchain) |
 | Java toolchain for the mod | 8 |
 | License | CC BY-NC 4.0 (see `LICENSE`) |
 
-Current snapshot: `2026.3-1.0.42.109-beta`. It includes the generator
+Current snapshot: `2026.3-1.0.49.116-beta`. It includes the generator
 foundation, creative tabs, items, recipes, blocks, plants, fluids, tools,
 armor, enchantments, attributes, item extensions, native loot tables, potion
 effects/items, procedures, dimensions, biomes, custom trees, portals/igniters,
@@ -46,7 +46,9 @@ reschedules zero-rate update ticks every game tick. The 1.0.40.107 pass
 preserves tile-entity inventories through same-block state updates. The
 1.0.41.108 pass makes the command-based inventory read non-destructive. The
 1.0.42.109 pass replaces NeoForge item handler capabilities with the 1.12.2
-`IInventory` API and resolves generated workspaces to Forge 2864.
+`IInventory` API and requests Forge 2864 for generated workspaces. The 1.0.49.116
+pass stops emitting tag JSON files, removes the mixin debug launch flag, and
+declares a 2847–2864 compatibility range in `mcmod.info`.
 The complete five-tier support matrix is in
 [docs/SUPPORT-MATRIX.md](docs/SUPPORT-MATRIX.md); trigger levels are in
 [docs/TRIGGER-CLASSIFICATION.md](docs/TRIGGER-CLASSIFICATION.md); known
@@ -69,8 +71,9 @@ synchronization action. RetroFuturaGradle keeps the 1.12.2 build semantics
 (MCP snapshot `20171003`) and compiles/runs the mod with a **Java 8 toolchain**,
 so generated code remains Java 8 compatible. RetroFuturaGradle 2.0.6 pins the
 1.12.2 Forge dependency to 2847 internally; the generated workspace base adds a
-`resolutionStrategy` override so the resolved Forge version is
-`1.12.2-14.23.5.2864`.
+`resolutionStrategy` override that requests `1.12.2-14.23.5.2864`. If that
+artifact is not available in the local cache, the development runtime can still
+use 2847; generated `mcmod.info` declares compatibility with both versions.
 
 No MCreator "Java home override" to a JDK 8 is required anymore. Leave the
 Gradle JVM at MCreator's bundled JDK (Java 25) or any JDK supported by
@@ -290,8 +293,10 @@ files:
   under the parent ore name and its own normalized name, with cycle protection.
 - The internal `mod:` namespace is normalized to the workspace mod id, so
   editor tags and procedure literals resolve to the same Ore Dictionary names.
-- Tag JSON files are still written for MCreator compatibility but are inert in
-  1.12.2; they are placed under the unused `data/` folder.
+- Tag JSON files are not generated. The MCreator tag editor remains available,
+  but 1.12.2 has no tag file format, so only the Ore Dictionary registrations are
+  emitted. Remove a legacy `data/<modid>/tags` directory once when upgrading an
+  existing workspace.
 - Other tag types (entities, biomes, structures, functions, enchantments, ...)
   have no 1.12.2 equivalent and are not registered.
 
@@ -367,7 +372,8 @@ precedence over resources of the same generator name shipped by other plugins.
 ## Create a workspace
 
 1. Create a new MCreator workspace, open the generator selection and choose
-   **Forge for 1.12.2 (14.23.5.2864)**.
+   **Forge for 1.12.2 (14.23.5.2864)**; existing 2847 development caches remain
+   usable because the generated mod accepts both versions.
 2. Keep MCreator's Gradle Java home override at the default Java 25 runtime (do
    not point it to JDK 8; Gradle 9.8 requires Java 17+). The Java 8 toolchain is
    handled by Gradle/RetroFuturaGradle.
@@ -421,7 +427,7 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.42.109-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.49.116-beta`.
 2. Generator validator on processed resources (YAML, mappings, FreeMarker
    syntax, template references): `VALIDATION PASSED` (82 YAML documents, 759
    FTL templates, 144 template references).
@@ -495,7 +501,7 @@ plugin-branch-2026.3/
 28. A headless `WorkspaceGeneratorSetup.setupWorkspaceBase` run replaced a
     deliberately stale Fabric `build.gradle` with the Forge
     RetroFuturaGradle base. The copied script contains no unescaped Groovy
-    interpolation, and generator `subversion` `1.3` forces the same setup for
+    interpolation, and later generator `subversion` bumps force the same setup for
     workspaces created with an older base.
 29. The four test workspaces were regenerated through the real MCreator
     generation path and built with `compileJava` and `build`; all produced
@@ -548,12 +554,14 @@ plugin-branch-2026.3/
       state boxes are skipped and farmland keeps its partial top-level box.
     - All four workspaces regenerate with `failed=0` and complete a fresh
       `gradlew build`; manual in-game retesting remains for the user.
-34. The 1.0.42.109 build was validated with `VALIDATION PASSED` (82 YAML
+34. The 1.0.49.116 build was validated with `VALIDATION PASSED` (82 YAML
     documents, 759 FTL templates, 144 template references) and
-    `BUILD SUCCESSFUL`. The packaged workspace base contains the Forge 2864
-    resolution override.
-35. Forge 2864 resolution was checked in a generated Gradle project:
+    `BUILD SUCCESSFUL`. A probe workspace regenerated 488 elements with
+    `failed=0` and no `data/<modid>/tags` directory.
+35. Forge resolution was checked in a generated Gradle project:
     `net.minecraftforge:forge:1.12.2-14.23.5.2847 -> 1.12.2-14.23.5.2864`.
+    The actual development runtime still uses 2847 when the 2864 universal or
+    userdev artifact is not present in the cache.
 
 The latest user tests confirmed custom dimension portals, skyboxes, terrain,
 cave/Nether Mixin basics, custom biome/weight behavior and chunk seam fixes.

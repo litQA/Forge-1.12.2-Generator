@@ -1,5 +1,20 @@
 # Changelog
 
+# 2026.3-1.0.49.116-beta
+
+## Changes
+
+- Stopped generating `data/<modid>/tags` JSON files. Tag entries continue to be
+  registered through the Ore Dictionary, and the MCreator tag editor remains
+  usable; the tag output mapping is now a no-op.
+- Removed `-Dmixin.debug=true` from generated workspace launch arguments. The
+  required `-Dmixin.configs=` argument is unchanged.
+- Generated `mcmod.info` now declares Forge compatibility
+  `[14.23.5.2847,14.23.5.2864]`. This allows a cached 2847 development runtime
+  while accepting an external 2864 client.
+- Bumped the workspace-base subversion so existing workspaces refresh their
+  launch arguments when the generator is updated.
+
 # 2026.3-1.0.42.109-beta
 
 ## Fixes

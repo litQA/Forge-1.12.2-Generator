@@ -23,10 +23,10 @@ needs normal build, client/server and gameplay acceptance testing.
 | --- | --- |
 | Generator | `forge-1.12.2` |
 | Plugin | `generator-forge-1.12.2` |
-| Generator snapshot | `2026.3-1.0.42.109-beta` |
+| Generator snapshot | `2026.3-1.0.49.116-beta` |
 | MCreator target | EAP `2026.3.44621` (`EAP2026344621`) |
 | Minecraft | `1.12.2` |
-| Forge | `14.23.5.2864` |
+| Forge | `14.23.5.2864` requested; generated mod declares `14.23.5.2847`–`14.23.5.2864` |
 | Generated Java target | Java 8 |
 | Gradle | Gradle 9.8.0 with RetroFuturaGradle 2.0.6 |
 
@@ -364,6 +364,7 @@ NeoForge parity.
 | Item and block tags | Partial | Ore Dictionary registration plus the generated itemless-block `BlockTags` map. | No native 1.12.2 tag system. Only item and block semantics are represented. |
 | Nested/custom tags | Partial | Recursive flattening, parent/leaf registration and cycle protection. | Names are flattened; tag identity and inheritance graphs are not preserved at runtime. |
 | Water and lava fluid tags | Partial | Water/lava entries also register flowing variants. | Other fluid-tag semantics and fluid-state queries need explicit procedures. |
+| Tag JSON files | None | Not emitted; legacy `data/<modid>/tags` directories should be removed. | The tag editor remains available, but 1.12.2 has no tag file format. |
 
 ### Climate, biomes and dimensions
 
