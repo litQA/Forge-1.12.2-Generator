@@ -330,7 +330,7 @@ generator, and the support matrix marks them as unavailable.
 - Plugin build: Gradle 9.8.0, Java 25 toolchain, official Gradle distribution
   URL, caches inside the project (`gradlew` sets `GRADLE_USER_HOME`).
 - Generated mod: RetroFuturaGradle 2.0.6, Gradle 9.8.0, Java 8 toolchain, MCP
-  snapshot `20171003`, Forge `1.12.2-14.23.5.2847`.
+  snapshot `20171003`, Forge `1.12.2-14.23.5.2864`.
 - Gradle 9.8 runs on MCreator's Java 25 runtime, so MCreator's Java 25 Gradle
   synchronization action can be parsed and loaded. RetroFuturaGradle then
   compiles and runs the mod with a Java 8 toolchain. The previous ForgeGradle
@@ -340,9 +340,13 @@ generator, and the support matrix marks them as unavailable.
   Java 25 (or any Gradle 9.8 supported JDK). If no local JDK 8 is present, the
   Foojay toolchain resolver configured in the generated `settings.gradle`
   provisions one into the Gradle user home.
-- `14.23.5.2847` is RetroFuturaGradle's supported 1.12.2 Forge version and the
-  newest build that still publishes the legacy `-userdev` artifact. Build `2864`
-  is not used by the RFG 2.0.6 1.12.2 defaults.
+- RetroFuturaGradle 2.0.6 still derives `1.12.2-14.23.5.2847` internally and
+  exposes no supported `forgeVersion` setter. The generated workspace base
+  therefore keeps RFG for the toolchain and adds a `resolutionStrategy`
+  override for `net.minecraftforge:forge`, resolving it to
+  `1.12.2-14.23.5.2864`. The override was verified with the
+  `forgeUniversal` configuration; a generated project reports the requested
+  version rewritten from 2847 to 2864.
 
 ## Known Limitations
 
@@ -925,6 +929,34 @@ write-only in 1.12.2 and cannot return NBT, so this is a workspace-element
 migration issue rather than a supported inventory-read path. The inventory tile
 entity continues to use `shouldRefresh` so same-block state updates retain its
 NBT-backed inventory.
+
+## 42.109: native 1.12.2 inventories and Forge 2864
+
+Generated inventory procedures previously used NeoForge item-handler
+capabilities. Those classes do not exist in Forge 1.12.2, so converted
+procedures failed to compile with `IItemHandler`,
+`CapabilityItemHandler` and `IItemHandlerModifiable` symbols. The block
+inventory procedures and helpers now use `IInventory` through a
+`TileEntity instanceof IInventory` check, with explicit slot bounds checks.
+Entity procedures use a generated `getEntityInventory(Entity)` helper that
+accepts entities implementing `IInventory` and the vanilla player inventory.
+The item-stack slot procedures fall back to items implementing `IInventory`;
+1.12.2 has no equivalent item-stack capability, so those procedures are
+best-effort rather than a full capability bridge.
+
+Forge 2864 is selected by a generated workspace `resolutionStrategy` override.
+Changing only `generator.yaml` updates the displayed version but does not
+change RFG's hardcoded dependency. The generated workspace base now forces
+`net.minecraftforge:forge:1.12.2-14.23.5.2864` and adds the MinecraftForge
+Maven repository.
+
+Converted workspaces can also contain `config` mod elements or
+`JsonLootCache` variables supplied by another plugin. This generator does not
+define those feature types and does not silently emulate them; the source
+workspace must retain the plugin that supplies them or those elements must be
+migrated. The same rule applies to `blockdata ... {}` reads: 1.12.2
+`blockdata` is write-only, and `data get block` is only available through the
+compatibility bridge.
 
 
 

@@ -23,10 +23,10 @@ needs normal build, client/server and gameplay acceptance testing.
 | --- | --- |
 | Generator | `forge-1.12.2` |
 | Plugin | `generator-forge-1.12.2` |
-| Generator snapshot | `2026.3-1.0.41.108-beta` |
+| Generator snapshot | `2026.3-1.0.42.109-beta` |
 | MCreator target | EAP `2026.3.44621` (`EAP2026344621`) |
 | Minecraft | `1.12.2` |
-| Forge | `14.23.5.2847` |
+| Forge | `14.23.5.2864` |
 | Generated Java target | Java 8 |
 | Gradle | Gradle 9.8.0 with RetroFuturaGradle 2.0.6 |
 

@@ -1,5 +1,25 @@
 # Changelog
 
+# 2026.3-1.0.42.109-beta
+
+## Fixes
+
+- Replaced NeoForge `IItemHandler`, `CapabilityItemHandler` and
+  `IItemHandlerModifiable` usage in generated 1.12.2 procedures with the native
+  `IInventory` API. Block procedures read and write `TileEntity` inventories only
+  after an `instanceof IInventory` check and a slot bounds check.
+- Entity inventory procedures now use a generated `getEntityInventory(Entity)`
+  helper that supports entities implementing `IInventory` and the vanilla player
+  inventory. Item-stack inventory procedures fall back to items implementing
+  `IInventory`; 1.12.2 has no item-handler capability.
+- Generated workspaces now resolve `net.minecraftforge:forge` to
+  `1.12.2-14.23.5.2864`. RetroFuturaGradle 2.0.6 still pins 2847 internally, so
+  the workspace base adds an explicit dependency resolution override.
+- Documented that converted workspaces may contain `config` or `JsonLootCache`
+  features supplied by another plugin; those features are not emulated by this
+  generator. `blockdata ... {}` remains write-only in 1.12.2, and `data get
+  block` requires the compatibility bridge.
+
 # 2026.3-1.0.41.108-beta
 
 ## Fixes
