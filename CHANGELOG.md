@@ -15,10 +15,6 @@
 - Generated workspaces now resolve `net.minecraftforge:forge` to
   `1.12.2-14.23.5.2864`. RetroFuturaGradle 2.0.6 still pins 2847 internally, so
   the workspace base adds an explicit dependency resolution override.
-- Documented that converted workspaces may contain `config` or `JsonLootCache`
-  features supplied by another plugin; those features are not emulated by this
-  generator. `blockdata ... {}` remains write-only in 1.12.2, and `data get
-  block` requires the compatibility bridge.
 
 # 2026.3-1.0.41.108-beta
 

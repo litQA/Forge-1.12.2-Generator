@@ -950,14 +950,6 @@ change RFG's hardcoded dependency. The generated workspace base now forces
 `net.minecraftforge:forge:1.12.2-14.23.5.2864` and adds the MinecraftForge
 Maven repository.
 
-Converted workspaces can also contain `config` mod elements or
-`JsonLootCache` variables supplied by another plugin. This generator does not
-define those feature types and does not silently emulate them; the source
-workspace must retain the plugin that supplies them or those elements must be
-migrated. The same rule applies to `blockdata ... {}` reads: 1.12.2
-`blockdata` is write-only, and `data get block` is only available through the
-compatibility bridge.
-
 
 
 

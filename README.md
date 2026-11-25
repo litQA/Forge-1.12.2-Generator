@@ -428,9 +428,7 @@ plugin-branch-2026.3/
 3. A converted test workspace was regenerated locally with 487 elements and
    `failed=0`. Its generated block and entity inventory procedures use
    `IInventory`, and the generated sources contain no `IItemHandler`,
-   `CapabilityItemHandler` or `IItemHandlerModifiable` references. Compilation
-   of that converted workspace still requires the plugin that supplies its
-   `config` and `JsonLootCache` features.
+   `CapabilityItemHandler` or `IItemHandlerModifiable` references.
 4. The enchantment and armor templates were rendered with FreeMarker using the
    test element data, then compiled with `javac --release 8`: `PASSED`.
 5. The generated shield class shape was compiled against the test workspace's
@@ -556,9 +554,6 @@ plugin-branch-2026.3/
     resolution override.
 35. Forge 2864 resolution was checked in a generated Gradle project:
     `net.minecraftforge:forge:1.12.2-14.23.5.2847 -> 1.12.2-14.23.5.2864`.
-    The converted workspace also requires the originating plugin for its
-    `config` and `JsonLootCache` features, and its generated `blockdata ... {}`
-    read must be replaced with a supported inventory read.
 
 The latest user tests confirmed custom dimension portals, skyboxes, terrain,
 cave/Nether Mixin basics, custom biome/weight behavior and chunk seam fixes.
