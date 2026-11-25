@@ -17,7 +17,7 @@
     "authorList": ["${settings.getAuthor()?json_string}"],
     </#if>
     "dependencies": [
-        "forge@[${generator.getGeneratorBuildFileVersion()}]"<#if settings.getDependencies()?has_content>,</#if>
+        "forge@[14.23.5.2847,${generator.getGeneratorBuildFileVersion()}]"<#if settings.getDependencies()?has_content>,</#if>
         <#list settings.getDependencies() as dependency>
         "${dependency?json_string}"<#if dependency?has_next>,</#if>
         </#list>

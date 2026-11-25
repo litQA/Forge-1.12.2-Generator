@@ -1,7 +1,7 @@
 name: Forge for @minecraft (@buildfileversion)
 status: dev
 buildfileversion: 14.23.5.2864
-subversion: 1.4 # force workspace base refresh after template fixes
+subversion: 1.5 # force workspace base refresh after mixin/JVM argument changes
 
 # Java model key used by the legacy 1.12.2 renderer (ModelRenderer based models).
 java_models:
@@ -140,12 +140,12 @@ language_file:
   root_folder: "@MODASSETSROOT/lang/"
   langfile_name: "@langname.lang"
 
-# Forge 1.12.2 has no tag registry. The tag editor remains available in the
-# workspace; this inert file keeps MCreator's tag workflow compatible, while
-# elementinits/oredictionary.java.ftl registers the actual Ore Dictionary entries.
+# Forge 1.12.2 has no tag registry. Tags are generated as Ore Dictionary
+# registrations by elementinits/oredictionary.java.ftl. The placeholder name is
+# outside the workspace so MCreator never emits data-pack tag files.
 tags:
   template: tags.json.ftl
-  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
+  name: "@RESROOT/../../../../.tag-disabled"
 
 resources_setup_tasks:
   - task: copy_models

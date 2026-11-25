@@ -79,7 +79,6 @@ dependencies {
 minecraft {
     extraTweakClasses.add('org.spongepowered.asm.launch.MixinTweaker')
     extraRunJvmArguments.add('-Dmixin.configs=' + mixinConfigName)
-    extraRunJvmArguments.add('-Dmixin.debug=true')
 }
 
 jar {
