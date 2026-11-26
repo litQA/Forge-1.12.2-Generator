@@ -970,6 +970,22 @@ arguments. `mcmod.info` now declares Forge compatibility from 2847 through 2864
 so a cached 2847 development runtime launches while an external 2864 client is
 accepted.
 
+## 50.118: per-mod Mixin relocation
+
+The generated workspace base now applies Shadow 9.2.2. The development jar keeps
+the original `org.spongepowered.asm` namespace and Mixin tweaker for RFG
+`runClient`; the `shadowJar` task relocates the embedded runtime to
+`org.spongepowered.<modid>` (the mod id without underscores), merges and
+relocates service files, and writes the relocated `TweakClass`. `reobfJar` now
+consumes that shadow jar, so the exported production jar no longer contains the
+shared `org.spongepowered.asm` namespace that conflicted with other mods.
+
+The workspace-base subversion is `1.6`, so existing workspaces refresh the
+generated `build.gradle`. The first generated build resolves the Shadow plugin
+from the Gradle Plugin Portal; offline environments need a populated Gradle
+cache. Relocation isolates the Mixin runtime package, but it does not prevent
+conflicts between two mods that inject into the same target method.
+
 
 
 

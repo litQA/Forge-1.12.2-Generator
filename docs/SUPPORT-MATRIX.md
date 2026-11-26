@@ -23,7 +23,7 @@ needs normal build, client/server and gameplay acceptance testing.
 | --- | --- |
 | Generator | `forge-1.12.2` |
 | Plugin | `generator-forge-1.12.2` |
-| Generator snapshot | `2026.3-1.0.49.116-beta` |
+| Generator snapshot | `2026.3-1.0.50.118-beta` |
 | MCreator target | EAP `2026.3.44621` (`EAP2026344621`) |
 | Minecraft | `1.12.2` |
 | Forge | `14.23.5.2864` requested; generated mod declares `14.23.5.2847`–`14.23.5.2864` |
@@ -321,7 +321,11 @@ conflicting mixins can affect them.
 | Feature | Scope | Implementation method | Compatibility note |
 | --- | --- | --- | --- |
 | Cave and Nether biome lookup | Partial | Mixin `0.7.11-SNAPSHOT` on `World#getBiome`. | Column-based injection, not per-Y biome storage. Overworld lookup is limited to `0 < y < 50`; `y=0` is excluded because 1.12.2 decoration queries that position. |
-| Mixin packaging | Full | Embedded Mixin, RFG refmap, `MixinTweaker`, `MixinConfigs`, `ForceLoadAsMod` and a generated `mixins.<modid>.json`. | Conflicts with another mod that transforms the same world/biome path are possible. |
+| Mixin packaging | Full | Embedded Mixin relocated by Shadow 9.2.2 to `org.spongepowered.<modid>`, with RFG refmap, relocated `MixinTweaker`, `MixinConfigs`, `ForceLoadAsMod` and a generated `mixins.<modid>.json`. | The production jar no longer shares the global `org.spongepowered` namespace. Conflicts with another mod that transforms the same world/biome path are still possible. |
+
+Production jars relocate the embedded Mixin runtime to
+`org.spongepowered.<modid>` (mod id without underscores); the development jar
+keeps the original namespace for RFG `runClient`.
 
 ### Registry extensions
 

@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'com.gtnewhorizons.retrofuturagradle' version '2.0.6'
+    id 'com.gradleup.shadow' version '9.2.2'
 }
 
 def modId = 'modid'
@@ -14,6 +15,7 @@ try {
 }
 def mixinConfigName = 'mixins.' + modId + '.json'
 def mixinRefMapName = 'mixins.' + modId + '.refmap.json'
+def mixinPackage = 'org.spongepowered.' + modId.replace('_', '')
 
 version = '1.0'
 group = 'com.example.modid'
@@ -89,11 +91,41 @@ jar {
             'ForceLoadAsMod': 'true'
         )
     }
-    from(provider { configurations.embed.collect { it.isDirectory() ? it : zipTree(it) } }) {
-        exclude 'META-INF/MANIFEST.MF'
-        exclude 'META-INF/*.SF'
-        exclude 'META-INF/*.RSA'
-        exclude 'META-INF/*.DSA'
+    doFirst {
+        // Shadow 9 shares the manifest object with shadowJar. Restore the
+        // development tweaker after the production manifest is configured.
+        manifest.attributes('TweakClass': 'org.spongepowered.asm.launch.MixinTweaker')
+    }
+}
+
+// Relocate the embedded Mixin runtime into a mod-specific namespace. Without
+// this, every exported mod ships org.spongepowered.asm and the first loaded
+// copy wins, which breaks mods that embed a different Mixin build.
+shadowJar {
+    archiveClassifier = 'shadow'
+    configurations = [project.configurations.embed]
+    relocate 'org.spongepowered', mixinPackage
+    mergeServiceFiles()
+    exclude 'META-INF/MANIFEST.MF'
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.RSA'
+    exclude 'META-INF/*.DSA'
+    manifest {
+        attributes(
+            'TweakClass': mixinPackage + '.asm.launch.MixinTweaker',
+            'MixinConfigs': mixinConfigName,
+            'ForceLoadAsMod': 'true'
+        )
+    }
+    doFirst {
+        // Restore the relocated tweaker for the production jar.
+        manifest.attributes('TweakClass': mixinPackage + '.asm.launch.MixinTweaker')
+    }
+}
+
+afterEvaluate {
+    tasks.named('reobfJar') {
+        inputJarFromTask(tasks.named('shadowJar'))
     }
 }
 

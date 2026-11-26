@@ -9,7 +9,7 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | --- | --- |
 | Plugin id | `generator-forge-1.12.2` |
 | Generator id | `forge-1.12.2` |
-| Plugin version | `2026.3-1.0.49.116-beta` |
+| Plugin version | `2026.3-1.0.50.118-beta` |
 | Minecraft / Forge | `1.12.2` / `14.23.5.2864` (declared compatible `2847`–`2864`) |
 | Gradle for generated mods | Gradle 9.8.0 + RetroFuturaGradle 2.0.6 |
 | Java for generated Gradle / MCreator | 25 (bundled MCreator JDK) |
@@ -17,12 +17,12 @@ MCreator generator plugin for Minecraft Forge 1.12.2, targeting MCreator EAP
 | Java toolchain for the mod | 8 |
 | License | CC BY-NC 4.0 (see `LICENSE`) |
 
-Current snapshot: `2026.3-1.0.49.116-beta`. It includes the generator
+Current snapshot: `2026.3-1.0.50.118-beta`. It includes the generator
 foundation, creative tabs, items, recipes, blocks, plants, fluids, tools,
 armor, enchantments, attributes, item extensions, native loot tables, potion
 effects/items, procedures, dimensions, biomes, custom trees, portals/igniters,
 skyboxes, sounds, custom dimension terrain with caves/aquifers, five-range
-biome weight mapping, self-contained Mixin 0.7.11 worldgen injection,
+biome weight mapping, per-mod-relocated Mixin 0.7.11 worldgen injection,
 advancements, Java structure/feature worldgen, villager professions/trades,
 commands, functions, game rules, music discs, banner patterns, damage types,
 native procedure triggers, global workspace variables with persistent
@@ -48,7 +48,10 @@ preserves tile-entity inventories through same-block state updates. The
 1.0.42.109 pass replaces NeoForge item handler capabilities with the 1.12.2
 `IInventory` API and requests Forge 2864 for generated workspaces. The 1.0.49.116
 pass stops emitting tag JSON files, removes the mixin debug launch flag, and
-declares a 2847–2864 compatibility range in `mcmod.info`.
+declares a 2847–2864 compatibility range in `mcmod.info`. The 1.0.50.118 pass
+relocates the embedded Mixin runtime to `org.spongepowered.<modid>` with Shadow
+9.2.2, so production jars do not share the global `org.spongepowered` namespace;
+the development jar keeps the original tweaker for `runClient`.
 The complete five-tier support matrix is in
 [docs/SUPPORT-MATRIX.md](docs/SUPPORT-MATRIX.md); trigger levels are in
 [docs/TRIGGER-CLASSIFICATION.md](docs/TRIGGER-CLASSIFICATION.md); known
@@ -78,6 +81,13 @@ use 2847; generated `mcmod.info` declares compatibility with both versions.
 No MCreator "Java home override" to a JDK 8 is required anymore. Leave the
 Gradle JVM at MCreator's bundled JDK (Java 25) or any JDK supported by
 Gradle 9.8.
+
+Production packaging uses Shadow 9.2.2. The generated `build.gradle` keeps the
+development `jar` unrelocated for `runClient`, then produces a `shadowJar` that
+relocates `org.spongepowered` to `org.spongepowered.<modid>` (underscores
+removed) and feeds that jar to `reobfJar`. The Shadow plugin is resolved from
+the Gradle Plugin Portal on the first generated build, so that build needs
+network access or a populated Gradle cache.
 
 ## Block support
 
@@ -427,7 +437,7 @@ plugin-branch-2026.3/
 
 1. `gradlew.bat build` with Gradle 9.8.0 and the Java 25 toolchain:
    `BUILD SUCCESSFUL`, producing
-   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.49.116-beta`.
+   `build/dist/generator-forge-1.12.2.zip` version `2026.3-1.0.50.118-beta`.
 2. Generator validator on processed resources (YAML, mappings, FreeMarker
    syntax, template references): `VALIDATION PASSED` (82 YAML documents, 759
    FTL templates, 144 template references).
@@ -562,6 +572,19 @@ plugin-branch-2026.3/
     `net.minecraftforge:forge:1.12.2-14.23.5.2847 -> 1.12.2-14.23.5.2864`.
     The actual development runtime still uses 2847 when the 2864 universal or
     userdev artifact is not present in the cache.
+36. The 1.0.50.118 Shadow pass was validated with the exact workspace-base
+    `build.gradle` and a real `World#getWorldTime` mixin. The development jar
+    kept the original Mixin namespace and `TweakClass`; the shadow and
+    reobfuscated production jars contained 476 relocated class references,
+    zero `org/spongepowered/asm` references, relocated service files, the
+    relocated `TweakClass`, and the generated refmap. A fresh `reobfJar`
+    completed successfully, and `runClient` applied the mixin and reached an
+    integrated world. The plugin build reported `VALIDATION PASSED` (82 YAML
+    documents, 759 FTL templates, 144 template references) and
+    `BUILD SUCCESSFUL`; the installed ZIP is 472479 bytes with SHA-256
+    `5F9E0DCD8EFFD5247C685480E6308464E66776CAD6D4CF480BEF1FC9E1BFFB63`.
+    The production jar layout was verified by archive inspection; a
+    production-client launch remains for the user's real-machine test.
 
 The latest user tests confirmed custom dimension portals, skyboxes, terrain,
 cave/Nether Mixin basics, custom biome/weight behavior and chunk seam fixes.
@@ -576,7 +599,10 @@ Fabric-to-Forge conversion test in MCreator. The four test workspaces compile,
 build and reach Forge mod loading in `1.0.38.105`. Custom collision, block
 GUI/inventory, block-inventory output, item placement, tag right-click and the
 teleport/effect flow still need real-client gameplay testing; the conversion UI
-flow also remains to be rechecked.
+flow also remains to be rechecked. The 1.0.50.118 Shadow relocation has been
+validated by build, archive inspection and a development-client mixin smoke
+test; a production client with a normal mod list still needs the user's
+real-machine test.
 
 ## Attribution
 

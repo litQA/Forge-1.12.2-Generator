@@ -1,7 +1,7 @@
 name: Forge for @minecraft (@buildfileversion)
 status: dev
 buildfileversion: 14.23.5.2864
-subversion: 1.5 # force workspace base refresh after mixin/JVM argument changes
+subversion: 1.6 # force workspace base refresh after Shadow Mixin relocation
 
 # Java model key used by the legacy 1.12.2 renderer (ModelRenderer based models).
 java_models:

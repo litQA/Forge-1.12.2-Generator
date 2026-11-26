@@ -1,5 +1,19 @@
 # Changelog
 
+# 2026.3-1.0.50.118-beta
+
+## Fixes
+
+- Relocated the embedded Mixin 0.7.11 runtime to a per-mod namespace
+  `org.spongepowered.<modid>` (underscores removed from the mod id) with Shadow
+  9.2.2. Production jars now use the relocated `MixinTweaker`, service files,
+  class references and refmap, so they no longer ship the shared
+  `org.spongepowered.asm` namespace that conflicted with other mods. The
+  development jar keeps the original namespace and tweaker for RFG `runClient`.
+- Generated workspaces now apply the `com.gradleup.shadow` 9.2.2 Gradle plugin.
+- Bumped the workspace-base `subversion` to `1.6` so existing workspaces refresh
+  the generated `build.gradle`.
+
 # 2026.3-1.0.49.116-beta
 
 ## Changes
